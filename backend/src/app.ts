@@ -23,12 +23,12 @@ mongoose
 //app.use(express.static("dist"));
 app.use(express.json());
 app.use(middleware.requestLogger);
-app.use(middleware.tokenExtractor);
+app.use(middleware.tokenExtractor);S
 
 app.use("/api/login", loginRouter);
-app.use("/api/blogs", middleware.userExtractor, patientRouter);
+app.use("/api/patients", middleware.userExtractor, patientRouter);
 app.use("/api/diagnoses", diagnosesRouter);
-app.use("/api/users", employeeRouter);
+app.use("/api/employees", employeeRouter);
 
 if (process.env.NODE_ENV === "test") {
   const testingRouter = require("./controllers/testing");
