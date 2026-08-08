@@ -1,13 +1,13 @@
-const info = (...params) => {
+export const info = (...params: unknown[]) => {
   if (process.env.NODE_ENV !== "test") {
     console.log(...params);
   }
 };
 
-const error = (...params) => {
+export const error = (...params: unknown[]) => {
   if (process.env.NODE_ENV !== "test") {
     console.error(...params);
   }
 };
 
-module.exports = { info, error };
+export default { info, error };

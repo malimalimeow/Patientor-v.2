@@ -1,8 +1,9 @@
-const logger = require("./logger");
-const jwt = require("jsonwebtoken");
-const User = require("../models/user");
+import * as logger from "./logger.ts";
+import jwt from "jsonwebtoken";
+import Employee from "../models/employee.ts"
+import {type Request, type Response, type NextFunction} from "express";
 
-const tokenExtractor = (request, response, next) => {
+export const tokenExtractor = (request: Request, _response: Response, next: NextFunction) => {
   const authorization = request.get("authorization");
   if (authorization && authorization.startsWith("Bearer ")) {
     const token = authorization.replace("Bearer ", "");
@@ -14,7 +15,7 @@ const tokenExtractor = (request, response, next) => {
   next();
 };
 
-const userExtractor = async (request, response, next) => {
+export const userExtractor = async (request: Request, response: Response, next: NextFunction) => {
   if (request.token) {
     try {
       const decodedToken = jwt.verify(request.token, process.env.SECRET);
@@ -22,8 +23,8 @@ const userExtractor = async (request, response, next) => {
       if (!decodedToken.id) {
         return response.status(401).json({ error: "token invalid" });
       }
-      const user = await User.findById(decodedToken.id);
-      request.user = user;
+  const employee = await Employee.findById(decodedToken.id);
+  request.employee = employee;
     } catch (error) {
       next(error);
     }
@@ -31,7 +32,7 @@ const userExtractor = async (request, response, next) => {
   next();
 };
 
-const requestLogger = (request, response, next) => {
+export const requestLogger = (request: Request, _response: Response, next: NextFunction) => {
   logger.info("Method:", request.method);
   logger.info("Path:  ", request.path);
   logger.info("Body:  ", request.body);
@@ -39,11 +40,11 @@ const requestLogger = (request, response, next) => {
   next();
 };
 
-const unknownEndpoint = (request, response) => {
+export  const unknownEndpoint = (_request: Request, response: Response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
 
-const errorHandler = (error, request, response, next) => {
+export  const errorHandler = (error: unknown, request: Request, response: Response, next: NextFunction) => {
   logger.error(error);
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
@@ -68,7 +69,7 @@ const errorHandler = (error, request, response, next) => {
   next(error);
 };
 
-module.exports = {
+export default {
   requestLogger,
   unknownEndpoint,
   errorHandler,
