@@ -1,8 +1,8 @@
 import patientService from "../services/patientService.ts";
 import express,{type Request, type Response, type NextFunction} from "express";
-import { NewEntrySchema, NewPatientSchema,PatientSchema } from "../utils.ts";
+import { NewEntrySchema, NewPatientSchema,PatientSchema } from "../zodSchemas.ts";
 import {z} from "zod";
-import type{Entry, NewEntry, NewPatient ,Patient} from "../types.ts";
+import type{EntryType, NewEntryType, NewPatientType ,PatientType} from "../zodSchemas.ts";
 
 
 const patientRouter=express.Router();
@@ -40,14 +40,14 @@ patientRouter.get("/:id",(req,res,next)=>{
 
 });
 
-patientRouter.post("/", newPatientParser,(req:Request<unknown,unknown,NewPatient>,res:Response<Patient>)=>{
+patientRouter.post("/", newPatientParser,(req:Request<unknown,unknown,NewPatientType>,res:Response<PatientType>)=>{
     const response =patientService.addData(req.body);
     console.log("add someone,response:",response,"body:",req.body);
     res.json(response);
     
 });
 
-patientRouter.post("/:id/entries", newEntryParser,(req:Request<{ id: string },unknown,NewEntry>,res:Response<Entry>)=>{
+patientRouter.post("/:id/entries", newEntryParser,(req:Request<{ id: string },unknown,NewEntryType>,res:Response<EntryType >)=>{
     const response =patientService.addEntry(req.params.id,req.body);
     res.json(response);
 });

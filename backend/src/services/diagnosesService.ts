@@ -1,17 +1,13 @@
 import data from "../../data/diagnoses.ts" with {type:"json"};
 
-import type { Diagnosis } from "../types.ts";
+import  type {DiagnosisType} from "../zodSchemas.ts";
 
-const diagnoses: Diagnosis[]= data;
+const diagnoses: DiagnosisType[]= data;
 
-const getData=():Diagnosis[]=>{
+const getData=():DiagnosisType[]=>{
     return diagnoses;
 };
 
-const addData=()=>{
-    return null;
-};
-
 export default{
-    getData,addData,
+    getData
 };

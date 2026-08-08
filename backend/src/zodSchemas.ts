@@ -1,7 +1,13 @@
-import type { Entry, NewEntry, NewPatient, Patient } from "./types.ts";
-import { Gender } from "./types.ts";
 import { z } from 'zod';
 
+export const DiagnosisSchema = z.object({
+    code: z.string(),
+    name: z.string(),
+    latin: z.string().optional()
+});
+
+export const Gender ={ 
+  male:'male',female:'female',other:'other'}as const;
 
 export const NewPatientSchema= z.object({
         name: z.string(),
@@ -68,19 +74,46 @@ export const NewEntrySchema=z.discriminatedUnion("type",[HealthCheckSchema,Hospi
 
 export const EntrySchema=NewEntrySchema.and(z.object({id:z.string()}));
 
-export const parseNewEntry =(object:unknown):NewEntry=>{
+export const parseNewEntry =(object:unknown):NewEntryType=>{
   return NewEntrySchema.parse(object);
 };
 
-export const parseEntry =(object:unknown):Entry=>{
+export const parseEntry =(object:unknown):EntryType=>{
   return EntrySchema.parse(object);
 };
 
- export const parseNewPatient = (object:unknown):NewPatient=>{
+ export const parseNewPatient = (object:unknown):NewPatientType=>{
    return NewPatientSchema.parse(object);};
 
-  export const parseOnePatient =(object:unknown):Patient=>{
+  export const parseOnePatient =(object:unknown):PatientType=>{
     return PatientSchema.parse(object);
   };
 
+
+export type NonSensitivePatient = Omit<PatientType, 'ssn'|'entries'>;
+
+export type GenderType = typeof Gender[keyof typeof Gender];
+
+export type NewPatientType =z.infer<typeof NewPatientSchema>;
+
+export type PatientType=z.infer<typeof PatientSchema>;
+
+
+export type BaseEntryType =z.infer<typeof BaseEntrySchema>;
+
+export type HealthCheckEntryType =z.infer<typeof HealthCheckSchema>;
+
+export type HospitalEntryType =z.infer<typeof HospitalSchema>;
+
+export type OccupationalHealthcareEntryType =z.infer<typeof OccupationalSchema>;
+
+
+export type EntryType  =z.infer<typeof EntrySchema>;
+
+export type NewEntryType =z.infer<typeof NewEntrySchema>;
+
+export type DiagnosisType =z.infer<typeof DiagnosisSchema>;
+
+//type UnionOmit<T,K extends string|number|symbol>=T extends unknown ? Omit<T,K>:never
+//kinda like a function here T=>type, K=>key, in string/number/symbol(constraint)= (Ternary)when a type extends something? type omit that key 
 

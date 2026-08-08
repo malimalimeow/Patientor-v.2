@@ -9,9 +9,5 @@ diagnosesRouter.get("/",(_req,res)=>{
     res.send(data);
 });
 
-diagnosesRouter.post("/",(_req,res)=>{
-    diagnosesService.addData();
-    res.send("add a new diary");
-});
 
 export default diagnosesRouter;

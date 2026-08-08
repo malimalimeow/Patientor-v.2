@@ -1,9 +1,9 @@
 import data from "../../data/patients.ts" with {type:"json"};
 
-import type { Entry,NewEntry,Patient, NonSensitivePatient, NewPatient } from "../types.ts";
+import type { EntryType,NewEntryType,PatientType, NonSensitivePatient, NewPatientType } from "../zodSchemas.ts";
 import { v1 as uuid } from 'uuid';
 
-const patients: Patient[]= data||[];
+const patients: PatientType[]= data||[];
 
 
 //can take all the data, should not export to any file!!
@@ -16,21 +16,21 @@ return patients.map(({id,name,dateOfBirth,gender,occupation})=>(({id,name,dateOf
     
 ));};
 
-const getOne=(id:string):Patient[]=>{
+const getOne=(id:string):PatientType[]=>{
     const patient=patients.filter((p)=>p.id===id);
     return patient;
 };
 
-const addData=(data:NewPatient):Patient=>{
+const addData=(data:NewPatientType):PatientType=>{
     const id = uuid();
-    const newPatient:Patient= {id,...data,entries:data.entries||[]};
+    const newPatient:PatientType= {id,...data,entries:data.entries||[]};
     patients.push(newPatient);
     return newPatient;
 };
 
-const addEntry=(id:string,data:NewEntry):Entry=>{
+const addEntry=(id:string,data:NewEntryType):EntryType=>{
     const newId:string=uuid();
-    const newEntry:Entry={id:newId,...data};
+    const newEntry:EntryType={id:newId,...data};
     const patient=patients.find(p=>p.id===id);
     if(!patient){
         throw new Error (`can't find user${id}`);
