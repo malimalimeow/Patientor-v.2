@@ -1,9 +1,8 @@
-import data from "../../data/patients.ts" with {type:"json"};
+import Patient from "../models/patient.ts"
 
-import type { EntryType,NewEntryType,PatientType, NonSensitivePatient, NewPatientType } from "../zodSchemas.ts";
-import { v1 as uuid } from 'uuid';
+import type { NewEntryType, NonSensitivePatient ,PatientType,NewPatientType ,EntryType} from "../zodSchemas.ts";
 
-const patients: PatientType[]= data||[];
+
 
 
 //can take all the data, should not export to any file!!
@@ -11,36 +10,38 @@ const patients: PatientType[]= data||[];
     return patients;
 }*/
 
-const getNonSensitiveData=():NonSensitivePatient[] =>{
-return patients.map(({id,name,dateOfBirth,gender,occupation})=>(({id,name,dateOfBirth,gender,occupation})
-    
-));};
+const getNonSensitiveData=async():Promise<NonSensitivePatient[]> =>{
+    const AllData= await Patient.find({}).select({name:1,gender:1,dateOfBirth:1,occupation:1});
+    return AllData;
+};
 
-const getOne=(id:string):PatientType[]=>{
-    const patient=patients.filter((p)=>p.id===id);
+const getOne=async (id:string):Promise<PatientType>=>{
+    const patient= await Patient.findById(id);
+    if (patient===null){
+        throw new Error(`can't find user ${id}`)
+    }
     return patient;
 };
 
-const addData=(data:NewPatientType):PatientType=>{
-    const id = uuid();
-    const newPatient:PatientType= {id,...data,entries:data.entries||[]};
-    patients.push(newPatient);
-    return newPatient;
+const addData=async(data:NewPatientType):Promise<PatientType>=>{
+    const newPatient= new Patient(data);
+    const savedPatient = await newPatient.save();
+    return savedPatient;
 };
 
-const addEntry=(id:string,data:NewEntryType):EntryType=>{
-    const newId:string=uuid();
-    const newEntry:EntryType={id:newId,...data};
-    const patient=patients.find(p=>p.id===id);
+const addEntry=async(id:string,data:NewEntryType):Promise<EntryType>=>{
+    const patient= await Patient.findById(id);
     if(!patient){
         throw new Error (`can't find user${id}`);
     }
     if (!patient.entries) {
   patient.entries = [];
 }
-    patient.entries.push(newEntry);
-    console.log(patient);
-    return newEntry;  
+    patient.entries.push(data)
+    await patient.save()
+    const savedEntry =patient.entries.at(-1)
+
+    return  savedEntry as EntryType;  
 };
 
 export default{

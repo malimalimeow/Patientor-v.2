@@ -1,2 +1,23 @@
-import {Schema} from "mongoose"
+import mongoose,{Schema} from "mongoose"
+import {Gender} from "../zodSchemas.ts"
+import type {NewEmployeeType} from "../zodSchemas.ts"
 
+const MongoEmployeeSchema = new Schema<NewEmployeeType>({
+    name: { type: String, required: true },
+    dateOfBirth: { type: String, required: true },
+    NI: { type: String, required: true },
+    address: { type: String, required: true },
+    emergencyContact: { type: Number},
+    gender: { type: String, enum: Object.values(Gender), required: true} })
+
+MongoEmployeeSchema.set("toJSON", {
+  transform: (_document, returnedObject:Record<string,any>) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
+
+const Employee = mongoose.model("Employee", MongoEmployeeSchema);
+
+export default Employee;

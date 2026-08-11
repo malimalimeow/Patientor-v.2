@@ -1,13 +1,24 @@
 import { z } from 'zod';
 
+export const Gender ={ 
+  male:'male',female:'female',other:'other'}as const;
+
+export const NewEmployeeSchema = z.object({
+    name: z.string(),
+    dateOfBirth: z.iso.date(),
+    NI:z.string(),
+    address: z.string(),
+    emergencyContact: z.number(),
+    gender: z.enum(Object.values(Gender))
+});
+
 export const DiagnosisSchema = z.object({
     code: z.string(),
     name: z.string(),
     latin: z.string().optional()
 });
 
-export const Gender ={ 
-  male:'male',female:'female',other:'other'}as const;
+
 
 export const NewPatientSchema= z.object({
         name: z.string(),
@@ -87,6 +98,18 @@ export type OccupationalHealthcareEntryType =z.infer<typeof OccupationalSchema>;
 export type NewEntryType =z.infer<typeof NewEntrySchema>;
 
 export type DiagnosisType =z.infer<typeof DiagnosisSchema>;
+
+export type NewEmployeeType =z.infer<typeof NewEmployeeSchema>;
+
+export const PatientSchema= NewPatientSchema.extend({ id:z.string() });
+
+export type PatientType=z.infer<typeof PatientSchema>;
+
+export type NonSensitivePatient = Omit<PatientType, 'ssn'|'entries'>;
+
+export const EntrySchema=NewEntrySchema.and(z.object({id:z.string()}));
+
+export type EntryType=z.infer<typeof EntrySchema>;
 
 //type UnionOmit<T,K extends string|number|symbol>=T extends unknown ? Omit<T,K>:never
 //kinda like a function here T=>type, K=>key, in string/number/symbol(constraint)= (Ternary)when a type extends something? type omit that key 
