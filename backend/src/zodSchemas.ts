@@ -13,23 +13,13 @@ export const NewPatientSchema= z.object({
         name: z.string(),
         dateOfBirth: z.iso.date(),
         ssn: z.string(),
-        gender: z.enum(Gender),
+        gender: z.enum(Object.values(Gender)),
         occupation:z.string(),
         entries:z.array(z.unknown()).default([])
        });
 
-export const PatientSchema= NewPatientSchema.extend({ id:z.string() });
-
 export const NewBaseEntrySchema =z.object({
   
-  description: z.string(),
-  date:z.string(),
-  specialist: z.string(),
-  diagnosisCodes: z.array(z.string()).optional()
-});
-
-export const BaseEntrySchema = z.object({
-  id:z.string(),
   description: z.string(),
   date:z.string(),
   specialist: z.string(),
@@ -72,43 +62,27 @@ export const OccupationalSchema=NewBaseEntrySchema.extend({
 
 export const NewEntrySchema=z.discriminatedUnion("type",[HealthCheckSchema,HospitalSchema,OccupationalSchema]);
 
-export const EntrySchema=NewEntrySchema.and(z.object({id:z.string()}));
-
 export const parseNewEntry =(object:unknown):NewEntryType=>{
   return NewEntrySchema.parse(object);
 };
 
-export const parseEntry =(object:unknown):EntryType=>{
-  return EntrySchema.parse(object);
+export const parseEntry =(object:unknown):NewEntryType=>{
+  return NewEntrySchema.parse(object);
 };
 
  export const parseNewPatient = (object:unknown):NewPatientType=>{
    return NewPatientSchema.parse(object);};
 
-  export const parseOnePatient =(object:unknown):PatientType=>{
-    return PatientSchema.parse(object);
-  };
-
-
-export type NonSensitivePatient = Omit<PatientType, 'ssn'|'entries'>;
 
 export type GenderType = typeof Gender[keyof typeof Gender];
 
 export type NewPatientType =z.infer<typeof NewPatientSchema>;
-
-export type PatientType=z.infer<typeof PatientSchema>;
-
-
-export type BaseEntryType =z.infer<typeof BaseEntrySchema>;
 
 export type HealthCheckEntryType =z.infer<typeof HealthCheckSchema>;
 
 export type HospitalEntryType =z.infer<typeof HospitalSchema>;
 
 export type OccupationalHealthcareEntryType =z.infer<typeof OccupationalSchema>;
-
-
-export type EntryType  =z.infer<typeof EntrySchema>;
 
 export type NewEntryType =z.infer<typeof NewEntrySchema>;
 
