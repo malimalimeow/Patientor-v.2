@@ -44,6 +44,23 @@ const addEntry=async(id:string,data:NewEntryType):Promise<EntryType>=>{
     return  savedEntry as EntryType;  
 };
 
+const deleteEntry=async(patientId:string, entryId:string):Promise<void>=>{
+    const patient= await Patient.findById(patientId);
+    if(!patient){
+        throw new Error (`can't find user${patientId}`);
+    }else if (!patient.entries ||patient.entries.length ===0){
+        throw new Error (`no entries found for user ${patientId}`);
+    }
+    const lookupEntry=patient.entries as EntryType[]
+    const toDeleteEntry= lookupEntry.find(entry =>entry.id===entryId)
+    if(!toDeleteEntry){
+        throw new Error(`can't find entry ${entryId}`)
+    }
+    patient.entries = lookupEntry.filter(entry => entry.id !== entryId);
+    await patient.save();
+
+}
+
 export default{
-    addData,getNonSensitiveData,getOne,addEntry
+    addData,getNonSensitiveData,getOne,addEntry,deleteEntry
 };

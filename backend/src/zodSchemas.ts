@@ -5,12 +5,15 @@ export const Gender ={
 
 export const NewEmployeeSchema = z.object({
     name: z.string(),
+    passwordHash: z.string(),
     dateOfBirth: z.iso.date(),
     NI:z.string(),
     address: z.string(),
     emergencyContact: z.number(),
     gender: z.enum(Object.values(Gender))
 });
+
+
 
 export const DiagnosisSchema = z.object({
     code: z.string(),
@@ -100,6 +103,12 @@ export type NewEntryType =z.infer<typeof NewEntrySchema>;
 export type DiagnosisType =z.infer<typeof DiagnosisSchema>;
 
 export type NewEmployeeType =z.infer<typeof NewEmployeeSchema>;
+
+export const EmployeeSchema =NewEmployeeSchema.extend({id:z.string()})
+
+export type EmployeeType =z.infer<typeof EmployeeSchema>
+
+export type NonSensitiveEmployee = Omit<EmployeeType,'NI'|'address'|'passwordHash'>
 
 export const PatientSchema= NewPatientSchema.extend({ id:z.string() });
 

@@ -3,6 +3,11 @@ import jwt from "jsonwebtoken";
 import Employee from "../models/employee.ts"
 import {type Request, type Response, type NextFunction} from "express";
 
+interface CustomJwtPayload {
+  id: string;
+  name?: string;
+}
+
 export const tokenExtractor = (request: Request, _response: Response, next: NextFunction) => {
   const authorization = request.get("authorization");
   if (authorization && authorization.startsWith("Bearer ")) {
@@ -18,12 +23,16 @@ export const tokenExtractor = (request: Request, _response: Response, next: Next
 export const userExtractor = async (request: Request, response: Response, next: NextFunction) => {
   if (request.token) {
     try {
-      const decodedToken = jwt.verify(request.token, process.env.SECRET);
+      if(!process.env.SECRET){
+        throw new Error("SECRET is not found");
+      }
+      const decodedToken = jwt.verify(request.token, process.env.SECRET) as CustomJwtPayload;
 
       if (!decodedToken.id) {
         return response.status(401).json({ error: "token invalid" });
       }
   const employee = await Employee.findById(decodedToken.id);
+  
   request.employee = employee;
     } catch (error) {
       next(error);
@@ -44,8 +53,9 @@ export  const unknownEndpoint = (_request: Request, response: Response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
 
-export  const errorHandler = (error: unknown, request: Request, response: Response, next: NextFunction) => {
+export  const errorHandler = (error: Error, request: Request, response: Response, next: NextFunction) => {
   logger.error(error);
+
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
   } else if (error.name === "ValidationError") {
