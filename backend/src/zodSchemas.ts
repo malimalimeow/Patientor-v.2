@@ -3,14 +3,20 @@ import { z } from 'zod';
 export const Gender ={ 
   male:'male',female:'female',other:'other'}as const;
 
+export const Role={
+  admin='admin',normal='normal',master='master'
+}as const;
+
 export const NewEmployeeSchema = z.object({
     name: z.string(),
-    passwordHash: z.string(),
+    password: z.string(),
+    title:z.string(),
     dateOfBirth: z.iso.date(),
     NI:z.string(),
     address: z.string(),
     emergencyContact: z.number(),
-    gender: z.enum(Object.values(Gender))
+    gender: z.enum(Object.values(Gender)),
+    role:z.enum(Object.values(Role))
 });
 
 
@@ -104,7 +110,7 @@ export type DiagnosisType =z.infer<typeof DiagnosisSchema>;
 
 export type NewEmployeeType =z.infer<typeof NewEmployeeSchema>;
 
-export const EmployeeSchema =NewEmployeeSchema.extend({id:z.string()})
+export const EmployeeSchema =NewEmployeeSchema.omit({password:true}).extend({id:z.string(),passwordHash:z.string()})
 
 export type EmployeeType =z.infer<typeof EmployeeSchema>
 
