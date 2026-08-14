@@ -6,6 +6,7 @@ import {type Request, type Response, type NextFunction} from "express";
 interface CustomJwtPayload {
   id: string;
   name?: string;
+  role:string
 }
 
 export const tokenExtractor = (request: Request, _response: Response, next: NextFunction) => {
@@ -20,7 +21,7 @@ export const tokenExtractor = (request: Request, _response: Response, next: Next
   next();
 };
 
-export const userExtractor = async (request: Request, response: Response, next: NextFunction) => {
+export const employeeExtractor = async (request: Request, response: Response, next: NextFunction) => {
   if (request.token) {
     try {
       if(!process.env.SECRET){
@@ -53,7 +54,7 @@ export  const unknownEndpoint = (_request: Request, response: Response) => {
   response.status(404).send({ error: "unknown endpoint" });
 };
 
-export  const errorHandler = (error: Error, request: Request, response: Response, next: NextFunction) => {
+export  const errorHandler = (error: Error, _request: Request, response: Response, next: NextFunction) => {
   logger.error(error);
 
   if (error.name === "CastError") {

@@ -1,6 +1,6 @@
 import mongoose,{Schema} from "mongoose"
 import {Gender, Role} from "../zodSchemas.ts"
-import type {NewEmployeeType, EmployeeType} from "../zodSchemas.ts"
+import type {EmployeeType} from "../zodSchemas.ts"
 
 const MongoEmployeeSchema = new Schema<EmployeeType>({
     name: { type: String, required: true },

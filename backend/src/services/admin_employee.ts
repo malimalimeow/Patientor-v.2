@@ -1,4 +1,3 @@
-import { $ZodEncodeError } from 'zod/v4/core';
 import Employee from '../models/employee.ts';
 import type { NonSensitiveEmployee, NewEmployeeType,EmployeeType} from '../zodSchemas.ts';
 import bcrypt from "bcrypt"
@@ -52,4 +51,19 @@ const updatePassword= async(id:string,newPassword:string):Promise<void>=>{
     return;
 }
 
-export default {getAllEmployee,getOneEmployee,addEmployee,updatePassword}
+const updateDetails = async(id:string,updateData:Partial<EmployeeType>)=>{
+    if (Object.keys(updateData).length===0){
+        throw new Error("Everything up-to-date")
+    }
+
+    const employee= await Employee.findById(id)
+    if(!employee){
+        throw new Error(`can't find employee ${id}`)
+    }
+
+    const updatedEmployee= await Employee.findByIdAndUpdate(id,{$set:updateData},{new:true,runValidators:true})
+    return updatedEmployee
+
+}
+
+export default {getAllEmployee,getOneEmployee,addEmployee,updatePassword,updateDetails}
