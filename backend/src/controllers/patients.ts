@@ -8,8 +8,12 @@ import { parser } from "../utils/validator.ts";
 
 const patientRouter=express.Router();
 
-patientRouter.get("/",async(_req:Request,res:Response,next: NextFunction)=>{
+patientRouter.get("/",async(req:Request,res:Response,next: NextFunction)=>{
   try{  
+    const employee=req.employee
+        if(!employee){
+            throw new Error ("please login")
+        }
   const patients =  await patientService.getNonSensitiveData();
     res.json(patients);}catch(error){
       next(error);
@@ -18,6 +22,10 @@ patientRouter.get("/",async(_req:Request,res:Response,next: NextFunction)=>{
 
 patientRouter.get("/:id", async(req:Request,res:Response,next: NextFunction)=>{
   try{
+    const employee=req.employee
+        if(!employee){
+            throw new Error ("please login")
+        }
     const id = req.params.id;
   const patient= await patientService.getOne(id as string);
   const parsedPatient= PatientSchema.parse(patient);
@@ -30,7 +38,12 @@ patientRouter.get("/:id", async(req:Request,res:Response,next: NextFunction)=>{
 });
 
 patientRouter.post("/", parser(NewPatientSchema),async (req:Request<unknown,unknown,NewPatientType>,res:Response<PatientType>,next:NextFunction)=>{
-    try{const response = await  patientService.addData(req.body);
+    try{
+      const employee=req.employee
+        if(!employee){
+            throw new Error ("please login")
+        }
+      const response = await  patientService.addData(req.body);
     console.log("add someone,response:",response,"body:",req.body);
     res.json(response);}catch(error){
       next(error);
@@ -38,7 +51,12 @@ patientRouter.post("/", parser(NewPatientSchema),async (req:Request<unknown,unkn
 });
 
 patientRouter.post("/:id/entries", parser(NewEntrySchema), async(req:Request<{ id: string },unknown,NewEntryType>,res:Response<EntryType >,next:NextFunction)=>{
-    try{const response = await patientService.addEntry(req.params.id,req.body);
+    try{
+      const employee=req.employee
+        if(!employee){
+            throw new Error ("please login")
+        }
+      const response = await patientService.addEntry(req.params.id,req.body);
     res.json(response);}catch(error){
       next(error);
     }

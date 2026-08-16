@@ -1,5 +1,5 @@
 import Employee from '../models/employee.ts';
-import type { NonSensitiveEmployee, NewEmployeeType,EmployeeType} from '../zodSchemas.ts';
+import type { NonSensitiveEmployee, NewEmployeeType,EmployeeType,updatePasswordType,updateEmployeeType} from '../zodSchemas.ts';
 import bcrypt from "bcrypt";
 import { v4 as uuid} from "uuid";
 
@@ -42,12 +42,13 @@ const addEmployee=async(newData:NewEmployeeType):Promise<EmployeeType>=>{
      return savedEmployee;
 };
 
-const updatePassword= async(id:string,newPassword:string):Promise<void>=>{
+const updatePassword= async(id:string,Password:updatePasswordType):Promise<void>=>{
     const employee= await Employee.findById(id);
     if(!employee){
         throw new Error(`can't find employee ${id}`);
     }
     const saltRounds=10;
+    const newPassword=Password.newPassword
     if(newPassword && newPassword.length>2){
         const passwordHash=await bcrypt.hash(newPassword,saltRounds);
         employee.passwordHash=passwordHash;
@@ -56,7 +57,8 @@ const updatePassword= async(id:string,newPassword:string):Promise<void>=>{
     return;
 };
 
-const updateDetails = async(id:string,updateData:Partial<EmployeeType>)=>{
+const updateDetails = async(id:string,updateData:updateEmployeeType)=>{
+    
     if (Object.keys(updateData).length===0){
         throw new Error("Everything up-to-date");
     }
