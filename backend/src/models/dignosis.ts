@@ -5,9 +5,9 @@ const MongoDiagnosisSchema= new Schema <DiagnosisType>({
     code: {type:String,required:true},
         name: {type:String,required:true},
         latin: {type:String},
-},{_id:false})
+},{_id:false});
 
-const Diagnosis= mongoose.model("Diagnosis",MongoDiagnosisSchema)
+const Diagnosis= mongoose.model("Diagnosis",MongoDiagnosisSchema);
 
-export default Diagnosis
+export default Diagnosis;
 

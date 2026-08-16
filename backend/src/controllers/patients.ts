@@ -1,37 +1,26 @@
 import patientService from "../services/patientService.ts";
 import express,{type Request, type Response, type NextFunction} from "express";
 import { NewEntrySchema, NewPatientSchema,PatientSchema } from "../zodSchemas.ts";
-import {z} from "zod";
 import type{EntryType, NewEntryType, NewPatientType ,PatientType} from "../zodSchemas.ts";
+import { parser } from "../utils/validator.ts";
+
 
 
 const patientRouter=express.Router();
 
-const newPatientParser = (req: Request,_res:Response,next: NextFunction)=>{
-  try{NewPatientSchema.parse(req.body);
-    next();
-  }catch (error:unknown){
-    next(error);
-  }
-};
-
-const newEntryParser = (req:Request,_res:Response,next: NextFunction)=>{
-  try{NewEntrySchema.parse(req.body);
-    next();
-  }catch (error:unknown){
-    next(error);
-  }
-};
-
-patientRouter.get("/",(_req,res)=>{
-    const patients = patientService.getNonSensitiveData();
-    res.json(patients);
+patientRouter.get("/",async(_req:Request,res:Response,next: NextFunction)=>{
+  try{  
+  const patients =  await patientService.getNonSensitiveData();
+    res.json(patients);}catch(error){
+      next(error);
+    }
 });
 
-patientRouter.get("/:id",(req,res,next)=>{
+patientRouter.get("/:id", async(req:Request,res:Response,next: NextFunction)=>{
   try{
-  const patient= patientService.getOne(req.params.id);
-  const parsedPatient= PatientSchema.parse(patient[0]);
+    const id = req.params.id;
+  const patient= await patientService.getOne(id as string);
+  const parsedPatient= PatientSchema.parse(patient);
   console.log("Get",patient);
   res.json(parsedPatient);
   }catch(error:unknown){
@@ -40,27 +29,19 @@ patientRouter.get("/:id",(req,res,next)=>{
 
 });
 
-patientRouter.post("/", newPatientParser,(req:Request<unknown,unknown,NewPatientType>,res:Response<PatientType>)=>{
-    const response =patientService.addData(req.body);
+patientRouter.post("/", parser(NewPatientSchema),async (req:Request<unknown,unknown,NewPatientType>,res:Response<PatientType>,next:NextFunction)=>{
+    try{const response = await  patientService.addData(req.body);
     console.log("add someone,response:",response,"body:",req.body);
-    res.json(response);
-    
+    res.json(response);}catch(error){
+      next(error);
+    }
 });
 
-patientRouter.post("/:id/entries", newEntryParser,(req:Request<{ id: string },unknown,NewEntryType>,res:Response<EntryType >)=>{
-    const response =patientService.addEntry(req.params.id,req.body);
-    res.json(response);
+patientRouter.post("/:id/entries", parser(NewEntrySchema), async(req:Request<{ id: string },unknown,NewEntryType>,res:Response<EntryType >,next:NextFunction)=>{
+    try{const response = await patientService.addEntry(req.params.id,req.body);
+    res.json(response);}catch(error){
+      next(error);
+    }
 });
-
-
-const errorMiddleware = (error: unknown, _req: Request, res: Response, next: NextFunction) => { 
-  if (error instanceof z.ZodError) {
-    res.status(400).json({ error: error.issues });
-  } else {
-    next(error);
-  }
-};
-
-patientRouter.use(errorMiddleware);
 
 export default patientRouter;

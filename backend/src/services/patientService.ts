@@ -1,4 +1,4 @@
-import Patient from "../models/patient.ts"
+import Patient from "../models/patient.ts";
 
 import type { NewEntryType, NonSensitivePatient ,PatientType,NewPatientType ,EntryType} from "../zodSchemas.ts";
 
@@ -18,7 +18,7 @@ const getNonSensitiveData=async():Promise<NonSensitivePatient[]> =>{
 const getOne=async (id:string):Promise<PatientType>=>{
     const patient= await Patient.findById(id);
     if (patient===null){
-        throw new Error(`can't find user ${id}`)
+        throw new Error(`can't find user ${id}`);
     }
     return patient;
 };
@@ -37,9 +37,9 @@ const addEntry=async(id:string,data:NewEntryType):Promise<EntryType>=>{
     if (!patient.entries) {
   patient.entries = [];
 }
-    patient.entries.push(data)
-    await patient.save()
-    const savedEntry =patient.entries.at(-1)
+    patient.entries.push(data);
+    await patient.save();
+    const savedEntry =patient.entries.at(-1);
 
     return  savedEntry as EntryType;  
 };
@@ -51,15 +51,15 @@ const deleteEntry=async(patientId:string, entryId:string):Promise<void>=>{
     }else if (!patient.entries ||patient.entries.length ===0){
         throw new Error (`no entries found for user ${patientId}`);
     }
-    const lookupEntry=patient.entries as EntryType[]
-    const toDeleteEntry= lookupEntry.find(entry =>entry.id===entryId)
+    const lookupEntry=patient.entries as EntryType[];
+    const toDeleteEntry= lookupEntry.find(entry =>entry.id===entryId);
     if(!toDeleteEntry){
-        throw new Error(`can't find entry ${entryId}`)
+        throw new Error(`can't find entry ${entryId}`);
     }
     patient.entries = lookupEntry.filter(entry => entry.id !== entryId);
     await patient.save();
 
-}
+};
 
 export default{
     addData,getNonSensitiveData,getOne,addEntry,deleteEntry

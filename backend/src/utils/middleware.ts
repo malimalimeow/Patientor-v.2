@@ -1,7 +1,8 @@
 import * as logger from "./logger.ts";
 import jwt from "jsonwebtoken";
-import Employee from "../models/employee.ts"
+import Employee from "../models/employee.ts";
 import {type Request, type Response, type NextFunction} from "express";
+import { ZodError } from "zod";
 
 interface CustomJwtPayload {
   id: string;
@@ -22,8 +23,8 @@ export const tokenExtractor = (request: Request, _response: Response, next: Next
 };
 
 export const employeeExtractor = async (request: Request, response: Response, next: NextFunction) => {
-  if (request.token) {
-    try {
+  if (!request.token) {throw new Error ("token is missing");}
+  try {
       if(!process.env.SECRET){
         throw new Error("SECRET is not found");
       }
@@ -35,10 +36,13 @@ export const employeeExtractor = async (request: Request, response: Response, ne
   const employee = await Employee.findById(decodedToken.id);
   
   request.employee = employee;
+
+  return request.employee;
+
     } catch (error) {
       next(error);
     }
-  }
+  
   next();
 };
 
@@ -56,6 +60,13 @@ export  const unknownEndpoint = (_request: Request, response: Response) => {
 
 export  const errorHandler = (error: Error, _request: Request, response: Response, next: NextFunction) => {
   logger.error(error);
+
+  if(error instanceof ZodError) {
+    return response.status(400).json({
+      error: "Validation error",
+      details: error.issues,
+    });
+  }
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
@@ -77,7 +88,7 @@ export  const errorHandler = (error: Error, _request: Request, response: Respons
       error: "token expired",
     });
   }
-  next(error);
+  return next(error);
 };
 
 export default {
@@ -85,5 +96,5 @@ export default {
   unknownEndpoint,
   errorHandler,
   tokenExtractor,
-  userExtractor,
+  employeeExtractor
 };

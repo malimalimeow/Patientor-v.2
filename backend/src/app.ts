@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 import config from "./utils/config.ts";
 import logger from "./utils/logger.ts";
 import middleware from "./utils/middleware.ts";
-import diagnosesRouter from "./controllers/diagonoses.ts";
+import diagnosesRouter from "./controllers/diagnoses.ts";
 import employeeRouter from "./controllers/employees.ts";
 import loginRouter from "./controllers/login.ts";
 import patientRouter from "./controllers/patients.ts";
+import testingRouter from "./controllers/testing.ts";
 const  app = express();
 
 logger.info("connecting to", config.MONGODB_URI);
@@ -23,19 +24,18 @@ mongoose
 //app.use(express.static("dist"));
 app.use(express.json());
 app.use(middleware.requestLogger);
-app.use(middleware.tokenExtractor);S
+app.use(middleware.tokenExtractor);
 
 app.use("/api/login", loginRouter);
-app.use("/api/patients", middleware.userExtractor, patientRouter);
+app.use("/api/patients",middleware.employeeExtractor, patientRouter);
 app.use("/api/diagnoses", diagnosesRouter);
 app.use("/api/employees", employeeRouter);
 
 if (process.env.NODE_ENV === "test") {
-  const testingRouter = require("./controllers/testing");
   app.use("/api/testing", testingRouter);
 }
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
-module.exports = app;
+export default app;

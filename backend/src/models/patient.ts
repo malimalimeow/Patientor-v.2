@@ -19,7 +19,7 @@ const MongoBaseEntrySchema =new Schema<NewEntryType>({
       diagnosisCodes: [{
             type: String,
          }]},
-         {discriminatorKey: "type"}) //use "type" to define which model, generate with id.
+         {discriminatorKey: "type"}); //use "type" to define which model, generate with id.
 
 const MongoPatientSchema = new Schema<NewPatientType>({
     name: {
@@ -41,9 +41,9 @@ const MongoPatientSchema = new Schema<NewPatientType>({
             type: String,
             required: true,
          },
-        entries:[MongoBaseEntrySchema]})
+        entries:[MongoBaseEntrySchema]});
 
-const entriesArray= MongoPatientSchema.path('entries') as mongoose.Schema.Types.DocumentArray
+const entriesArray= MongoPatientSchema.path('entries');
 
 entriesArray.discriminator("hospital",new Schema({
      discharge:{
@@ -53,7 +53,7 @@ entriesArray.discriminator("hospital",new Schema({
       criteria:{
             type: String, required: true 
         },
-}}, { _id: false }))
+}}, { _id: false }));
 
 entriesArray.discriminator("healthCheck", new Schema({
     healthCheckRating:{
@@ -61,7 +61,7 @@ entriesArray.discriminator("healthCheck", new Schema({
         enum:Object.values(HealthCheckRating),
         required:true
     }
-}, { _id: false }))
+}, { _id: false }));
 
 entriesArray.discriminator("OccupationalHealthcare", new Schema({
      employerName :{
@@ -75,7 +75,7 @@ entriesArray.discriminator("OccupationalHealthcare", new Schema({
             type: String
         },
         }
-}, { _id: false }))
+}, { _id: false }));
 
 MongoPatientSchema.set("toJSON", {
   transform: (_document, returnedObject:Record<string,any>) => {
@@ -98,4 +98,4 @@ MongoBaseEntrySchema.set("toJSON", {
 });
 const Patient = mongoose.model("Patient", MongoPatientSchema);
 
-export default Patient
+export default Patient;

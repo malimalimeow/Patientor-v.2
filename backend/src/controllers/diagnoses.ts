@@ -4,8 +4,8 @@ import diagnosesService from "../services/diagnosesService.ts";
 
 const diagnosesRouter = express.Router();
 
-diagnosesRouter.get("/",(_req,res)=>{
-    const data = diagnosesService.getData();
+diagnosesRouter.get("/", async (_req,res)=>{
+    const data = await diagnosesService.getData();
     res.send(data);
 });
 

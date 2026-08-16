@@ -1,10 +1,11 @@
 import { z } from 'zod';
+import type { TypeOf } from 'zod/v3';
 
 export const Gender ={ 
   male:'male',female:'female',other:'other'}as const;
 
 export const Role={
-  admin='admin',normal='normal',master='master'
+  admin:'admin',normal:'normal',master:'master'
 }as const;
 
 export const NewEmployeeSchema = z.object({
@@ -82,17 +83,6 @@ export const OccupationalSchema=NewBaseEntrySchema.extend({
 
 export const NewEntrySchema=z.discriminatedUnion("type",[HealthCheckSchema,HospitalSchema,OccupationalSchema]);
 
-export const parseNewEntry =(object:unknown):NewEntryType=>{
-  return NewEntrySchema.parse(object);
-};
-
-export const parseEntry =(object:unknown):NewEntryType=>{
-  return NewEntrySchema.parse(object);
-};
-
- export const parseNewPatient = (object:unknown):NewPatientType=>{
-   return NewPatientSchema.parse(object);};
-
 
 export type GenderType = typeof Gender[keyof typeof Gender];
 
@@ -110,11 +100,11 @@ export type DiagnosisType =z.infer<typeof DiagnosisSchema>;
 
 export type NewEmployeeType =z.infer<typeof NewEmployeeSchema>;
 
-export const EmployeeSchema =NewEmployeeSchema.omit({password:true}).extend({id:z.string(),passwordHash:z.string()})
+export const EmployeeSchema =NewEmployeeSchema.omit({password:true}).extend({id:z.string(),passwordHash:z.string(),username:z.string()});
 
-export type EmployeeType =z.infer<typeof EmployeeSchema>
+export type EmployeeType =z.infer<typeof EmployeeSchema>;
 
-export type NonSensitiveEmployee = Omit<EmployeeType,'NI'|'address'|'passwordHash'>
+export type NonSensitiveEmployee = Omit<EmployeeType,'NI'|'address'|'passwordHash'>;
 
 export const PatientSchema= NewPatientSchema.extend({ id:z.string() });
 
@@ -125,6 +115,30 @@ export type NonSensitivePatient = Omit<PatientType, 'ssn'|'entries'>;
 export const EntrySchema=NewEntrySchema.and(z.object({id:z.string()}));
 
 export type EntryType=z.infer<typeof EntrySchema>;
+
+export const updatePasswordSchema = z.object({
+  oldPassword:z.string().min(8,"Old password is required"),
+  newPassword:z.string().min(8,"New password is required,minimum 8 characters")
+});
+
+export type updatePasswordType= z.infer<typeof updatePasswordSchema>;
+
+export const updateEmployeeSchema= EmployeeSchema.pick({
+    name:true,
+    title:true,
+    dateOfBirth: true,
+    NI:true,
+    address: true,
+    emergencyContact: true,
+    gender:true,
+}).partial();
+
+export type updateEmployeeType= z.infer<typeof updateEmployeeSchema>;
+
+export const loginSchema=z.object({
+  username:z.string().regex(/^[A-Za-z][0-9a-fA-F]{6}$/,"username invalid"),
+  password:z.string().min(8,"password is required,minimum 8 characters")
+});
 
 //type UnionOmit<T,K extends string|number|symbol>=T extends unknown ? Omit<T,K>:never
 //kinda like a function here T=>type, K=>key, in string/number/symbol(constraint)= (Ternary)when a type extends something? type omit that key 

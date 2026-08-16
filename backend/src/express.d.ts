@@ -1,5 +1,5 @@
 import * as express from "express";
-import {EmployeeType} from "./types/employee";
+import type {EmployeeType} from "./types/employee";
 
 declare global {
   namespace Express {
