@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { TypeOf } from 'zod/v3';
+
 
 export const Gender ={ 
   male:'male',female:'female',other:'other'}as const;
@@ -139,6 +139,8 @@ export const loginSchema=z.object({
   username:z.string().regex(/^[A-Za-z][0-9a-fA-F]{6}$/,"username invalid"),
   password:z.string().min(8,"password is required,minimum 8 characters")
 });
+
+export type loginType=z.infer<typeof loginSchema>;
 
 //type UnionOmit<T,K extends string|number|symbol>=T extends unknown ? Omit<T,K>:never
 //kinda like a function here T=>type, K=>key, in string/number/symbol(constraint)= (Ternary)when a type extends something? type omit that key 

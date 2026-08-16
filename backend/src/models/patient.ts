@@ -1,4 +1,4 @@
-import mongoose, {Schema }from "mongoose";
+import mongoose, {Schema,type Types }from "mongoose";
 
 import type { NewPatientType , NewEntryType} from "../zodSchemas.ts";
 import { Gender,HealthCheckRating } from "../zodSchemas.ts";
@@ -43,7 +43,8 @@ const MongoPatientSchema = new Schema<NewPatientType>({
          },
         entries:[MongoBaseEntrySchema]});
 
-const entriesArray= MongoPatientSchema.path('entries');
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+const entriesArray= MongoPatientSchema.path('entries') as Schema.Types.DocumentArray;
 
 entriesArray.discriminator("hospital",new Schema({
      discharge:{
@@ -78,8 +79,9 @@ entriesArray.discriminator("OccupationalHealthcare", new Schema({
 }, { _id: false }));
 
 MongoPatientSchema.set("toJSON", {
-  transform: (_document, returnedObject:Record<string,any>) => {
-    returnedObject.id = returnedObject._id.toString();
+  transform: (_document, returnedObject:Record<string,unknown>) => {
+     if(returnedObject._id){const id = returnedObject._id as Types.ObjectId;
+      returnedObject.id = id.toString();}
     delete returnedObject._id;
     delete returnedObject.__v;
   },
@@ -90,8 +92,9 @@ MongoPatientSchema.set("toJSON", {
 // accommodating various properties that may be present in the MongoDB document.
 
 MongoBaseEntrySchema.set("toJSON", {
-  transform: (_document, returnedObject:Record<string,any>) => {
-    returnedObject.id = returnedObject._id.toString();
+  transform: (_document, returnedObject:Record<string,unknown>) => {
+    if(returnedObject._id){const id = returnedObject._id as Types.ObjectId;
+      returnedObject.id = id.toString();}
     delete returnedObject._id;
     delete returnedObject.__v;
   },

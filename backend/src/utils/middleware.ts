@@ -37,10 +37,9 @@ export const employeeExtractor = async (request: Request, response: Response, ne
   
   request.employee = employee;
 
-  return request.employee;
 
     } catch (error) {
-      next(error);
+       return next(error);
     }
   
   next();

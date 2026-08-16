@@ -1,4 +1,4 @@
-import mongoose,{Schema} from "mongoose";
+import mongoose,{Schema,type Types} from "mongoose";
 import {Gender, Role} from "../zodSchemas.ts";
 import type {EmployeeType} from "../zodSchemas.ts";
 
@@ -14,8 +14,10 @@ const MongoEmployeeSchema = new Schema<EmployeeType>({
     role:{type:String,enum:Object.values(Role),default:"normal"}});
 
 MongoEmployeeSchema.set("toJSON", {
-  transform: (_document, returnedObject:Record<string,any>) => {
-    returnedObject.id = returnedObject._id.toString();
+  transform: (_document, returnedObject:Record<string,unknown>) => {
+    if(returnedObject._id){
+      const id = returnedObject._id as Types.ObjectId;
+      returnedObject.id = id.toString();}
     delete returnedObject._id;
     delete returnedObject.__v;
   },

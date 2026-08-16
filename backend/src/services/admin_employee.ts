@@ -32,7 +32,9 @@ const addEmployee=async(newData:NewEmployeeType):Promise<EmployeeType>=>{
         throw new Error ("password doesn't meet requirement");}
 
     const passwordHash=await bcrypt.hash(newData.password,saltRounds);
-    const {password,...otherData}=newData;
+    // eslint-disable-next-block @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {password:_password,...otherData}=newData;
     const formattedData= {...otherData,passwordHash:passwordHash,username:userId};
     const newEmployee= new Employee(formattedData);
     const savedEmployee = await newEmployee.save();
