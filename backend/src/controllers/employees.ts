@@ -1,4 +1,4 @@
-import express,{type Request, type Response, type NextFunction, request} from "express";
+import express,{type Request, type Response, type NextFunction} from "express";
 import admin_employee from "../services/admin_employee.ts";
 import { NewEmployeeSchema, updateEmployeeSchema ,updatePasswordSchema } from "../zodSchemas.ts";
 import type { NewEmployeeType,updateEmployeeType,updatePasswordType } from "../zodSchemas.ts";
@@ -12,7 +12,7 @@ employeeRouter.get("/",async(req: Request,res:Response,next: NextFunction)=>{
         if(!employee){
             throw new Error ("please login")
         }
-        else if (employee.role!=="admin" || employee.role!=="master"){
+        else if (employee.role!=="admin" && employee.role!=="master"){
             throw new Error ("Insufficient Permissions")
         }
     const employees =await admin_employee.getAllEmployee();
@@ -28,7 +28,7 @@ employeeRouter.get("/:id",async(req: Request,res:Response,next: NextFunction)=>{
     if(!loginEmployee){
             throw new Error ("please login")
         }
-        else if (loginEmployee.role!=="admin" || loginEmployee.role!=="master" ||loginEmployee.id!==id){
+        else if (loginEmployee.role!=="admin" && loginEmployee.role!=="master" &&loginEmployee.id!==id){
             throw new Error ("Insufficient Permissions")
         }
 
@@ -44,7 +44,7 @@ employeeRouter.post("/",parser(NewEmployeeSchema),async(req:Request,res:Response
         if(!employee){
             throw new Error ("please login")
         }
-        else if (employee.role!=="admin" || employee.role!=="master"){
+        else if (employee.role!=="admin" && employee.role!=="master"){
             throw new Error ("Insufficient Permissions")
         }
     
@@ -82,7 +82,7 @@ employeeRouter.patch("/:id/details",parser(updateEmployeeSchema),async (req:Requ
     if(!loginEmployee){
             throw new Error ("please login")
         }
-        else if (loginEmployee.role!=="admin" || loginEmployee.role!=="master" ||loginEmployee.id!==id){
+        else if (loginEmployee.role!=="admin" && loginEmployee.role!=="master" &&loginEmployee.id!==id){
             throw new Error ("Insufficient Permissions")
         }
        
@@ -100,7 +100,7 @@ employeeRouter.delete("/:id",async (req:Request,res:Response, next: NextFunction
     if(!loginEmployee){
             throw new Error ("please login")
         }
-        else if (loginEmployee.role!=="admin" || loginEmployee.role!=="master"){
+        else if (loginEmployee.role!=="admin" && loginEmployee.role!=="master"){
             throw new Error ("Insufficient Permissions")
         }
        

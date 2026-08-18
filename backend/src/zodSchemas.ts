@@ -12,12 +12,12 @@ export const NewEmployeeSchema = z.object({
     name: z.string(),
     password: z.string(),
     title:z.string(),
-    dateOfBirth: z.iso.date(),
+    dateOfBirth: z.string().date(),
     NI:z.string(),
     address: z.string(),
     emergencyContact: z.number(),
-    gender: z.enum(Object.values(Gender)),
-    role:z.enum(Object.values(Role))
+    gender: z.nativeEnum(Gender),
+    role:z.nativeEnum(Role)
 });
 
 
@@ -32,9 +32,9 @@ export const DiagnosisSchema = z.object({
 
 export const NewPatientSchema= z.object({
         name: z.string(),
-        dateOfBirth: z.iso.date(),
+        dateOfBirth: z.string().date(),
         ssn: z.string(),
-        gender: z.enum(Object.values(Gender)),
+        gender: z.nativeEnum(Gender),
         occupation:z.string(),
         entries:z.array(z.unknown()).default([])
        });
@@ -68,7 +68,7 @@ export const HealthCheckSchema= NewBaseEntrySchema.extend({
 export const  HospitalSchema =NewBaseEntrySchema.extend({
     type: z.literal("Hospital"),
     discharge:z.object({
-  date:z.iso.date(),
+  date:z.string().date(),
   criteria:z.string()
 })});
 
@@ -76,8 +76,8 @@ export const OccupationalSchema=NewBaseEntrySchema.extend({
    type: z.literal("OccupationalHealthcare"),
     employerName :z.string(),
     sickLeave:z.object({
-      startDate: z.string(),
-    endDate: z.string()
+      startDate:z.string().date(),
+    endDate: z.string().date()
     }).optional()
 });
 

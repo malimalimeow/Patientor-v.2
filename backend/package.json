@@ -11,7 +11,8 @@
     "tsc": "tsc",
     "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
     "start": "node --experimental-transform-types src/index.ts",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "seed": "tsx src/utils/seed.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -21,7 +22,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.9.1",
     "uuid": "^14.0.1",
-    "zod": "^4.4.3"
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -33,6 +34,7 @@
     "@types/uuid": "^10.0.0",
     "concurrently": "^10.0.3",
     "eslint": "^10.7.0",
+    "tsx": "^4.23.12",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.65.0"
   }
