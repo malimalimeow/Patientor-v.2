@@ -7,6 +7,21 @@ const getData=async():Promise<DiagnosisType[]>=>{
     return allDiagnoses;
 };
 
+const createDiagnoses= async(diagnosis:DiagnosisType):Promise<DiagnosisType>=>{
+    const code = diagnosis.code
+    if (!code){
+       throw new Error("please provide valid code")
+    }
+    const checkCode= await Diagnosis.findOne({code:code})
+    if (checkCode){
+        throw new Error("Code existed")
+    }
+    const newDiagnosis= new Diagnosis(diagnosis)
+    const savedDiagnosis = await newDiagnosis.save()
+
+    return savedDiagnosis
+}
+
 export default{
-    getData
+    getData,createDiagnoses
 };

@@ -3,6 +3,8 @@ import bcrypt from "bcrypt"
 import Employee from "../models/employee.ts"
 import config from "./config.ts";
 
+console.log("ready??")
+
 const createFirstMaster =async()=>{
     try{
         if(!config.MONGODB_URI){throw new Error("Can't find Db")}
@@ -39,4 +41,4 @@ const createFirstMaster =async()=>{
     }
 }
 
-void createFirstMaster
+void createFirstMaster()

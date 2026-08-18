@@ -62,4 +62,17 @@ patientRouter.post("/:id/entries", parser(NewEntrySchema), async(req:Request<{ i
     }
 });
 
+patientRouter.delete("/:id",async(req:Request,res:Response,next:NextFunction)=>{
+  try{
+    const employee=req.employee
+    if(!employee){throw new Error("please login")}
+
+    const response = await patientService.deletePatient(req.params.id as string)
+
+    res.json(response)
+  }catch(error){
+    next(error)
+  }
+})
+
 export default patientRouter;

@@ -6,8 +6,13 @@ const diagnosesRouter = express.Router();
 
 diagnosesRouter.get("/", async (_req,res)=>{
     const data = await diagnosesService.getData();
-    res.send(data);
+    res.json(data);
 });
+
+diagnosesRouter.post("/",async(req,res)=>{
+    const response = await diagnosesService.createDiagnoses(req.body)
+    res.json(response)
+})
 
 
 export default diagnosesRouter;

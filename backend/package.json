@@ -12,7 +12,8 @@
     "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
     "start": "node --experimental-transform-types src/index.ts",
     "lint": "eslint .",
-    "seed": "tsx src/utils/seed.ts"
+    "seed": "tsx src/utils/seed.ts",
+    "seed_d":"tsx src/utils/seed_diagnosis.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

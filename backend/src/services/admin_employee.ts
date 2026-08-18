@@ -1,17 +1,13 @@
 import Employee from '../models/employee.ts';
-import type { NonSensitiveEmployee, NewEmployeeType,EmployeeType,updatePasswordType,updateEmployeeType} from '../zodSchemas.ts';
+import type {NewEmployeeType,EmployeeType,updatePasswordType,updateEmployeeType} from '../zodSchemas.ts';
 import bcrypt from "bcrypt";
 import { v4 as uuid} from "uuid";
 
 
-const getAllEmployee= async():Promise<NonSensitiveEmployee[]>=>{
-    const allUser =await Employee.find({}).select({name: 1,
-        dateOfBirth:1,
-        emergencyContact: 1,
-        gender:1});
+const getAllEmployee= async():Promise<Omit<EmployeeType,"passwordHash">[]>=>{
+    const allEmployee= await Employee.find({}).select('-passwordHash')
+    return allEmployee}
 
-        return allUser;
-};
 
 const getOneEmployee=async(id:string):Promise<EmployeeType>=>{
     const employee= await Employee.findById(id);
@@ -22,7 +18,7 @@ const getOneEmployee=async(id:string):Promise<EmployeeType>=>{
     return employee;
 };
 
-const addEmployee=async(newData:NewEmployeeType):Promise<EmployeeType>=>{
+const addEmployee=async(newData:NewEmployeeType):Promise<Omit<EmployeeType,"passwordHash">>=>{
     const firstLetter = newData.name?.charAt(0).toUpperCase()||"M";
     const shortUUID= uuid().slice(0,6);
     const userId=`${firstLetter}${shortUUID}`;
@@ -38,8 +34,9 @@ const addEmployee=async(newData:NewEmployeeType):Promise<EmployeeType>=>{
     const formattedData= {...otherData,passwordHash:passwordHash,username:userId};
     const newEmployee= new Employee(formattedData);
     const savedEmployee = await newEmployee.save();
-     
-     return savedEmployee;
+    const savedObject= savedEmployee.toJSON()
+    const {passwordHash:_hashedPassword,...allData}=savedObject
+     return {...allData}
 };
 
 const updatePassword= async(id:string,Password:updatePasswordType):Promise<void>=>{
@@ -68,7 +65,7 @@ const updateDetails = async(id:string,updateData:updateEmployeeType)=>{
         throw new Error(`can't find employee ${id}`);
     }
 
-    const updatedEmployee= await Employee.findByIdAndUpdate(id,{$set:updateData},{new:true,runValidators:true});
+    const updatedEmployee= await Employee.findByIdAndUpdate(id,{$set:updateData},{returnDocument: 'after',runValidators:true});
     return updatedEmployee;
 
 };

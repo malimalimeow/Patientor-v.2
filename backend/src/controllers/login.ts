@@ -9,8 +9,9 @@ const loginRouter=express.Router();
 loginRouter.post("/",parser(loginSchema),async(req:Request,res:Response,next:NextFunction)=>{
     try{
     const { username  , password }=req.body as loginType;
-    await loginServices.toLogin(username,password);
-    res.json({message:"Login success,welcome back!"}); }catch(error){
+    const {token,name}= await loginServices.toLogin(username,password);
+
+    res.json({message:`Login success,welcome back!${name},token:${token}`}); }catch(error){
         next(error);
     }
 });

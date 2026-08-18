@@ -21,6 +21,8 @@ employeeRouter.get("/",async(req: Request,res:Response,next: NextFunction)=>{
     }
 });
 
+
+
 employeeRouter.get("/:id",async(req: Request,res:Response,next: NextFunction)=>{
     try{
     const id= req.params.id;

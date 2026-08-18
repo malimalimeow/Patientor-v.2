@@ -29,7 +29,7 @@ app.use(middleware.tokenExtractor);
 app.use("/api/login", loginRouter);
 app.use("/api/patients",middleware.employeeExtractor, patientRouter);
 app.use("/api/diagnoses", diagnosesRouter);
-app.use("/api/employees", employeeRouter);
+app.use("/api/employees",middleware.employeeExtractor, employeeRouter);
 
 if (process.env.NODE_ENV === "test") {
   app.use("/api/testing", testingRouter);

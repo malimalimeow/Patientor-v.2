@@ -1,0 +1,37 @@
+GET http://localhost:3003/api/patients/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc2MzEsImV4cCI6MTc4NzA5MTIzMX0.-F9r4hm9lbrpHINgGX7LAeXL6ggc-Vbjk7zyzw27xNs
+
+###
+
+POST http://localhost:3003/api/patients
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc2MzEsImV4cCI6MTc4NzA5MTIzMX0.-F9r4hm9lbrpHINgGX7LAeXL6ggc-Vbjk7zyzw27xNs
+
+{"name": "John McClane",
+    "dateOfBirth": "1986-07-09",
+   "ssn": "090786-122X",
+    "gender": "male",
+    "occupation": "New york city cop"}
+
+###
+POST http://localhost:3003/api/patients/6a84d1d059bce9a9e10c9841/entries
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc2MzEsImV4cCI6MTc4NzA5MTIzMX0.-F9r4hm9lbrpHINgGX7LAeXL6ggc-Vbjk7zyzw27xNs
+
+{ "date": "2015-01-02",
+        "type": "Hospital",
+        "specialist": "MD House",
+        "diagnosisCodes": ["S62.5"],
+        "description":
+          "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
+        "discharge": {
+          "date": "2015-01-16",
+          "criteria": "Thumb has healed."}}
+
+###
+
+DELETE http://localhost:3003/api/patients/6a84d1dcd5e9935d2a59fe95
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc2MzEsImV4cCI6MTc4NzA5MTIzMX0.-F9r4hm9lbrpHINgGX7LAeXL6ggc-Vbjk7zyzw27xNs
+
+###
+GET http://localhost:3003/api/diagnoses

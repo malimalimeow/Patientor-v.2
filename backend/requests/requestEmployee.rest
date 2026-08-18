@@ -1,0 +1,55 @@
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+  "username": "P9292da",
+  "password":"PooPoo1234!"
+}
+
+###
+
+GET http://localhost:3003/api/employees
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc2MzEsImV4cCI6MTc4NzA5MTIzMX0.-F9r4hm9lbrpHINgGX7LAeXL6ggc-Vbjk7zyzw27xNs
+
+
+###
+
+POST http://localhost:3003/api/employees
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg3MDg0MDA2LCJleHAiOjE3ODcwODc2MDZ9.j4xBGKJnhck5NGYHHbTdpLV1wH57SvBa1Y3PnVDWDMc
+
+{
+  "name": "Poo Leung",
+  "password": "Password123!",
+  "title": "junior nurse",
+  "dateOfBirth": "2000-10-17",
+  "NI": "CA678432T",
+  "address": "Room 202, Cat Road, Liverpool",
+  "emergencyContact": 847535423,
+  "gender": "female",
+  "role": "normal"
+}
+
+###
+PATCH http://localhost:3003/api/employees/6a84bcfcbbcc4887f1501fb2/details
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg3MDg0MDA2LCJleHAiOjE3ODcwODc2MDZ9.j4xBGKJnhck5NGYHHbTdpLV1wH57SvBa1Y3PnVDWDMc
+  
+  {"role": "admin"
+}
+###
+
+PATCH http://localhost:3003/api/employees/6a84bcfcbbcc4887f1501fb2/password
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc1OTgsImV4cCI6MTc4NzA5MTE5OH0.Sl2SMrjeDn6ByoGGj5hKXo_FxZYjxOH11DKjBFx6dx8
+
+{"oldPassword":"Password123!",
+"newPassword":"PooPoo1234!"}
+
+###
+
+
+
+DELETE http://localhost:3003/api/employees/6a84a9fab5e1fbbb9f8c3057
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc1OTgsImV4cCI6MTc4NzA5MTE5OH0.Sl2SMrjeDn6ByoGGj5hKXo_FxZYjxOH11DKjBFx6dx8
+

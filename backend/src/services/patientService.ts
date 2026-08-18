@@ -61,6 +61,13 @@ const deleteEntry=async(patientId:string, entryId:string):Promise<void>=>{
 
 };
 
+const deletePatient=async (patientId:string):Promise<void>=>{
+    const patient= await Patient.findByIdAndDelete(patientId);
+    if(!patient){
+        throw new Error (`can't find user${patientId}`);}
+    return;  
+}
+
 export default{
-    addData,getNonSensitiveData,getOne,addEntry,deleteEntry
+    addData,getNonSensitiveData,getOne,addEntry,deleteEntry,deletePatient
 };
