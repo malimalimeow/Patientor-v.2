@@ -9,7 +9,7 @@ const MongoEmployeeSchema = new Schema<EmployeeType>({
     dateOfBirth: { type: String, required: true },
     NI: { type: String, required: true },
     address: { type: String, required: true },
-    emergencyContact: { type: Number},
+    emergencyContact: { type: String, required: true },
     gender: { type: String, enum: Object.values(Gender), required: true},
     role:{type:String,enum:Object.values(Role),default:"normal"}});
 

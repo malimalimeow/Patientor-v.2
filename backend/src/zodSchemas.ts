@@ -9,13 +9,13 @@ export const Role={
 }as const;
 
 export const NewEmployeeSchema = z.object({
-    name: z.string(),
-    password: z.string(),
-    title:z.string(),
+    name: z.string().trim().min(1,"name required"),
+    password: z.string().trim().min(8, "password accept 8-16 characters only").max(16,"password accept 8-16 characters only").regex(/^[0-9a-zA-Z!*#@$%^&]+$/,"password contains invalid characters"),
+    title:z.string().trim().min(1,"title required"),
     dateOfBirth: z.string().date(),
-    NI:z.string(),
-    address: z.string(),
-    emergencyContact: z.number(),
+    NI:z.string().trim().regex(/^[A-CEG-HJ-PR-TW-Z][A-CEG-HJ-NP-TW-Z][0-9]{6}[ABCD]$/,"Invalid UK National Insurance Number format"),
+    address: z.string().trim().min(1,"address required"),
+    emergencyContact: z.string().trim().regex(/^[0-9]{8,15}$/,"Invalid emergency contact number"),
     gender: z.nativeEnum(Gender),
     role:z.nativeEnum(Role)
 });
@@ -23,27 +23,26 @@ export const NewEmployeeSchema = z.object({
 
 
 export const DiagnosisSchema = z.object({
-    code: z.string(),
-    name: z.string(),
+    code: z.string().trim().min(1,"code required"),
+    name: z.string().trim().min(1,"name required"),
     latin: z.string().optional()
 });
 
 
 
 export const NewPatientSchema= z.object({
-        name: z.string(),
+        name: z.string().trim().min(1,"name required"),
         dateOfBirth: z.string().date(),
-        ssn: z.string(),
         gender: z.nativeEnum(Gender),
-        occupation:z.string(),
+        occupation:z.string().trim().min(1,"occupation required"),
         entries:z.array(z.unknown()).default([])
        });
 
 export const NewBaseEntrySchema =z.object({
   
-  description: z.string(),
-  date:z.string(),
-  specialist: z.string(),
+  description: z.string().trim().min(1,"description required"),
+  date: z.string().date(),
+  specialist: z.string().trim().min(1,"specialist required"),
   diagnosisCodes: z.array(z.string()).optional()
 });
 
@@ -69,12 +68,12 @@ export const  HospitalSchema =NewBaseEntrySchema.extend({
     type: z.literal("Hospital"),
     discharge:z.object({
   date:z.string().date(),
-  criteria:z.string()
+  criteria:z.string().trim().min(1,"criteria required")
 })});
 
 export const OccupationalSchema=NewBaseEntrySchema.extend({
    type: z.literal("OccupationalHealthcare"),
-    employerName :z.string(),
+    employerName :z.string().trim().min(1,"employerName required"),
     sickLeave:z.object({
       startDate:z.string().date(),
     endDate: z.string().date()

@@ -29,10 +29,6 @@ const MongoPatientSchema = new Schema<NewPatientType>({
         dateOfBirth: {
             type: String, required: true 
         },
-        ssn: {
-            type: String,
-            required: true,
-         },
         gender: {type:String,
             enum:Object.values(Gender),
             required: true,
