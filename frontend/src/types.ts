@@ -94,3 +94,40 @@ export interface message {
   message: string;
   isError: boolean;
 }
+
+export const Role={
+  admin:'admin',normal:'normal',master:'master'
+}as const;
+
+export type Role = typeof Role[keyof typeof Role];
+export interface NewEmployeeForm {
+  name: string;
+  password: string;
+  title: string;
+  dateOfBirth: string;
+  NI: string;
+  address: string;
+  emergencyContact: string;
+  gender: Gender;
+  role: Role;
+}
+
+export interface updatePasswordForm {
+  oldPassword:string,
+  newPassword:string
+}
+
+export interface UpdateEmployeeForm {
+  name?: string;
+  title?: string;
+  dateOfBirth?: string;
+  NI?: string;
+  address?: string;
+  emergencyContact?: string;
+  role?: Role;
+}
+
+export interface loginForm{
+  username:string;
+  password:string;
+};

@@ -130,6 +130,7 @@ export const updateEmployeeSchema= EmployeeSchema.pick({
     address: true,
     emergencyContact: true,
     gender:true,
+    role:true,
 }).partial();
 
 export type updateEmployeeType= z.infer<typeof updateEmployeeSchema>;

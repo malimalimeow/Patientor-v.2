@@ -1,7 +1,7 @@
 import axios from "axios";
-import { Patient, PatientFormValues, Entry ,EntryFormValues} from "../types";
+import { Patient, PatientFormValues, Entry , EntryFormValues } from "../types";
 
-import { apiBaseUrl } from "../constants";
+const apiBaseUrl = '/api'
 
 const getAll = async () => {
   const { data } = await axios.get<Patient[]>(
@@ -33,8 +33,20 @@ const addEntry =async( id:string,object:EntryFormValues)=>{
   return data
 }
 
+const deleteEntry =async(id:string,entryId:string)=>{
+  const {data} = await axios.delete<Entry>(
+    `${apiBaseUrl}/patients/${id}/entries/${entryId}`
+  )
+  return data
+}
+
+const deletePatient = async(id:string)=>{
+  const {data} = await axios.delete<Patient>(`${apiBaseUrl}/patients/${id}`)
+  return data
+}
+
 export default {
 
-  getAll, create,getOne,addEntry
+  getAll, create,getOne,addEntry,deleteEntry,deletePatient
 };
 
