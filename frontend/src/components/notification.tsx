@@ -1,26 +1,22 @@
 import { useEffect } from "react";
 import { Alert } from "@mui/material";
-import { message } from "../types";
+import { useMessage, useNotiAction } from "../stores/notificationStore";
 
-interface NotiProps {
-  message: message;
-  setMessage: React.Dispatch<React.SetStateAction<message>>;
-}
-const Notification = ({ message, setMessage }: NotiProps) => {
+const Notification = () => {
+  const message = useMessage();
+  const { clearMessage } = useNotiAction();
+
   useEffect(() => {
     if (message.message === "") {
       return;
     }
 
     const timer = setTimeout(() => {
-      setMessage({
-        message: "",
-        isError: true,
-      });
+      clearMessage();
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [message, setMessage]);
+  }, [message]);
 
   if (message.message === "") {
     return null;
