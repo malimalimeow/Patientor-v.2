@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import type {
   Discharge,
   SickLeave,
-  Diagnosis,
   EntryTypes,
   EntryFormValues,
   HealthCheckRating,
@@ -11,6 +10,8 @@ import type {
 } from "../types";
 import { EntryType } from "../types";
 import NewEntryType from "./NewEntryType";
+import { useDiagnoses } from "../stores/diagnosesStore";
+import { useModalActions } from "../stores/modalStore";
 
 import {
   TextField,
@@ -24,18 +25,11 @@ import {
 } from "@mui/material";
 
 interface NewEntryProps {
-  diagnoses: Diagnosis[];
-  onCancel: () => void;
   onSubmit: (id: string, values: EntryFormValues) => void;
   patientId: string;
 }
 
-const NewEntry = ({
-  diagnoses,
-  onCancel,
-  onSubmit,
-  patientId,
-}: NewEntryProps) => {
+const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
   const [date, setDate] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [specialist, setSpecialist] = useState<string>("");
@@ -51,6 +45,8 @@ const NewEntry = ({
     startDate: "",
     endDate: "",
   });
+  const diagnoses = useDiagnoses();
+  const { closeModal } = useModalActions();
 
   console.log(
     date,
@@ -106,7 +102,7 @@ const NewEntry = ({
       }
 
       onSubmit(patientId, OccupationalPack);
-      onCancel();
+      closeModal();
     }
   };
 

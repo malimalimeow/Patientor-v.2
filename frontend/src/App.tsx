@@ -1,24 +1,18 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import { Button, Divider, Container, Typography } from "@mui/material";
 
 import { apiBaseUrl } from "./constants";
-import { Diagnosis, Patient, message } from "./types";
-import patientService from "./services/patients";
 import PatientListPage from "./components/PatientListPage";
 import PatientDetails from "./components/PatientDetails";
-import diagnosesService from "./services/diagnosesService";
 import Notification from "./components/notification";
+import { useDiagnosesAction } from "./stores/diagnosesStore";
+import { usePatientActions } from "./stores/patientStore";
 
 const App = () => {
-  const [patients, setPatients] = useState<Patient[]>([]);
-  const [showPatient, setShowPatient] = useState<Patient | null>(null);
-  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>([]);
-  const [message, setMessage] = useState<message>({
-    message: "",
-    isError: true,
-  });
+  const { fetchPatientList } = usePatientActions();
+  const { fetchDiagnoses } = useDiagnosesAction();
 
   useEffect(() => {
     const ping = async () => {
@@ -26,24 +20,12 @@ const App = () => {
       console.log("Backend ready！");
     };
 
-    const fetchPatientList = async () => {
-      const patients = await patientService.getAll();
-      setPatients(patients);
-    };
-    const fetchDiagnoses = async () => {
-      const diagnoses = await diagnosesService.getAll();
-      setDiagnoses(diagnoses);
-    };
+    fetchPatientList();
+    fetchDiagnoses();
+
     void ping();
     void fetchPatientList();
-    void fetchDiagnoses();
   }, []);
-
-  const getOnePatient = async (id: string) => {
-    setShowPatient(null);
-    const patient = await patientService.getOne(id);
-    setShowPatient(patient);
-  };
 
   return (
     <div className="App">
@@ -56,33 +38,11 @@ const App = () => {
             Home
           </Button>
           <Divider sx={{ marginY: 2 }} />
-          <Notification message={message} setMessage={setMessage} />
+          <Notification />
           <Routes>
-            <Route
-              path="/"
-              element={
-                <PatientListPage
-                  message={message}
-                  setMessage={setMessage}
-                  patients={patients}
-                  setPatients={setPatients}
-                  getOnePatient={getOnePatient}
-                />
-              }
-            />
+            <Route path="/" element={<PatientListPage />} />
 
-            <Route
-              path="/patients/:id"
-              element={
-                <PatientDetails
-                  message={message}
-                  setMessage={setMessage}
-                  setShowPatient={setShowPatient}
-                  showPatient={showPatient}
-                  diagnoses={diagnoses}
-                />
-              }
-            />
+            <Route path="/patients/:id" element={<PatientDetails />} />
           </Routes>
         </Container>
       </Router>

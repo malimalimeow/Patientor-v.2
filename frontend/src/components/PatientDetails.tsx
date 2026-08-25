@@ -1,10 +1,4 @@
-import type {
-  Patient,
-  Diagnosis,
-  Entry,
-  EntryFormValues,
-  message,
-} from "../types";
+import type { Entry, EntryFormValues } from "../types";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
@@ -17,16 +11,10 @@ import { assertNever } from "../helper";
 import { useState } from "react";
 import { Button } from "@mui/material";
 import AddEntryModal from "./AddEntryModal";
-import patientService from "../services/patients";
 import axios from "axios";
-
-interface PatientDetailProps {
-  showPatient: Patient | null;
-  diagnoses: Diagnosis[];
-  setShowPatient: React.Dispatch<React.SetStateAction<Patient | null>>;
-  setMessage: React.Dispatch<React.SetStateAction<message>>;
-  message: message;
-}
+import { useNotiAction } from "../stores/notificationStore";
+import { usePatientActions, useShowPatient } from "../stores/patientStore";
+import { useModalActions } from "../stores/modalStore";
 
 export const EntryDetails = ({ entry }: { entry: Entry }) => {
   switch (entry.type) {
@@ -82,24 +70,11 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
   }
 };
 
-const PatientDetails = ({
-  showPatient,
-  diagnoses,
-  setShowPatient,
-  setMessage,
-  message,
-}: PatientDetailProps) => {
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-
-  const openModal = (): void => setModalOpen(true);
-
-  const closeModal = (): void => {
-    setModalOpen(false);
-    setMessage({
-      message: "",
-      isError: true,
-    });
-  };
+const PatientDetails = () => {
+  const { setMessage } = useNotiAction();
+  const showPatient = useShowPatient();
+  const { createEntry } = usePatientActions();
+  const { openModal, closeModal } = useModalActions();
 
   if (!showPatient) {
     return <p>Loading</p>;
@@ -113,39 +88,22 @@ const PatientDetails = ({
 
   const submitNewEntry = async (id: string, values: EntryFormValues) => {
     try {
-      const newEntry = await patientService.addEntry(id, values);
-      setShowPatient((prev) => {
-        if (!prev) {
-          return null;
-        }
-        return {
-          ...prev,
-          entries: prev.entries ? prev.entries.concat(newEntry) : [newEntry],
-        };
-      });
-      setModalOpen(false);
-      setMessage({
-        message: `new Entry on ${newEntry.date} added`,
-        isError: false,
-      });
+      const date = values.date;
+      createEntry(id, values);
+      closeModal();
+      setMessage(`new Entry on ${date} added`, false);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "object") {
           const firstError = e?.response?.data.error[0];
           const message = `Something went wrong. Error: ${firstError?.message}`;
-          setMessage((prev) => {
-            return { ...prev, message: message };
-          });
+          setMessage(`${message}`);
         } else {
-          setMessage((prev) => {
-            return { ...prev, message: "Unrecognized axios error" };
-          });
+          setMessage("Unrecognized axios error");
         }
       } else {
         console.error("Unknown error", e);
-        setMessage((prev) => {
-          return { ...prev, message: "Unknown error" };
-        });
+        setMessage("Unknown error");
       }
     }
   };
@@ -167,15 +125,7 @@ const PatientDetails = ({
         </div>
       ))}
 
-      <AddEntryModal
-        setMessage={setMessage}
-        message={message}
-        modalOpen={modalOpen}
-        onSubmit={submitNewEntry}
-        onClose={closeModal}
-        diagnoses={diagnoses}
-        patientId={showPatient.id}
-      />
+      <AddEntryModal onSubmit={submitNewEntry} patientId={showPatient.id} />
       <Button variant="contained" onClick={() => openModal()}>
         Add New Entry
       </Button>

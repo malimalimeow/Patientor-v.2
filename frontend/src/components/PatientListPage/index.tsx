@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -11,66 +10,37 @@ import {
   TableBody,
 } from "@mui/material";
 import axios from "axios";
-
-import { PatientFormValues, Patient, message } from "../../types";
+import { PatientFormValues, Patient } from "../../types";
 import AddPatientModal from "../AddPatientModal";
-
 import HealthRatingBar from "../HealthRatingBar";
+import { useNotiAction } from "../../stores/notificationStore";
+import { usePatients, usePatientActions } from "../../stores/patientStore";
+import { useModalActions } from "../../stores/modalStore";
 
-import patientService from "../../services/patients";
-
-interface Props {
-  patients: Patient[];
-  setPatients: React.Dispatch<React.SetStateAction<Patient[]>>;
-  getOnePatient: (id: string) => Promise<void>;
-  setMessage: React.Dispatch<React.SetStateAction<message>>;
-  message: message;
-}
-
-const PatientListPage = ({
-  patients,
-  setPatients,
-  getOnePatient,
-  setMessage,
-  message,
-}: Props) => {
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-
-  const openModal = (): void => setModalOpen(true);
-
-  const closeModal = (): void => {
-    setModalOpen(false);
-    setMessage({
-      message: "",
-      isError: true,
-    });
-  };
+const PatientListPage = () => {
+  const { setMessage } = useNotiAction();
+  const { getOnePatient, createPatient } = usePatientActions();
+  const patients = usePatients();
+  const { openModal, closeModal } = useModalActions();
 
   const submitNewPatient = async (values: PatientFormValues) => {
     try {
-      const patient = await patientService.create(values);
-      console.log(values);
-      setPatients(patients.concat(patient));
-      setModalOpen(false);
-      setMessage({ message: `${patient.name} added`, isError: false });
+      const name = values.name;
+      createPatient(values);
+      closeModal();
+      setMessage(`${name} added`, false);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "object") {
           const firstError = e?.response?.data.error[0];
           const message = `Something went wrong. Error: ${firstError?.message}`;
-          setMessage((prev) => {
-            return { ...prev, message: message };
-          });
+          setMessage(`${message}`);
         } else {
-          setMessage((prev) => {
-            return { ...prev, message: "Unrecognized axios error" };
-          });
+          setMessage("Unrecognized axios error");
         }
       } else {
         console.error("Unknown error", e);
-        setMessage((prev) => {
-          return { ...prev, message: "Unknown error" };
-        });
+        setMessage("Unknown error");
       }
     }
   };
@@ -115,13 +85,7 @@ const PatientListPage = ({
           ))}
         </TableBody>
       </Table>
-      <AddPatientModal
-        modalOpen={modalOpen}
-        onSubmit={submitNewPatient}
-        setMessage={setMessage}
-        message={message}
-        onClose={closeModal}
-      />
+      <AddPatientModal onSubmit={submitNewPatient} />
       <Button variant="contained" onClick={() => openModal()}>
         Add New Patient
       </Button>

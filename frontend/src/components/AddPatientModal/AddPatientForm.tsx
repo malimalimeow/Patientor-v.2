@@ -13,7 +13,6 @@ import {
 import { PatientFormValues, Gender } from "../../types";
 
 interface Props {
-  onCancel: () => void;
   onSubmit: (values: PatientFormValues) => Promise<void>;
 }
 
@@ -27,7 +26,7 @@ const genderOptions: GenderOption[] = Object.values(Gender).map((v) => ({
   label: v.toString(),
 }));
 
-const AddPatientForm = ({ onCancel, onSubmit }: Props) => {
+const AddPatientForm = ({ onSubmit }: Props) => {
   const [name, setName] = useState<string>("");
   const [occupation, setOccupation] = useState<string>("");
   const [ssn, setSsn] = useState<string>("");
