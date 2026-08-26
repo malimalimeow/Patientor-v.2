@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Patient, PatientFormValues, Entry , EntryFormValues } from "../types";
 
-const apiBaseUrl = '/api'
+const apiBaseUrl = '/api';
 
 const getAll = async () => {
   const { data } = await axios.get<Patient[]>(
@@ -13,8 +13,8 @@ const getAll = async () => {
 
 const getOne =async(id:string)=>{
   const {data}=await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`);
-  return data
-}
+  return data;
+};
 
 const create = async (object: PatientFormValues) => {
   const { data } = await axios.post<Patient>(
@@ -30,20 +30,20 @@ const addEntry =async( id:string,object:EntryFormValues)=>{
     `${apiBaseUrl}/patients/${id}/entries`,
     object
   );
-  return data
-}
+  return data;
+};
 
 const deleteEntry =async(id:string,entryId:string)=>{
   const {data} = await axios.delete<Entry>(
     `${apiBaseUrl}/patients/${id}/entries/${entryId}`
-  )
-  return data
-}
+  );
+  return data;
+};
 
 const deletePatient = async(id:string)=>{
-  const {data} = await axios.delete<Patient>(`${apiBaseUrl}/patients/${id}`)
-  return data
-}
+  const {data} = await axios.delete<Patient>(`${apiBaseUrl}/patients/${id}`);
+  return data;
+};
 
 export default {
 

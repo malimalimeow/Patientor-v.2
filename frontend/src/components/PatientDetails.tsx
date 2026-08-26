@@ -8,7 +8,6 @@ import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import EmergencyIcon from "@mui/icons-material/Emergency";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { assertNever } from "../helper";
-import { useState } from "react";
 import { Button } from "@mui/material";
 import AddEntryModal from "./AddEntryModal";
 import axios from "axios";
@@ -114,7 +113,6 @@ const PatientDetails = () => {
         {showPatient?.name}
         <GenderIcon color="primary" fontSize="large" />
       </h2>
-      <p>ssn:{showPatient?.ssn}</p>
       <p>occupation:{showPatient?.occupation}</p>
       <p>date of birth:{showPatient?.dateOfBirth}</p>
 

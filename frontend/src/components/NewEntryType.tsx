@@ -8,23 +8,25 @@ interface NewEntryTypeProps {
   type: EntryTypes | null;
   setRating: React.Dispatch<React.SetStateAction<HealthCheckRating>>;
   setDischarge: React.Dispatch<React.SetStateAction<Discharge>>;
-  setEmployerName: React.Dispatch<React.SetStateAction<string>>;
   setSickLeave: React.Dispatch<React.SetStateAction<SickLeave>>;
   rating: HealthCheckRating;
   discharge: Discharge;
-  employerName: string;
   sickLeave: SickLeave;
+  employerNameField: {
+    type: string;
+    value: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement, Element>) => void;
+  };
 }
 const NewEntryType = ({
   type,
   setRating,
   setDischarge,
-  setEmployerName,
   setSickLeave,
   rating,
   discharge,
-  employerName,
   sickLeave,
+  employerNameField,
 }: NewEntryTypeProps) => {
   if (type != null) {
     switch (type) {
@@ -92,11 +94,9 @@ const NewEntryType = ({
             <div>
               <TextField
                 label="employerName"
-                value={employerName}
                 id="employerName"
-                type="text"
+                {...employerNameField}
                 required
-                onChange={({ target }) => setEmployerName(target.value)}
               ></TextField>
             </div>
 

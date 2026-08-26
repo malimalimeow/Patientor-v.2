@@ -2,12 +2,12 @@ import axios from "axios";
 
 import { loginForm} from "../types";
 
-const baseUrl="/api/login"
+const baseUrl="/api/login";
 
 const toLogin = async(object:loginForm)=>{
-    const {data}= await axios.post(baseUrl,object)
+    const {data}= await axios.post(baseUrl,object);
 
-    return data
-}
+    return data;
+};
 
-export default {toLogin}
+export default {toLogin};

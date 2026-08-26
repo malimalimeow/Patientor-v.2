@@ -1,4 +1,4 @@
-import {create } from "zustand"
+import {create } from "zustand";
 interface modalState{
     modalOpen:boolean,
     actions:{
@@ -13,7 +13,7 @@ export const useModalStore=create<modalState>((set)=>({
         openModal:()=>set({modalOpen:true}),
         closeModal:()=>set({modalOpen:false})
     }
-}))
+}));
 
-export const useModalOpen=()=>useModalStore((state)=>state.modalOpen)
-export const useModalActions=()=>useModalStore((state)=>state.actions)
+export const useModalOpen=()=>useModalStore((state)=>state.modalOpen);
+export const useModalActions=()=>useModalStore((state)=>state.actions);

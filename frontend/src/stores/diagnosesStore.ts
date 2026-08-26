@@ -14,9 +14,9 @@ export  const useDiagnosesStore =create<diagnosisState>((set)=>({
     actions:{
         fetchDiagnoses : async () => {
               const data = await diagnosesService.getAll();
-              set({diagnoses:data})
+              set({diagnoses:data});
         }}
-    }))
+    }));
 
 export const useDiagnoses=()=> useDiagnosesStore((state)=>state.diagnoses);
-export const useDiagnosesAction=()=>useDiagnosesStore((state)=>state.actions)
+export const useDiagnosesAction=()=>useDiagnosesStore((state)=>state.actions);

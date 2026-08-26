@@ -12,7 +12,7 @@ import { EntryType } from "../types";
 import NewEntryType from "./NewEntryType";
 import { useDiagnoses } from "../stores/diagnosesStore";
 import { useModalActions } from "../stores/modalStore";
-
+import { useField } from "../hooks/useField";
 import {
   TextField,
   InputLabel,
@@ -30,9 +30,11 @@ interface NewEntryProps {
 }
 
 const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
-  const [date, setDate] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [specialist, setSpecialist] = useState<string>("");
+  const { reset: resetDate, ...date } = useField("text");
+  const { reset: resetDescription, ...description } = useField("text");
+  const { reset: resetSpecialist, ...specialist } = useField("text");
+  const { reset: resetEmployerName, ...employerName } = useField("text");
+
   const [code, setCode] = useState<string[]>([]);
   const [type, setType] = useState<EntryTypes>("Hospital");
   const [rating, setRating] = useState<HealthCheckRating>(0);
@@ -40,25 +42,12 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
     date: "",
     criteria: "",
   });
-  const [employerName, setEmployerName] = useState<string>("");
   const [sickLeave, setSickLeave] = useState<SickLeave>({
     startDate: "",
     endDate: "",
   });
   const diagnoses = useDiagnoses();
   const { closeModal } = useModalActions();
-
-  console.log(
-    date,
-    description,
-    specialist,
-    code,
-    type,
-    rating,
-    discharge,
-    employerName,
-    sickLeave,
-  );
 
   const handleCodeChange = (event: SelectChangeEvent<typeof code>) => {
     const {
@@ -70,9 +59,9 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
   const handleCreate = (e: React.SyntheticEvent) => {
     e.preventDefault();
     let basicPack: BaseEntryForm = {
-      description: description,
-      date: date,
-      specialist: specialist,
+      description: description.value,
+      date: date.value,
+      specialist: specialist.value,
     };
     if (code.length !== 0) {
       basicPack = { ...basicPack, diagnosisCodes: code };
@@ -94,7 +83,7 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
       let OccupationalPack: OccupationalForm = {
         ...basicPack,
         type: "OccupationalHealthcare",
-        employerName: employerName,
+        employerName: employerName.value,
       };
 
       if (sickLeave.startDate !== "" && sickLeave.endDate !== "") {
@@ -103,6 +92,10 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
 
       onSubmit(patientId, OccupationalPack);
       closeModal();
+      resetDate();
+      resetDescription();
+      resetEmployerName();
+      resetSpecialist();
     }
   };
 
@@ -131,29 +124,17 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
           <TextField
             label="Date"
             slotProps={{ inputLabel: { shrink: true } }}
-            value={date}
-            type="date"
             required
-            onChange={({ target }) => setDate(target.value)}
+            {...date}
           />
         </div>
 
         <div>
-          <TextField
-            label="Description"
-            value={description}
-            required
-            onChange={({ target }) => setDescription(target.value)}
-          />
+          <TextField label="Description" required {...description} />
         </div>
 
         <div>
-          <TextField
-            label="Specialist"
-            value={specialist}
-            required
-            onChange={({ target }) => setSpecialist(target.value)}
-          />
+          <TextField label="Specialist" required {...specialist} />
         </div>
 
         <div>
@@ -192,11 +173,10 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
           type={type}
           rating={rating}
           discharge={discharge}
-          employerName={employerName}
+          employerNameField={employerName}
           sickLeave={sickLeave}
           setRating={setRating}
           setDischarge={setDischarge}
-          setEmployerName={setEmployerName}
           setSickLeave={setSickLeave}
         />
 

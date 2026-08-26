@@ -1,40 +1,40 @@
-import axios from "axios"
-import { NewEmployeeForm ,updatePasswordForm,UpdateEmployeeForm} from "../types"
+import axios from "axios";
+import { NewEmployeeForm ,updatePasswordForm,UpdateEmployeeForm} from "../types";
 
-const baseUrl="/api/employees"
+const baseUrl="/api/employees";
 
 const getAll=async()=>{
-    const {data}= await axios.get(baseUrl)
+    const {data}= await axios.get(baseUrl);
 
-    return data
-}
+    return data;
+};
 
 const getOne = async(id:string)=>{
-    const {data}= await axios.get(`${baseUrl}/${id}`)
-    return data
-}
+    const {data}= await axios.get(`${baseUrl}/${id}`);
+    return data;
+};
 
 const createNewEmployee = async(object:NewEmployeeForm)=>{
-    const {data}=await axios.post(baseUrl,object)
-    return data
-}
+    const {data}=await axios.post(baseUrl,object);
+    return data;
+};
 
 const updatePassword= async(id:string,object:updatePasswordForm)=>{
-    const {data}=await axios.patch(`${baseUrl}/${id}/password`,object)
-    return data
-}
+    const {data}=await axios.patch(`${baseUrl}/${id}/password`,object);
+    return data;
+};
 
 const updateDetails = async(id:string, object:UpdateEmployeeForm)=>{
-    const {data}=await axios.patch(`${baseUrl}/${id}/details`,object)
-    return data
-}
+    const {data}=await axios.patch(`${baseUrl}/${id}/details`,object);
+    return data;
+};
 
 const deleteEmployee = async (id:string)=>{
-    const {data}= await axios.delete(`${baseUrl}/${id}`)
-    return data
-}
+    const {data}= await axios.delete(`${baseUrl}/${id}`);
+    return data;
+};
 
 
 
 
-export default {getAll,getOne,createNewEmployee,updatePassword,updateDetails,deleteEmployee}
+export default {getAll,getOne,createNewEmployee,updatePassword,updateDetails,deleteEmployee};

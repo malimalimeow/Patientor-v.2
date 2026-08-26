@@ -16,7 +16,7 @@ const Notification = () => {
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [message]);
+  }, [message, clearMessage]);
 
   if (message.message === "") {
     return null;

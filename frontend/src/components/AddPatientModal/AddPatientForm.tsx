@@ -9,12 +9,9 @@ import {
   Button,
   SelectChangeEvent,
 } from "@mui/material";
-
+import { useModalActions } from "../../stores/modalStore";
 import { PatientFormValues, Gender } from "../../types";
-
-interface Props {
-  onSubmit: (values: PatientFormValues) => Promise<void>;
-}
+import { useField } from "../../hooks/useField";
 
 interface GenderOption {
   value: Gender;
@@ -26,12 +23,16 @@ const genderOptions: GenderOption[] = Object.values(Gender).map((v) => ({
   label: v.toString(),
 }));
 
-const AddPatientForm = ({ onSubmit }: Props) => {
-  const [name, setName] = useState<string>("");
-  const [occupation, setOccupation] = useState<string>("");
-  const [ssn, setSsn] = useState<string>("");
-  const [dateOfBirth, setDateOfBirth] = useState<string>("");
+const AddPatientForm = ({
+  onSubmit,
+}: {
+  onSubmit: (values: PatientFormValues) => Promise<void>;
+}) => {
+  const { reset: resetName, ...name } = useField("text");
+  const { reset: resetOccupation, ...occupation } = useField("text");
+  const { reset: resetDOB, ...dateOfBirth } = useField("text");
   const [gender, setGender] = useState<Gender>("female");
+  const { closeModal } = useModalActions();
 
   const onGenderChange = (event: SelectChangeEvent<string>) => {
     event.preventDefault();
@@ -47,42 +48,29 @@ const AddPatientForm = ({ onSubmit }: Props) => {
   const addPatient = async (event: SyntheticEvent) => {
     event.preventDefault();
     await onSubmit({
-      name,
-      occupation,
-      ssn,
-      dateOfBirth,
-      gender,
+      name: name.value,
+      occupation: occupation.value,
+      dateOfBirth: dateOfBirth.value,
+      gender: gender,
     });
+    resetDOB();
+    resetName();
+    resetOccupation();
   };
 
   return (
     <div>
       <form onSubmit={addPatient}>
-        <TextField
-          label="Name"
-          fullWidth
-          value={name}
-          onChange={({ target }) => setName(target.value)}
-        />
-        <TextField
-          label="Social security number"
-          fullWidth
-          value={ssn}
-          onChange={({ target }) => setSsn(target.value)}
-        />
+        <TextField label="Name" fullWidth {...name} />
+
         <TextField
           label="Date of birth"
           placeholder="YYYY-MM-DD"
           fullWidth
-          value={dateOfBirth}
-          onChange={({ target }) => setDateOfBirth(target.value)}
+          {...dateOfBirth}
         />
-        <TextField
-          label="Occupation"
-          fullWidth
-          value={occupation}
-          onChange={({ target }) => setOccupation(target.value)}
-        />
+
+        <TextField label="Occupation" fullWidth {...occupation} />
 
         <InputLabel sx={{ marginTop: 2.5 }}>Gender</InputLabel>
         <Select
@@ -104,7 +92,7 @@ const AddPatientForm = ({ onSubmit }: Props) => {
               color="secondary"
               variant="contained"
               type="button"
-              onClick={onCancel}
+              onClick={closeModal}
             >
               Cancel
             </Button>

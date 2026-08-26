@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     const ping = async () => {
-      await axios.get<String>(`${apiBaseUrl}/ping`);
+      await axios.get<string>(`${apiBaseUrl}/ping`);
       console.log("Backend ready！");
     };
 
@@ -24,8 +24,7 @@ const App = () => {
     fetchDiagnoses();
 
     void ping();
-    void fetchPatientList();
-  }, []);
+  }, [fetchPatientList, fetchDiagnoses]);
 
   return (
     <div className="App">
