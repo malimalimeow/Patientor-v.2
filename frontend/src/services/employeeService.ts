@@ -3,6 +3,13 @@ import { NewEmployeeForm ,updatePasswordForm,UpdateEmployeeForm} from "../types"
 
 const baseUrl="/api/employees";
 
+let token = null;
+
+const setToken = (newToken:string) => {
+  token = `Bearer ${newToken}`;
+};
+
+
 const getAll=async()=>{
     const {data}= await axios.get(baseUrl);
 
@@ -37,4 +44,4 @@ const deleteEmployee = async (id:string)=>{
 
 
 
-export default {getAll,getOne,createNewEmployee,updatePassword,updateDetails,deleteEmployee};
+export default {setToken,getAll,getOne,createNewEmployee,updatePassword,updateDetails,deleteEmployee};

@@ -9,6 +9,9 @@ import PatientDetails from "./components/PatientDetails";
 import Notification from "./components/notification";
 import { useDiagnosesAction } from "./stores/diagnosesStore";
 import { usePatientActions } from "./stores/patientStore";
+import Login from "./components/Login";
+import Employee from "./components/Employee";
+import EmployeeDetails from "./components/EmployeeDetails";
 
 const App = () => {
   const { fetchPatientList } = usePatientActions();
@@ -39,8 +42,10 @@ const App = () => {
           <Divider sx={{ marginY: 2 }} />
           <Notification />
           <Routes>
-            <Route path="/" element={<PatientListPage />} />
-
+            <Route path="/employee" element={<Employee />} />
+            <Route path="/employee/:id" element={<EmployeeDetails />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/patients" element={<PatientListPage />} />
             <Route path="/patients/:id" element={<PatientDetails />} />
           </Routes>
         </Container>

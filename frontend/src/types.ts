@@ -130,3 +130,10 @@ export interface loginForm{
   username:string;
   password:string;
 };
+
+export interface token{
+  name:string;
+  id:string;
+  role:Role;
+  token:string
+}
