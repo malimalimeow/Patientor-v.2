@@ -19,6 +19,7 @@ import { useModalActions } from "../stores/modalStore";
 const PatientListPage = () => {
   const { setMessage } = useNotiAction();
   const employee = useEmployee();
+  const{createEmployee, getOneEmployee} =useEmployeeActions()
 
   const { openModal, closeModal } = useModalActions();
 

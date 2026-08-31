@@ -1,7 +1,7 @@
 import { TextField, Select, MenuItem, Grid, Button } from "@mui/material";
 import { useField } from "../../hooks/useField";
-import { Gender, Role } from "../../types";
-import { useState } from "react";
+import { Gender, NewEmployeeForm, Role } from "../../types";
+import { SyntheticEvent, useState } from "react";
 import { ChangeEvent } from "react";
 import { SelectChangeEvent } from "@mui/material";
 import { useModalActions } from "../../stores/modalStore";
@@ -15,7 +15,11 @@ interface textField {
   };
 }
 
-const Employee = () => {
+const Employee = ({
+  onSubmit,
+}: {
+  onSubmit: (values: NewEmployeeForm) => Promise<void>;
+}) => {
   const { closeModal } = useModalActions();
   const { reset: resetName, ...name } = useField("text");
   const { reset: resetPassword, ...password } = useField("password");
@@ -71,6 +75,23 @@ const Employee = () => {
     resetEmergencyContact();
     setGender("female");
     setRole("normal");
+  };
+
+  const addNewEmployee = async (e: SyntheticEvent) => {
+    e.preventDefault();
+
+    await onSubmit({
+      name: name.value,
+      password: password.value,
+      title: title.value,
+      dateOfBirth: dateOfBirth.value,
+      address: address.value,
+      NI: NI.value,
+      emergencyContact: emergencyContact.value,
+      gender: gender,
+      role: role,
+    });
+    resetAll();
   };
 
   return (
