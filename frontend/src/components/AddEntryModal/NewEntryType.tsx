@@ -1,8 +1,8 @@
-import type { EntryTypes, Discharge, SickLeave } from "../types";
-import { assertNever } from "../helper";
+import type { EntryTypes, Discharge, SickLeave } from "../../types";
+import { assertNever } from "../../helper";
 import { TextField, MenuItem } from "@mui/material";
-import { HealthCheckRatings } from "../types";
-import type { HealthCheckRating } from "../types";
+import { HealthCheckRatings } from "../../types";
+import type { HealthCheckRating } from "../../types";
 
 interface NewEntryTypeProps {
   type: EntryTypes | null;

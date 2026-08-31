@@ -10,7 +10,7 @@ import Notification from "./components/notification";
 import { useDiagnosesAction } from "./stores/diagnosesStore";
 import { usePatientActions } from "./stores/patientStore";
 import Login from "./components/Login";
-import Employee from "./components/Employee";
+import Employee from "./components/AddEmployeeModal/EmployeeForm";
 import EmployeeDetails from "./components/EmployeeDetails";
 
 const App = () => {

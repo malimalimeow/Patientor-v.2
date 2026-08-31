@@ -9,7 +9,7 @@ import EmergencyIcon from "@mui/icons-material/Emergency";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { assertNever } from "../helper";
 import { Button } from "@mui/material";
-import AddEntryModal from "./AddEntryModal";
+import AddEntryModal from "./AddEntryModal/AddEntryModal";
 import axios from "axios";
 import { useNotiAction } from "../stores/notificationStore";
 import { usePatientActions, useShowPatient } from "../stores/patientStore";

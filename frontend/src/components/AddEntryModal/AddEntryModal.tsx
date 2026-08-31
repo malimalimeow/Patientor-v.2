@@ -1,9 +1,9 @@
 import { Dialog, DialogTitle, DialogContent, Divider } from "@mui/material";
 
 import NewEntry from "./NewEntry";
-import { EntryFormValues } from "../types";
-import Notification from "./notification";
-import { useModalActions, useModalOpen } from "../stores/modalStore";
+import { EntryFormValues } from "../../types";
+import Notification from "../notification";
+import { useModalActions, useModalOpen } from "../../stores/modalStore";
 
 interface Props {
   onSubmit: (id: string, values: EntryFormValues) => void;

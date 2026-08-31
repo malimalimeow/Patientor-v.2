@@ -24,8 +24,6 @@ const Login = () => {
       resetPassword();
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
-        resetUsername();
-        resetPassword();
         if (e?.response?.data && typeof e?.response?.data === "object") {
           const firstError = e?.response?.data.error[0];
           const message = `Something went wrong. Error: ${firstError?.message}`;

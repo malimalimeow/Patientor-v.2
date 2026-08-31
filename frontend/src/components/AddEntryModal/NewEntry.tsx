@@ -7,12 +7,12 @@ import type {
   HealthCheckRating,
   BaseEntryForm,
   OccupationalForm,
-} from "../types";
-import { EntryType } from "../types";
+} from "../../types";
+import { EntryType } from "../../types";
 import NewEntryType from "./NewEntryType";
-import { useDiagnoses } from "../stores/diagnosesStore";
-import { useModalActions } from "../stores/modalStore";
-import { useField } from "../hooks/useField";
+import { useDiagnoses } from "../../stores/diagnosesStore";
+import { useModalActions } from "../../stores/modalStore";
+import { useField } from "../../hooks/useField";
 import {
   TextField,
   InputLabel,

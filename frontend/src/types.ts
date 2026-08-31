@@ -137,3 +137,5 @@ export interface token{
   role:Role;
   token:string
 }
+
+export type EmployeeType = Omit<NewEmployeeForm ,"password">& {id:string,passwordHash:string,username:string};
