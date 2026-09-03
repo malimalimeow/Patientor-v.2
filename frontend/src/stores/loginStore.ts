@@ -9,7 +9,7 @@ import axios from "axios";
 
 interface useLoginState{
     login:boolean
-    employee:String|null
+    employee:{name:string,id:string, role:string,token:string}|null
     actions:{
         handle401:(error:unknown)=>void;
         initialEmployee:()=>void;
