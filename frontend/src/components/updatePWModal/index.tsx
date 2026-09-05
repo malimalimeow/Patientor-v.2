@@ -1,27 +1,20 @@
 import { Dialog, DialogTitle, DialogContent, Divider } from "@mui/material";
-import AddEmployeeForm from "./EmployeeForm";
-import { NewEmployeeForm } from "../../types";
 import Notification from "../notification";
 import { useModalOpen, useModalActions } from "../../stores/modalStore";
 
-interface Props {
-  onSubmit: (values: NewEmployeeForm) => Promise<void>;
-}
-
-const AddPatientModal = ({ onSubmit }: Props) => {
+const UpdatePasswordModal = () => {
   const modalOpen = useModalOpen();
   const { closeModal } = useModalActions();
 
   return (
     <Dialog fullWidth={true} open={modalOpen} onClose={() => closeModal()}>
-      <DialogTitle>Add a new patient</DialogTitle>
+      <DialogTitle>Update Password</DialogTitle>
       <Divider />
       <DialogContent>
         <Notification />
-        <AddEmployeeForm onSubmit={onSubmit} />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default AddPatientModal;
+export default UpdatePasswordModal;

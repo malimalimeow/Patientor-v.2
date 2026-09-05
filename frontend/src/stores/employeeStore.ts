@@ -10,43 +10,48 @@ interface employeeState{
     employee:EmployeeType[]|[]
     showEmployee:EmployeeType|null
     actions:{
-        getAllEmployee:()=>void
-        getOneEmployee:(id:string)=>void
-        createEmployee:(values:NewEmployeeForm)=>void
-        updateEmployeePassword:(id:string,values:updatePasswordForm)=>void
-        updateEmployeeDetail:(id:string,values:UpdateEmployeeForm)=>void
-        deleteEmployee:(id:string)=>void
+        getAllEmployee:()=>Promise<EmployeeType[]>
+        getOneEmployee:(id:string)=>Promise<EmployeeType>
+        createEmployee:(values:NewEmployeeForm)=>Promise<EmployeeType>
+        updateEmployeePassword:(id:string,values:updatePasswordForm)=>Promise<void>
+        updateEmployeeDetail:(id:string,values:UpdateEmployeeForm)=>Promise<EmployeeType>
+        deleteEmployee:(id:string)=>Promise<void>
     }
 }
 
-export const useEmployeeStore=create<employeeState>()(devtools((set,get)=>({
+export const useEmployeeStore=create<employeeState>()(devtools((set)=>({
     employee:[],
     showEmployee:null,
     actions:{
         getAllEmployee:async()=>{
             const allEmployee= await employeeService.getAll()
             set({employee:allEmployee})
+            return allEmployee
         },
         getOneEmployee:async(id:string)=>{
             const oneEmployee = await employeeService.getOne(id)
             set({showEmployee:oneEmployee})
+            return oneEmployee
         },
         createEmployee:async(value:NewEmployeeForm)=>{
             const newEmployee= await employeeService.createNewEmployee(value)
             set((state)=>({employee:[...state.employee,newEmployee]}))
+            return newEmployee
         },
-        updateEmployeePassword:async(id:string,value:updatePasswordForm)=>{
-            await employeeService.updatePassword(id,value)
+        updateEmployeePassword:(id:string,value:updatePasswordForm)=>{
+            return employeeService.updatePassword(id,value)
         },
         updateEmployeeDetail:async(id:string,value:UpdateEmployeeForm)=>{
             const updatedEmployee=await employeeService.updateDetails(id,value)
             set((state)=>({employee:state.employee.map(e=>e.id===updatedEmployee.id?updatedEmployee:e),
                 showEmployee:state.showEmployee?.id===id? updatedEmployee:state.showEmployee
             }))
+            return updatedEmployee
         },
         deleteEmployee:async(id:string)=>{
-            await employeeService.deleteEmployee(id)
+            const response = await employeeService.deleteEmployee(id)
             set((state)=>({employee:state.employee.filter(e=>e.id!==id)}))
+            return response
         }
     }
 

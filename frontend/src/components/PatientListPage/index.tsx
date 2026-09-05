@@ -34,7 +34,7 @@ const PatientListPage = () => {
         if (e?.response?.data && typeof e?.response?.data === "object") {
           const firstError = e?.response?.data.error[0];
           const message = `Something went wrong. Error: ${firstError?.message}`;
-          setMessage(`${message}`);
+          setMessage(message);
         } else {
           setMessage("Unrecognized axios error");
         }

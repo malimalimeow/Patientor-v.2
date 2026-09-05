@@ -15,7 +15,7 @@ interface textField {
   };
 }
 
-const Employee = ({
+const AddEmployeeForm = ({
   onSubmit,
 }: {
   onSubmit: (values: NewEmployeeForm) => Promise<void>;
@@ -136,4 +136,4 @@ const Employee = ({
     </form>
   );
 };
-export default Employee;
+export default AddEmployeeForm;
