@@ -24,12 +24,12 @@ const UpdatePWForm = () => {
 
   const handleUpdatePW = async (event: SyntheticEvent) => {
     event.preventDefault();
+    const id = logInEmployee?.id;
+    if (!id) {
+      setMessage("please login");
+      return;
+    }
     try {
-      const id = logInEmployee?.id;
-      if (!id) {
-        setMessage("please login");
-        return;
-      }
       const data: updatePasswordForm = {
         oldPassword: oldPassword.value,
         newPassword: newPassword.value,

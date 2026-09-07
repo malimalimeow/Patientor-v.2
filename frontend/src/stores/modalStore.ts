@@ -1,17 +1,17 @@
 import {create } from "zustand";
 interface modalState{
-    modalOpen:boolean,
+    modalOpen:string|null,
     actions:{
-        openModal:()=>void
+        openModal:(value:string)=>void
         closeModal:()=>void
     }
 }
 
 export const useModalStore=create<modalState>((set)=>({
-    modalOpen:false,
+    modalOpen:null,
     actions:{
-        openModal:()=>set({modalOpen:true}),
-        closeModal:()=>set({modalOpen:false})
+        openModal:(value)=>set({modalOpen:value}),
+        closeModal:()=>set({modalOpen:null})
     }
 }));
 

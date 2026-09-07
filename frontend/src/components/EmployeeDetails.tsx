@@ -8,6 +8,10 @@ import { useNotiAction } from "../stores/notificationStore";
 import Notification from "./notification";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useModalActions, useModalOpen } from "../stores/modalStore";
+import UpdateDetailsForm from "./updateDetailsModal";
+import UpdatePasswordModal from "./updatePWModal";
+import UpdateDetailsModal from "./updateDetailsModal";
 
 const EmployeeDetails = () => {
   const employee = useLoginEmployee();
@@ -16,6 +20,8 @@ const EmployeeDetails = () => {
   const toEmployeeList = () => navigate("/employee");
   const showEmployee = useShowEmployee();
   const { deleteEmployee } = useEmployeeActions();
+  const { openModal, closeModal } = useModalActions();
+  const modalOpen = useModalOpen();
 
   if (!showEmployee) {
     return <p>Loading</p>;
@@ -73,13 +79,21 @@ const EmployeeDetails = () => {
           <p>Emergency Contact:{showEmployee?.emergencyContact}</p>
           {manager ? (
             <>
-              <Button onClick={}>Update Employee Details</Button>
+              <Button onClick={() => openModal("updateDetails")}>
+                Update Employee Details
+              </Button>
+              {modalOpen === "updateDetails" && <UpdateDetailsModal />}
               <Button onClick={() => handleDelete()}>
                 Delete Employee record
               </Button>
             </>
           ) : null}
-          {employeeSelf ? <Button onClick={}>update Password</Button> : null}
+          {employeeSelf ? (
+            <Button onClick={() => openModal("updatePW")}>
+              update Password
+            </Button>
+          ) : null}
+          {modalOpen === "updatePW" && <UpdatePasswordModal />}
         </div>
       )}
     </>

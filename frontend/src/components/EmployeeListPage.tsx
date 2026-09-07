@@ -11,16 +11,16 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { NewEmployeeForm, EmployeeType } from "../types";
-import Employee from "./AddEmployeeModal/EmployeeForm";
 import { useNotiAction } from "../stores/notificationStore";
 import { useEmployee, useEmployeeActions } from "../stores/employeeStore";
-import { useModalActions } from "../stores/modalStore";
+import { useModalActions, useModalOpen } from "../stores/modalStore";
+import AddEmployeeModal from "./AddEmployeeModal";
 
 const PatientListPage = () => {
   const { setMessage } = useNotiAction();
   const employee = useEmployee();
-  const{createEmployee, getOneEmployee} =useEmployeeActions()
-
+  const { createEmployee, getOneEmployee } = useEmployeeActions();
+  const modalOpen = useModalOpen();
   const { openModal, closeModal } = useModalActions();
 
   const submitNewEmployee = async (values: NewEmployeeForm) => {
@@ -81,8 +81,10 @@ const PatientListPage = () => {
           ))}
         </TableBody>
       </Table>
-      <Employee onSubmit={submitNewEmployee} />
-      <Button variant="contained" onClick={() => openModal()}>
+      {modalOpen === "addNewEmployee" && (
+        <AddEmployeeModal onSubmit={submitNewEmployee} />
+      )}
+      <Button variant="contained" onClick={() => openModal("addNewEmployee")}>
         Add New Employee
       </Button>
     </div>
