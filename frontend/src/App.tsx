@@ -11,13 +11,14 @@ import Login from "./components/Login";
 import EmployeeListPage from "./components/EmployeeListPage";
 import EmployeeDetails from "./components/EmployeeDetails";
 import { useEmployeeActions } from "./stores/employeeStore";
-import { useLoginEmployee } from "./stores/loginStore";
+import { useLoginAction, useLoginEmployee } from "./stores/loginStore";
 
 const App = () => {
   const { fetchPatientList } = usePatientActions();
   const { fetchDiagnoses } = useDiagnosesAction();
   const { getAllEmployee } = useEmployeeActions();
   const loginEmployee = useLoginEmployee();
+  const { initialEmployee } = useLoginAction();
 
   useEffect(() => {
     const ping = async () => {
@@ -31,7 +32,7 @@ const App = () => {
     if (!loginEmployee) {
       return;
     }
-
+    void initialEmployee();
     void fetchPatientList();
     void fetchDiagnoses();
     void getAllEmployee();
