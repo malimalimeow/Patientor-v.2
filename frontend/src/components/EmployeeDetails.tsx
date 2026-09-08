@@ -70,7 +70,7 @@ const EmployeeDetails = () => {
         <div>
           <h2>
             {showEmployee?.name}
-            <GenderIcon color="primary" fontSize="large" />
+            <GenderIcon fontSize="large" />
           </h2>
           <p>Title:{showEmployee?.title}</p>
           <p>Date of birth:{showEmployee?.dateOfBirth}</p>

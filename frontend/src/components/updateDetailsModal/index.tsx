@@ -13,7 +13,7 @@ const UpdateDetailsModal = () => {
       open={modalOpen === "updateDetails"}
       onClose={() => closeModal()}
     >
-      <DialogTitle>Update Password</DialogTitle>
+      <DialogTitle>Update Details</DialogTitle>
       <Divider />
       <DialogContent>
         <Notification />

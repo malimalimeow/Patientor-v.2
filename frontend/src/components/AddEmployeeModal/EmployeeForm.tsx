@@ -77,6 +77,11 @@ const AddEmployeeForm = ({
     setRole("normal");
   };
 
+  const toCloseModal = () => {
+    closeModal();
+    resetAll();
+  };
+
   const addNewEmployee = async (e: SyntheticEvent) => {
     e.preventDefault();
 
@@ -97,7 +102,7 @@ const AddEmployeeForm = ({
   return (
     <form onSubmit={addNewEmployee}>
       {textFieldArray.map(({ label, props }) => (
-        <TextField key={label} label={label} fullWidth {...props} />
+        <TextField key={label} label={label} required fullWidth {...props} />
       ))}
 
       <Select label="Gender" fullWidth value={gender} onChange={onGenderChange}>
@@ -122,7 +127,7 @@ const AddEmployeeForm = ({
             color="secondary"
             variant="contained"
             type="button"
-            onClick={closeModal}
+            onClick={() => toCloseModal}
           >
             Cancel
           </Button>

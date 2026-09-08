@@ -3,51 +3,71 @@ import { Patient, PatientFormValues, Entry , EntryFormValues } from "../types";
 
 const apiBaseUrl = '/api';
 
-let token = null;
+let token:string|null = null;
 
 const setToken = (newToken:string) => {
   token = `Bearer ${newToken}`;
 };
 
+
 const getAll = async () => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  console.log(config)
   const { data } = await axios.get<Patient[]>(
-    `${apiBaseUrl}/patients`
+    `${apiBaseUrl}/patients`,config
   );
 
   return data;
 };
 
 const getOne =async(id:string)=>{
-  const {data}=await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`);
+  const config = {
+    headers: { Authorization: token },
+  };
+  const {data}=await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`,config);
   return data;
 };
 
 const create = async (object: PatientFormValues) => {
+  const config = {
+    headers: { Authorization: token },
+  };
   const { data } = await axios.post<Patient>(
     `${apiBaseUrl}/patients`,
-    object
+    object,config
   );
 
   return data;
 };
 
 const addEntry =async( id:string,object:EntryFormValues)=>{
+  const config = {
+    headers: { Authorization: token },
+  };
   const{data}=await axios.post<Entry>(
     `${apiBaseUrl}/patients/${id}/entries`,
-    object
+    object,config
   );
   return data;
 };
 
 const deleteEntry =async(id:string,entryId:string)=>{
+  const config = {
+    headers: { Authorization: token },
+  };
   const {data} = await axios.delete<Entry>(
-    `${apiBaseUrl}/patients/${id}/entries/${entryId}`
+    `${apiBaseUrl}/patients/${id}/entries/${entryId}`,config
   );
   return data;
 };
 
 const deletePatient = async(id:string)=>{
-  const {data} = await axios.delete<Patient>(`${apiBaseUrl}/patients/${id}`);
+  const config = {
+    headers: { Authorization: token },
+  };
+  const {data} = await axios.delete<Patient>(`${apiBaseUrl}/patients/${id}`,config);
   return data;
 };
 

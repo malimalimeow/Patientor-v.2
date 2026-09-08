@@ -1,22 +1,21 @@
-GET http://localhost:3003/api/patients/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc2MzEsImV4cCI6MTc4NzA5MTIzMX0.-F9r4hm9lbrpHINgGX7LAeXL6ggc-Vbjk7zyzw27xNs
+GET http://localhost:3003/api/patients/6a84d1d059bce9a9e10c9841
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg4OTA5MTg0LCJleHAiOjE3ODg5MTI3ODR9.Y0X0lwbO81Lzvt4OYiVZUSsaAYHyrKZxluUtCfJXvsA
 
 ###
 
 POST http://localhost:3003/api/patients
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc2MzEsImV4cCI6MTc4NzA5MTIzMX0.-F9r4hm9lbrpHINgGX7LAeXL6ggc-Vbjk7zyzw27xNs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg4OTA5MTg0LCJleHAiOjE3ODg5MTI3ODR9.Y0X0lwbO81Lzvt4OYiVZUSsaAYHyrKZxluUtCfJXvsA
 
 {"name": "John McClane",
     "dateOfBirth": "1986-07-09",
-   "ssn": "090786-122X",
     "gender": "male",
     "occupation": "New york city cop"}
 
 ###
-POST http://localhost:3003/api/patients/6a84d1d059bce9a9e10c9841/entries
+POST http://localhost:3003/api/patients/6aa097773377ec852bbfb61a/entries
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc2MzEsImV4cCI6MTc4NzA5MTIzMX0.-F9r4hm9lbrpHINgGX7LAeXL6ggc-Vbjk7zyzw27xNs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg4OTA5MTg0LCJleHAiOjE3ODg5MTI3ODR9.Y0X0lwbO81Lzvt4OYiVZUSsaAYHyrKZxluUtCfJXvsA
 
 { "date": "2015-01-02",
         "type": "Hospital",
@@ -29,9 +28,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExld
           "criteria": "Thumb has healed."}}
 
 ###
+DELETE  http://localhost:3003/api/patients/6aa097773377ec852bbfb61a/entries/6aa097873377ec852bbfb61b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg4OTA5MTg0LCJleHAiOjE3ODg5MTI3ODR9.Y0X0lwbO81Lzvt4OYiVZUSsaAYHyrKZxluUtCfJXvsA
 
-DELETE http://localhost:3003/api/patients/6a84d1dcd5e9935d2a59fe95
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODcwODc2MzEsImV4cCI6MTc4NzA5MTIzMX0.-F9r4hm9lbrpHINgGX7LAeXL6ggc-Vbjk7zyzw27xNs
+###
+DELETE http://localhost:3003/api/patients/6a84d1d059bce9a9e10c9841
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg4OTA5MTg0LCJleHAiOjE3ODg5MTI3ODR9.Y0X0lwbO81Lzvt4OYiVZUSsaAYHyrKZxluUtCfJXvsA
 
 ###
 GET http://localhost:3003/api/diagnoses

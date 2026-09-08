@@ -14,6 +14,7 @@ import axios from "axios";
 import { useNotiAction } from "../stores/notificationStore";
 import { usePatientActions, useShowPatient } from "../stores/patientStore";
 import { useModalActions } from "../stores/modalStore";
+import { useModalOpen } from "../stores/modalStore";
 
 export const EntryDetails = ({ entry }: { entry: Entry }) => {
   switch (entry.type) {
@@ -74,6 +75,7 @@ const PatientDetails = () => {
   const showPatient = useShowPatient();
   const { createEntry } = usePatientActions();
   const { openModal, closeModal } = useModalActions();
+  const modalOpen = useModalOpen();
 
   if (!showPatient) {
     return <p>Loading</p>;
@@ -123,8 +125,10 @@ const PatientDetails = () => {
         </div>
       ))}
 
-      <AddEntryModal onSubmit={submitNewEntry} patientId={showPatient.id} />
-      <Button variant="contained" onClick={() => openModal()}>
+      {modalOpen === "addEntry" && (
+        <AddEntryModal onSubmit={submitNewEntry} patientId={showPatient.id} />
+      )}
+      <Button variant="contained" onClick={() => openModal("addEntry")}>
         Add New Entry
       </Button>
     </div>

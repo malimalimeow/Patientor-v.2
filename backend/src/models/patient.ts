@@ -42,7 +42,7 @@ const MongoPatientSchema = new Schema<NewPatientType>({
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 const entriesArray= MongoPatientSchema.path('entries') as Schema.Types.DocumentArray;
 
-entriesArray.discriminator("hospital",new Schema({
+entriesArray.discriminator("Hospital",new Schema({
      discharge:{
       date:{
             type: String, required: true 
@@ -52,7 +52,7 @@ entriesArray.discriminator("hospital",new Schema({
         },
 }}, { _id: false }));
 
-entriesArray.discriminator("healthCheck", new Schema({
+entriesArray.discriminator("HealthCheck", new Schema({
     healthCheckRating:{
         type:Number,
         enum:Object.values(HealthCheckRating),

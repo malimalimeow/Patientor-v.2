@@ -16,7 +16,7 @@ import { useEmployee, useEmployeeActions } from "../stores/employeeStore";
 import { useModalActions, useModalOpen } from "../stores/modalStore";
 import AddEmployeeModal from "./AddEmployeeModal";
 
-const PatientListPage = () => {
+const EmployeeListPage = () => {
   const { setMessage } = useNotiAction();
   const employee = useEmployee();
   const { createEmployee, getOneEmployee } = useEmployeeActions();
@@ -53,7 +53,7 @@ const PatientListPage = () => {
     <div className="App">
       <Box>
         <Typography align="center" variant="h6">
-          Patient list
+          Employee list
         </Typography>
       </Box>
       <Table sx={{ marginBottom: "1em" }}>
@@ -69,7 +69,7 @@ const PatientListPage = () => {
             <TableRow key={employee.id}>
               <TableCell>
                 <Link
-                  to={`/patients/${employee.id}`}
+                  to={`/employee/${employee.id}`}
                   onClick={() => findEmployeeData(employee.id)}
                 >
                   {employee.name}
@@ -91,4 +91,4 @@ const PatientListPage = () => {
   );
 };
 
-export default PatientListPage;
+export default EmployeeListPage;

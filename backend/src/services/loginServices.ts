@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import Employee from "../models/employee.ts";
+import type { Types } from "mongoose";
 
 
-const toLogin = async (username:string,password:string):Promise<{ token: string; name: string }>=>{
+const toLogin = async (username:string,password:string):Promise<{ token: string,employeeForToken:{name:String,id: Types.ObjectId,role:string}}>=>{
     const employee= await Employee.findOne({username});
     const passwordCorrect = employee ===null? false: await bcrypt.compare(password, employee.passwordHash);
     if(!(employee && passwordCorrect)){
@@ -18,7 +19,7 @@ const toLogin = async (username:string,password:string):Promise<{ token: string;
     expiresIn: 60 * 60,
   });
 
-  return { token, name: employee.name };
+  return { token, employeeForToken };
 };
 
 export default{toLogin};

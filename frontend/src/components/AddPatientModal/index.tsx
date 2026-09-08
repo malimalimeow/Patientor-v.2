@@ -14,7 +14,11 @@ const AddPatientModal = ({ onSubmit }: Props) => {
   const { closeModal } = useModalActions();
 
   return (
-    <Dialog fullWidth={true} open={modalOpen} onClose={() => closeModal()}>
+    <Dialog
+      fullWidth={true}
+      open={modalOpen === "addNewPatient"}
+      onClose={() => closeModal()}
+    >
       <DialogTitle>Add a new patient</DialogTitle>
       <Divider />
       <DialogContent>

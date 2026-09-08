@@ -2,12 +2,12 @@ import { useEmployeeActions } from "../../stores/employeeStore";
 import { useField } from "../../hooks/useField";
 import { updatePasswordForm } from "../../types";
 import Notification from "../notification";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Grid } from "@mui/material";
 import { useLoginEmployee } from "../../stores/loginStore";
 import { useNotiAction } from "../../stores/notificationStore";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { SyntheticEvent } from "react";
+import { useModalActions } from "../../stores/modalStore";
 
 const UpdatePWForm = () => {
   const logInEmployee = useLoginEmployee();
@@ -15,11 +15,15 @@ const UpdatePWForm = () => {
   const { reset: resetOld, ...oldPassword } = useField("password");
   const { reset: resetNew, ...newPassword } = useField("password");
   const { setMessage } = useNotiAction();
-  const navigate = useNavigate();
-  const toDetails = () => navigate("/employee/:id");
   const resetPW = () => {
     resetNew();
     resetOld();
+  };
+
+  const { closeModal } = useModalActions();
+  const toCloseModal = () => {
+    closeModal();
+    resetPW();
   };
 
   const handleUpdatePW = async (event: SyntheticEvent) => {
@@ -35,15 +39,12 @@ const UpdatePWForm = () => {
         newPassword: newPassword.value,
       };
       await updateEmployeePassword(id, data);
-      setMessage(
-        "Password updated,return to Employee details page in 3 seconds",
-        false,
-      );
+      setMessage("Password updated", false);
 
       resetPW();
 
       setTimeout(() => {
-        toDetails();
+        closeModal();
       }, 3000);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -70,8 +71,24 @@ const UpdatePWForm = () => {
       <form onSubmit={handleUpdatePW}>
         <TextField label="oldPW" fullWidth {...oldPassword} />
         <TextField label="newPW" fullWidth {...newPassword} />
-        <Button type="submit">Update</Button>
-        <Button onClick={() => resetPW()}>Cancel</Button>
+
+        <Grid container justifyContent="space-between" sx={{ marginTop: 2 }}>
+          <Grid size="auto">
+            <Button
+              color="secondary"
+              variant="contained"
+              type="button"
+              onClick={() => toCloseModal()}
+            >
+              Cancel
+            </Button>
+          </Grid>
+          <Grid size="auto">
+            <Button type="submit" variant="contained">
+              Update
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </>
   );

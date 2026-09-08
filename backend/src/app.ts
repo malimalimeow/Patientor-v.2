@@ -26,6 +26,11 @@ app.use(express.json());
 app.use(middleware.requestLogger);
 app.use(middleware.tokenExtractor);
 
+app.get('/api/ping', (_req, res) => {
+  console.log('someone pinged here');
+  res.send('pong');
+});
+
 app.use("/api/login", loginRouter);
 app.use("/api/patients",middleware.employeeExtractor, patientRouter);
 app.use("/api/diagnoses", diagnosesRouter);

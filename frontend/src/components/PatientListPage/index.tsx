@@ -86,7 +86,7 @@ const PatientListPage = () => {
         </TableBody>
       </Table>
       <AddPatientModal onSubmit={submitNewPatient} />
-      <Button variant="contained" onClick={() => openModal()}>
+      <Button variant="contained" onClick={() => openModal("addNewPatient")}>
         Add New Patient
       </Button>
     </div>

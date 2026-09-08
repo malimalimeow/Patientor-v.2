@@ -17,8 +17,11 @@ const Login = () => {
   const loginEmployee = async (e: SyntheticEvent) => {
     e.preventDefault();
     try {
-      await toLogin({ username: username.value, password: password.value });
-      setMessage(`${username.value} login successfully`, false);
+      await toLogin({
+        username: username.value,
+        password: password.value,
+      });
+      setMessage(`login successfully`, false);
       toPatient();
       resetUsername();
       resetPassword();

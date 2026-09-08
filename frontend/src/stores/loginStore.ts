@@ -13,7 +13,7 @@ interface useLoginState{
     actions:{
         handle401:(error:unknown)=>void;
         initialEmployee:()=>void;
-        toLogin:(loginData:loginForm)=>void;
+        toLogin:(loginData:loginForm)=>Promise<void>;
         logout:()=>void
     }
 }

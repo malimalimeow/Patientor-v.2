@@ -22,6 +22,7 @@ import {
   FormControl,
   Button,
   Chip,
+  Grid,
 } from "@mui/material";
 
 interface NewEntryProps {
@@ -180,7 +181,23 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
           setSickLeave={setSickLeave}
         />
 
-        <Button type="submit">Add</Button>
+        <Grid container justifyContent="space-between" sx={{ marginTop: 2 }}>
+          <Grid size="auto">
+            <Button
+              color="secondary"
+              variant="contained"
+              type="button"
+              onClick={closeModal}
+            >
+              Cancel
+            </Button>
+          </Grid>
+          <Grid size="auto">
+            <Button type="submit" variant="contained">
+              Add
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </div>
   );

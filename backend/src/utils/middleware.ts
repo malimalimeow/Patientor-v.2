@@ -28,10 +28,13 @@ export const employeeExtractor = async (request: Request, response: Response, ne
       if(!process.env.SECRET){
         throw new Error("SECRET is not found");
       }
+
       const decodedToken = jwt.verify(request.token, process.env.SECRET) as CustomJwtPayload;
 
       if (!decodedToken.id) {
         return response.status(401).json({ error: "token invalid" });
+
+      
       }
   const employee = await Employee.findById(decodedToken.id);
   

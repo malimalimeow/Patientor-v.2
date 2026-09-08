@@ -4,6 +4,7 @@ import type {EmployeeType} from "../zodSchemas.ts";
 
 const MongoEmployeeSchema = new Schema<EmployeeType>({
     name: { type: String, required: true },
+    title:{type:String,required:true},
     username:{type:String,required:true,unique:true},
     passwordHash:{ type: String, required: true },
     dateOfBirth: { type: String, required: true },
