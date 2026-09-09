@@ -1,7 +1,8 @@
+/// <reference types="node" />
 import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './',
   timeout: 30000,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -9,7 +10,15 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:3003',
     trace: 'on-first-retry',
+  },
+  webServer: {
+    command: 'npm run start:test', 
+    url: 'http://localhost:3003/api/ping', 
+    reuseExistingServer: !process.env.CI,
+    env: {
+      NODE_ENV: 'test', 
+    },
   },
 });

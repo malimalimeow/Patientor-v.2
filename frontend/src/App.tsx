@@ -18,7 +18,7 @@ const App = () => {
   const { fetchDiagnoses } = useDiagnosesAction();
   const { getAllEmployee } = useEmployeeActions();
   const loginEmployee = useLoginEmployee();
-  const { initialEmployee } = useLoginAction();
+  const { initialEmployee, logout } = useLoginAction();
 
   useEffect(() => {
     const ping = async () => {
@@ -29,10 +29,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
+    void initialEmployee();
+  }, []);
+
+  useEffect(() => {
     if (!loginEmployee) {
       return;
     }
-    void initialEmployee();
     void fetchPatientList();
     void fetchDiagnoses();
     void getAllEmployee();
@@ -45,9 +48,21 @@ const App = () => {
           <Typography variant="h3" sx={{ marginBottom: "0.5em" }}>
             Patientor
           </Typography>
-          <Button component={Link} to="/" variant="contained" color="primary">
-            {loginEmployee === null ? "Login" : "Log out"}
-          </Button>
+          {loginEmployee !== null ? (
+            <Button
+              onClick={() => logout()}
+              component={Link}
+              to="/"
+              variant="contained"
+              color="primary"
+            >
+              Log Out
+            </Button>
+          ) : (
+            <Button component={Link} to="/" variant="contained" color="primary">
+              Log in
+            </Button>
+          )}
           <Button
             component={Link}
             to="/patients"

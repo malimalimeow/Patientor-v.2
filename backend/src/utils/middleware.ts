@@ -23,10 +23,10 @@ export const tokenExtractor = (request: Request, _response: Response, next: Next
 };
 
 export const employeeExtractor = async (request: Request, response: Response, next: NextFunction) => {
-  if (!request.token) {throw new Error ("token is missing");}
+  if (!request.token) {return response.status(401).json({error:"token is missing"})}
   try {
       if(!process.env.SECRET){
-        throw new Error("SECRET is not found");
+        return response.status(500).json({error:"SECRET is not found"})
       }
 
       const decodedToken = jwt.verify(request.token, process.env.SECRET) as CustomJwtPayload;
@@ -39,7 +39,6 @@ export const employeeExtractor = async (request: Request, response: Response, ne
   const employee = await Employee.findById(decodedToken.id);
   
   request.employee = employee;
-
 
     } catch (error) {
        return next(error);

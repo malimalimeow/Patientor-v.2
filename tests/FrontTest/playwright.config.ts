@@ -1,7 +1,8 @@
+/// <reference types="node" />
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
+  testDir: './',
   timeout: 30000,
   fullyParallel: false,
   forbidOnly: !!process.env.CI,

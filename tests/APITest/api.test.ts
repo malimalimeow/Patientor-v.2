@@ -1,4 +1,20 @@
-import { test, expect } from '@playwright/test';
+import { test, expect} from '@playwright/test';
+
+test.describe('login',()=>{
+  let token:string
+
+  test.beforeAll(async({request})=>{
+    const response=await request.post('/api/login',{
+      data:{
+        username:"M1a2b3c",
+        password:"Password123!"
+      }})
+      expect(response.ok()).toBeTruthy();
+    const body = await response.json();
+    token = body.token
+    })
+
+  
 
 test.describe('Patientor API', () => {
   test.describe('GET /api/ping', () => {
@@ -38,9 +54,17 @@ test.describe('Patientor API', () => {
     });
   });
 
+  
+
+  
   test.describe('GET /api/patients', () => {
+    
     test('should return an array of patients', async ({ request }) => {
-      const response = await request.get('/api/patients');
+      const response = await request.get('/api/patients',{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       expect(response.ok()).toBeTruthy();
       expect(response.status()).toBe(200);
@@ -50,12 +74,16 @@ test.describe('Patientor API', () => {
       expect(body.length).toBeGreaterThan(0);
     });
 
-    test('patients should not include ssn field', async ({ request }) => {
-      const response = await request.get('/api/patients');
+    test('patients should not include password field', async ({ request }) => {
+      const response = await request.get('/api/patients',{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const body = await response.json();
 
       for (const patient of body) {
-        expect(patient).not.toHaveProperty('ssn');
+        expect(patient).not.toHaveProperty('password')
         expect(patient).toHaveProperty('id');
         expect(patient).toHaveProperty('name');
         expect(patient).toHaveProperty('dateOfBirth');
@@ -63,6 +91,12 @@ test.describe('Patientor API', () => {
         expect(patient).toHaveProperty('occupation');
       }
     });
+
+    test('should return error without login',async({request})=>{
+      const response=await request.get('/api/patients')
+      expect(response.status()).toBe(401)
+    })
+   
   });
 
   test.describe('POST /api/patients', () => {
@@ -70,13 +104,15 @@ test.describe('Patientor API', () => {
       const newPatient = {
         name: 'Test Patient',
         dateOfBirth: '1990-01-01',
-        ssn: '010190-1234',
         gender: 'male',
         occupation: 'Developer',
       };
 
       const response = await request.post('/api/patients', {
         data: newPatient,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       });
 
       expect(response.ok()).toBeTruthy();
@@ -86,7 +122,6 @@ test.describe('Patientor API', () => {
       expect(body).toHaveProperty('id');
       expect(body).toHaveProperty('name', newPatient.name);
       expect(body).toHaveProperty('dateOfBirth', newPatient.dateOfBirth);
-      expect(body).toHaveProperty('ssn', newPatient.ssn);
       expect(body).toHaveProperty('gender', newPatient.gender);
       expect(body).toHaveProperty('occupation', newPatient.occupation);
     });
@@ -96,7 +131,11 @@ test.describe('Patientor API', () => {
         data: {
           name: 'Incomplete Patient',
         },
-      });
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+        },
+      );
 
       expect(response.status()).toBe(400);
     });
@@ -106,13 +145,15 @@ test.describe('Patientor API', () => {
         data: {
           name: 'Test Patient',
           dateOfBirth: '1990-01-01',
-          ssn: '010190-5678',
           gender: 'invalid_gender',
           occupation: 'Developer',
-        },
+        },headers: {
+          Authorization: `Bearer ${token}`,
+        }
       });
 
       expect(response.status()).toBe(400);
     });
   });
 });
+})

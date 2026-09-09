@@ -24,7 +24,6 @@ mongoose
 //app.use(express.static("dist"));
 app.use(express.json());
 app.use(middleware.requestLogger);
-app.use(middleware.tokenExtractor);
 
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
@@ -32,6 +31,7 @@ app.get('/api/ping', (_req, res) => {
 });
 
 app.use("/api/login", loginRouter);
+app.use(middleware.tokenExtractor);
 app.use("/api/patients",middleware.employeeExtractor, patientRouter);
 app.use("/api/diagnoses", diagnosesRouter);
 app.use("/api/employees",middleware.employeeExtractor, employeeRouter);
