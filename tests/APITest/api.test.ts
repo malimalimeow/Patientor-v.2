@@ -55,8 +55,6 @@ test.describe('Patientor API', () => {
   });
 
   
-
-  
   test.describe('GET /api/patients', () => {
     
     test('should return an array of patients', async ({ request }) => {

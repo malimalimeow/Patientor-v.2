@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Patient, PatientFormValues, Entry , EntryFormValues } from "../types";
+import { Patient, PatientFormValues, Entry , EntryFormValues,UpdatePatientForm } from "../types";
 
 const apiBaseUrl = '/api';
 
@@ -53,6 +53,15 @@ const addEntry =async( id:string,object:EntryFormValues)=>{
   return data;
 };
 
+const updatePatient=async( id:string,updateData:UpdatePatientForm)=>{
+  const config = {
+    headers:{ Authorization: token},
+  };
+  const {data}= await axios.patch(`${apiBaseUrl}/patients/${id}`,updateData,config)
+
+  return data
+}
+
 const deleteEntry =async(id:string,entryId:string)=>{
   const config = {
     headers: { Authorization: token },
@@ -73,6 +82,6 @@ const deletePatient = async(id:string)=>{
 
 export default {
 
-  setToken,getAll, create,getOne,addEntry,deleteEntry,deletePatient
+  setToken,getAll, create,getOne,addEntry,deleteEntry,deletePatient,updatePatient
 };
 

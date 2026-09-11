@@ -1,7 +1,7 @@
 import patientService from "../services/patientService.ts";
 import express,{type Request, type Response, type NextFunction} from "express";
 import { NewEntrySchema, NewPatientSchema,PatientSchema } from "../zodSchemas.ts";
-import type{EntryType, NewEntryType, NewPatientType ,PatientType} from "../zodSchemas.ts";
+import type{EntryType, NewEntryType, NewPatientType ,PatientType, updatePatientType} from "../zodSchemas.ts";
 import { parser } from "../utils/validator.ts";
 
 
@@ -61,6 +61,18 @@ patientRouter.post("/:id/entries", parser(NewEntrySchema), async(req:Request<{ i
       return next(error);
     }
 });
+
+patientRouter.patch("/:id",async(req:Request,res:Response,next:NextFunction)=>{
+  try{
+    const employee=req.employee
+        if(!employee){
+            return res.status(401).json({error:"Insufficient permission,please login "})
+  }
+  const id=req.params.id
+  const updatedPatient= await patientService.updatePatient(id as string,req.body as updatePatientType)
+  res.json(updatedPatient)
+
+}catch(error){next(error)}})
 
 patientRouter.delete("/:id/entries/:entryId",async(req:Request,res:Response,next:NextFunction)=>{
   try{

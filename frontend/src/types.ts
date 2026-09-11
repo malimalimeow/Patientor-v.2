@@ -126,6 +126,13 @@ export interface UpdateEmployeeForm {
   role?: Role;
 }
 
+export interface UpdatePatientForm{
+  name?: string;
+  occupation?: string;
+  gender?: Gender;
+  dateOfBirth?: string;
+}
+
 export interface loginForm{
   username:string;
   password:string;

@@ -1,6 +1,6 @@
 import Patient from "../models/patient.ts";
 
-import type { NewEntryType, NonSensitivePatient ,PatientType,NewPatientType ,EntryType} from "../zodSchemas.ts";
+import type { NewEntryType, NonSensitivePatient ,PatientType,NewPatientType ,EntryType, updatePatientSchema, updatePatientType} from "../zodSchemas.ts";
 
 
 
@@ -44,6 +44,22 @@ const addEntry=async(id:string,data:NewEntryType):Promise<EntryType>=>{
     return  savedEntry as EntryType;  
 };
 
+const updatePatient=async(id:string,data:updatePatientType)=>{
+    const patient= await Patient.findById(id)
+    if(!patient){
+        throw new Error (`can't find user${id}`)
+    }
+
+    if (Object.keys(data).length===0){
+        throw new Error("Everything up-to-date");
+    }
+
+    const updatedPatient= await Patient.findByIdAndUpdate(id,{$set:data},{returnDocument: 'after',runValidators:true});
+        return updatedPatient;
+
+    
+}
+
 const deleteEntry=async(patientId:string, entryId:string):Promise<void>=>{
     const patient= await Patient.findById(patientId);
     if(!patient){
@@ -69,5 +85,5 @@ const deletePatient=async (patientId:string):Promise<void>=>{
 }
 
 export default{
-    addData,getNonSensitiveData,getOne,addEntry,deleteEntry,deletePatient
+    addData,getNonSensitiveData,getOne,addEntry,deleteEntry,deletePatient,updatePatient
 };

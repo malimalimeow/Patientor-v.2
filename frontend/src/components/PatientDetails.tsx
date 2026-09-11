@@ -15,6 +15,7 @@ import { useNotiAction } from "../stores/notificationStore";
 import { usePatientActions, useShowPatient } from "../stores/patientStore";
 import { useModalActions } from "../stores/modalStore";
 import { useModalOpen } from "../stores/modalStore";
+import UpdatePatientModal from "./UpdatePatientModal";
 
 export const EntryDetails = ({ entry }: { entry: Entry }) => {
   switch (entry.type) {
@@ -117,6 +118,11 @@ const PatientDetails = () => {
       </h2>
       <p>occupation:{showPatient?.occupation}</p>
       <p>date of birth:{showPatient?.dateOfBirth}</p>
+
+      {modalOpen === "updatePatient" && <UpdatePatientModal />}
+      <Button variant="contained" onClick={() => openModal("updatePatient")}>
+        Update Patient details
+      </Button>
 
       {showPatient && <h3>Entries</h3>}
       {showPatient?.entries?.map((entry) => (

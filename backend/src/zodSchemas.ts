@@ -135,6 +135,15 @@ export const updateEmployeeSchema= EmployeeSchema.pick({
 
 export type updateEmployeeType= z.infer<typeof updateEmployeeSchema>;
 
+export const updatePatientSchema= PatientSchema.pick({
+  name:true,
+        dateOfBirth: true,
+        gender:true,
+        occupation:true
+}).partial()
+
+export type updatePatientType=z.infer<typeof updatePatientSchema>
+
 export const loginSchema=z.object({
   username:z.string().regex(/^[A-Za-z][0-9a-fA-F]{6}$/,"username invalid"),
   password:z.string().min(8,"password is required,minimum 8 characters")
