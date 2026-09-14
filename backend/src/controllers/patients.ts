@@ -70,29 +70,18 @@ patientRouter.patch("/:id",async(req:Request,res:Response,next:NextFunction)=>{
   }
   const id=req.params.id
   const updatedPatient= await patientService.updatePatient(id as string,req.body as updatePatientType)
-  res.json(updatedPatient)
+  return res.json(updatedPatient)
 
-}catch(error){next(error)}})
-
-patientRouter.delete("/:id/entries/:entryId",async(req:Request,res:Response,next:NextFunction)=>{
-  try{
-    const employee=req.employee
-        if(!employee){
-            return res.status(401).json({error:"Insufficient permission,please login "})
-        }
-    const response= await patientService.deleteEntry(req.params.id as string, req.params.entryId as string)
-
-    return res.json(response)
-    
-  }catch(error){
-    return next(error)
-  }
-})
+}catch(error){return next(error)}})
 
 patientRouter.delete("/:id",async(req:Request,res:Response,next:NextFunction)=>{
   try{
     const employee=req.employee
     if(!employee){return res.status(401).json({error:"Insufficient permission,please login "})}
+    
+    if (employee.role!=="master"){
+            return res.status(403).json ({error:"Insufficient Permissions"})
+        }
 
     const response = await patientService.deletePatient(req.params.id as string)
 

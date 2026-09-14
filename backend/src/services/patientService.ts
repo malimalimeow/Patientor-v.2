@@ -55,27 +55,9 @@ const updatePatient=async(id:string,data:updatePatientType)=>{
     }
 
     const updatedPatient= await Patient.findByIdAndUpdate(id,{$set:data},{returnDocument: 'after',runValidators:true});
-        return updatedPatient;
-
-    
+        return updatedPatient; 
 }
 
-const deleteEntry=async(patientId:string, entryId:string):Promise<void>=>{
-    const patient= await Patient.findById(patientId);
-    if(!patient){
-        throw new Error (`can't find user${patientId}`);
-    }else if (!patient.entries ||patient.entries.length ===0){
-        throw new Error (`no entries found for user ${patientId}`);
-    }
-    const lookupEntry=patient.entries as EntryType[];
-    const toDeleteEntry= lookupEntry.find(entry =>entry.id===entryId);
-    if(!toDeleteEntry){
-        throw new Error(`can't find entry ${entryId}`);
-    }
-    patient.entries = lookupEntry.filter(entry => entry.id !== entryId);
-    await patient.save();
-
-};
 
 const deletePatient=async (patientId:string):Promise<void>=>{
     const patient= await Patient.findByIdAndDelete(patientId);
@@ -85,5 +67,5 @@ const deletePatient=async (patientId:string):Promise<void>=>{
 }
 
 export default{
-    addData,getNonSensitiveData,getOne,addEntry,deleteEntry,deletePatient,updatePatient
+    addData,getNonSensitiveData,getOne,addEntry, deletePatient,updatePatient
 };

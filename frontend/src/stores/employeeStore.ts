@@ -15,7 +15,7 @@ interface employeeState{
         createEmployee:(values:NewEmployeeForm)=>Promise<EmployeeType>
         updateEmployeePassword:(id:string,values:updatePasswordForm)=>Promise<void>
         updateEmployeeDetail:(id:string,values:UpdateEmployeeForm)=>Promise<EmployeeType>
-        deleteEmployee:(id:string)=>Promise<void>
+        deleteEmployee:(id:string)=>Promise<unknown>
     }
 }
 

@@ -16,6 +16,8 @@ import { usePatientActions, useShowPatient } from "../stores/patientStore";
 import { useModalActions } from "../stores/modalStore";
 import { useModalOpen } from "../stores/modalStore";
 import UpdatePatientModal from "./UpdatePatientModal";
+import { useLoginEmployee } from "../stores/loginStore";
+import { useNavigate } from "react-router-dom";
 
 export const EntryDetails = ({ entry }: { entry: Entry }) => {
   switch (entry.type) {
@@ -72,9 +74,13 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
 };
 
 const PatientDetails = () => {
+  const navigate = useNavigate();
+  const toPatientList = () => navigate("/patients");
+  const loginEmployee = useLoginEmployee();
+  const loginEmployeeRole = loginEmployee?.role;
   const { setMessage } = useNotiAction();
   const showPatient = useShowPatient();
-  const { createEntry } = usePatientActions();
+  const { createEntry, deletePatient } = usePatientActions();
   const { openModal, closeModal } = useModalActions();
   const modalOpen = useModalOpen();
 
@@ -94,6 +100,31 @@ const PatientDetails = () => {
       createEntry(id, values);
       closeModal();
       setMessage(`new Entry on ${date} added`, false);
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        if (e?.response?.data && typeof e?.response?.data === "object") {
+          const firstError = e?.response?.data.error[0];
+          const message = `Something went wrong. Error: ${firstError?.message}`;
+          setMessage(`${message}`);
+        } else {
+          setMessage("Unrecognized axios error");
+        }
+      } else {
+        console.error("Unknown error", e);
+        setMessage("Unknown error");
+      }
+    }
+  };
+
+  const deleteThisPatient = async () => {
+    if (!window.confirm(`Remove patient:${showPatient.name}?`)) {
+      return;
+    }
+    const id = showPatient.id;
+    try {
+      await deletePatient(id);
+      toPatientList();
+      setMessage("Patient deleted", false);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "object") {
@@ -137,6 +168,10 @@ const PatientDetails = () => {
       <Button variant="contained" onClick={() => openModal("addEntry")}>
         Add New Entry
       </Button>
+
+      {loginEmployeeRole === "master" && (
+        <Button onClick={() => deleteThisPatient()}>Delete Record</Button>
+      )}
     </div>
   );
 };

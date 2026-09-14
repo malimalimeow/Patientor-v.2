@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { EntryFormValues, Patient,PatientFormValues} from "../types";
+import type { EntryFormValues, Patient,PatientFormValues, UpdatePatientForm} from "../types";
 import patientService from "../services/patientService";
 
 interface patientState {
@@ -9,9 +9,10 @@ interface patientState {
         fetchPatientList:()=>Promise<void>
         getOnePatient:(id:string)=>Promise<void>
         createPatient:(values:PatientFormValues)=>Promise<void>
+        updatePatientDetails:(id:string,values:UpdatePatientForm)=>Promise<void>
         createEntry:(id:string,values: EntryFormValues)=>Promise<void>
-        //deletePatient:()=>Promise<void>
-        //deleteEntry:()=>Promise<void>
+        deletePatient:(id:string)=>Promise<unknown>
+       
     }
 }
 
@@ -33,9 +34,19 @@ export const usePatientStore=create<patientState>((set)=>({
             const data = await patientService.create(values);
             set((state)=>({patients:[...state.patients,data]}));
         },
+        updatePatientDetails:async(id,values)=>{
+            const data = await patientService.updatePatient(id,values);
+            set((state)=>({patients:state.patients.map(p=>p.id===id?data:p),
+                showPatient:state.showPatient?id===id?data:state.showPatient}))
+        },
         createEntry:async(id,values)=>{
             const data = await patientService.addEntry(id,values);
             set((state)=>({showPatient:state.showPatient,entries:state.showPatient?.entries?state.showPatient.entries.concat(data):[data]}));
+        },
+        deletePatient:async(id)=>{
+            const data = await patientService.deletePatient(id)
+            set((state)=>({patients:state.patients.filter(p=>p.id!==id)}))
+            return data
         }
 
     }
