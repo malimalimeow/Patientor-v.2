@@ -10,7 +10,6 @@ import patientRouter from "./controllers/patients.ts";
 import testingRouter from "./controllers/testing.ts";
 const  app = express();
 
-logger.info("connecting to", config.MONGODB_URI);
 
 mongoose
   .connect(config.MONGODB_URI as string, { family: 4 })
@@ -26,7 +25,7 @@ app.use(express.json());
 app.use(middleware.requestLogger);
 
 app.get('/api/ping', (_req, res) => {
-  console.log('someone pinged here');
+  logger.info('someone pinged here');
   res.send('pong');
 });
 
