@@ -9,14 +9,20 @@ const loginRouter=express.Router();
 loginRouter.post("/",parser(loginSchema),async(req:Request,res:Response,next:NextFunction)=>{
     try{
     const { username  , password }=req.body as loginType;
-    const {token,employeeForToken}= await loginServices.toLogin(username,password);
+    const response= await loginServices.toLogin(username,password);
 
-    res.json({message:`Login success,welcome back!${employeeForToken.name},token:${token}`,
+    if(response===null){
+        return res.status(400).json({ error: "invalid username or password" });
+    }
+
+    const {token,employeeForToken}=response
+
+    return res.json({message:`Login success,welcome back!${employeeForToken.name},token:${token}`,
         token,
         name:employeeForToken.name,
         id:employeeForToken.id,
         role:employeeForToken.role}); }catch(error){
-        next(error);
+        return next(error);
     }
 });
 

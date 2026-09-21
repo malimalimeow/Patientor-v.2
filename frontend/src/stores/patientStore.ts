@@ -37,7 +37,7 @@ export const usePatientStore=create<patientState>((set)=>({
         updatePatientDetails:async(id,values)=>{
             const data = await patientService.updatePatient(id,values);
             set((state)=>({patients:state.patients.map(p=>p.id===id?data:p),
-                showPatient:state.showPatient?id===id?data:state.showPatient}))
+                showPatient:state.showPatient?.id===id?data:state.showPatient}))
         },
         createEntry:async(id,values)=>{
             const data = await patientService.addEntry(id,values);
