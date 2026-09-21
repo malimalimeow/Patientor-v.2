@@ -28,9 +28,12 @@ patientRouter.get("/:id", async(req:Request,res:Response,next: NextFunction)=>{
         }
     const id = req.params.id;
   const patient= await patientService.getOne(id as string);
+  if(!patient){return res.status(404).json({error:"patient not found"})}
+
   const parsedPatient= PatientSchema.parse(patient);
+  
   console.log("Get",patient);
-  return res.json(parsedPatient);
+  return res.status(200).json(parsedPatient);
   }catch(error:unknown){
     return next(error);
   }

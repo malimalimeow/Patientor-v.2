@@ -1,33 +1,41 @@
 import { test, expect} from '@playwright/test';
 
 test.describe('reset',()=>{
+   let token:string
+   let id:string
 
   test.beforeEach(async({request})=>{
-    await request.post('/api/testing')
-  })
+    const resetResponse=await request.post('/api/testing/reset')
+    expect(resetResponse.status()).toBe(204);
 
-test.describe('login',()=>{
-  let token:string
-
-  test.beforeAll(async({request})=>{
     const response=await request.post('/api/login',{
       data:{
         username:"M1a2b3c",
         password:"Password123!"
       }})
-      expect(response.ok()).toBeTruthy();
+      
+      expect(response.status()).toBe(200)
     const body = await response.json();
     token = body.token
-    })
 
-  
+    const getResponse = await request.get('/api/patients',{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+    expect(getResponse.status()).toBe(200);
+
+    const patients=await getResponse.json()
+    expect(patients.length).toBeGreaterThan(0);
+    
+    id=patients[0].id
+    })
 
 test.describe('Patientor API', () => {
   test.describe('GET /api/ping', () => {
     test('should return pong', async ({ request }) => {
       const response = await request.get('/api/ping');
-
-      expect(response.ok()).toBeTruthy();
       expect(response.status()).toBe(200);
 
       const text = await response.text();
@@ -37,9 +45,6 @@ test.describe('Patientor API', () => {
 
   
   test.describe('GET /api/patients', () => {
-
-    
-    
     test('should return an array of patients', async ({ request }) => {
       const response = await request.get('/api/patients',{
         headers: {
@@ -47,7 +52,6 @@ test.describe('Patientor API', () => {
         },
       });
 
-      expect(response.ok()).toBeTruthy();
       expect(response.status()).toBe(200);
 
       const body = await response.json();
@@ -96,7 +100,6 @@ test.describe('Patientor API', () => {
         }
       });
 
-      expect(response.ok()).toBeTruthy();
       expect(response.status()).toBe(200);
 
       const body = await response.json();
@@ -136,5 +139,57 @@ test.describe('Patientor API', () => {
       expect(response.status()).toBe(400);
     });
   });
+
+  test.describe("Add entry, update patient,delete patient API",()=>{
+  
+
+  test("should create new entry to a patient",async({request})=>{
+    
+    const newEntry={
+        date: '2015-01-02',
+        type: 'Hospital',
+        specialist: 'MD House',
+        diagnosisCodes: ['S62.5'],
+        description:
+          "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
+        discharge: {
+          date: '2015-01-16',
+          criteria: 'Thumb has healed.',
+        }}
+    
+
+    const response = await request.post(`/api/patients/${id}/entries`,{data:newEntry,headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+      
+      expect(response.status()).toBe(200);
+
+      const body = await response.json();
+      expect(body).toHaveProperty('_id');
+      expect(body).toHaveProperty('type', newEntry.type);
+      expect(body).toHaveProperty('specialist', newEntry.specialist);
+      expect(body).toHaveProperty('diagnosisCodes', newEntry.diagnosisCodes);
+      expect(body).toHaveProperty('description', newEntry.description);
+      expect(body).toHaveProperty('discharge',newEntry.discharge);
+
+  })
+
+  test("should delete a patient",async({request})=>{
+
+    const response= await request.delete(`api/patients/${id}`,{headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+    
+
+    expect(response.status()).toBe(200);
+    const getPatient = await request.get(`api/patients/${id}`,{headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+    
+    expect(getPatient.status()).toBe(404);
+
+  })
+  })
 });
-})})
+
+})

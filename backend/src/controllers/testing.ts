@@ -36,16 +36,20 @@ testingRouter.post("/reset",async(_req: Request,res:Response)=>{
     try{
         await Employee.deleteMany({});
         await Patient.deleteMany({});
-        console.log("testing db cleared");
+        await Employee.findOneAndUpdate(
+    { username: master.username },
+  master,
+  { upsert: true, returnDocument: 'after', runValidators: true }
+);
 
-        await Employee.insertOne(master)
-        await Patient.insertOne(testPatient)
-        res.status(204).end();
+await Patient.findOneAndUpdate({name:testPatient.name},testPatient,{upsert:true,returnDocument: 'after',runValidators:true});
+
+        return res.status(204).end();
         
     }catch(error){
-        console.log("Testing db reset error");
-        if (error instanceof Error){res.status(500).json({ error: error.message });}
-        else{res.status(500).json({ error: "something went wrong" });}
+        console.log("Testing db reset error",error);
+        if (error instanceof Error){return res.status(500).json({ error: error.message });}
+        else{return res.status(500).json({ error: "something went wrong" });}
     }
 });
 
