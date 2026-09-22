@@ -3,7 +3,7 @@ import { test, expect} from '@playwright/test';
 test.describe('reset',()=>{
 
   test.beforeEach(async({request})=>{
-    await request.post('/api/testing')
+    await request.post('/api/testing/reset')
   })
 
 test.describe('POST /api/login',()=>{

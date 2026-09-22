@@ -1,5 +1,15 @@
 import { test, expect} from '@playwright/test';
 
+test.describe('GET /api/ping', () => {
+    test('should return pong', async ({ request }) => {
+      const response = await request.get('/api/ping');
+      expect(response.status()).toBe(200);
+
+      const text = await response.text();
+      expect(text).toBe('pong');
+    });
+  });
+
 test.describe('reset',()=>{
    let token:string
    let id:string
@@ -33,16 +43,7 @@ test.describe('reset',()=>{
     })
 
 test.describe('Patientor API', () => {
-  test.describe('GET /api/ping', () => {
-    test('should return pong', async ({ request }) => {
-      const response = await request.get('/api/ping');
-      expect(response.status()).toBe(200);
-
-      const text = await response.text();
-      expect(text).toBe('pong');
-    });
-  });
-
+  
   
   test.describe('GET /api/patients', () => {
     test('should return an array of patients', async ({ request }) => {
