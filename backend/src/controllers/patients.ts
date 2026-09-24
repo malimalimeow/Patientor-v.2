@@ -76,6 +76,7 @@ patientRouter.patch("/:id",async(req:Request,res:Response,next:NextFunction)=>{
   const id=req.params.id
   const updatedPatient= await patientService.updatePatient(id as string,req.body as updatePatientType)
    if(updatedPatient===null){return res.status(404).json({error:"patient not found"})}
+   
   return res.json(updatedPatient)
 
 }catch(error){return next(error)}})

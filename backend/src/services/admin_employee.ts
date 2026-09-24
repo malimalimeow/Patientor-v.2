@@ -9,10 +9,10 @@ const getAllEmployee= async():Promise<Omit<EmployeeType,"passwordHash">[]>=>{
     return allEmployee}
 
 
-const getOneEmployee=async(id:string):Promise<EmployeeType>=>{
-    const employee= await Employee.findById(id);
-    if(employee===null){
-        throw new Error("Employee not found");
+const getOneEmployee=async(id:string):Promise<EmployeeType|null>=>{
+    const employee= await Employee.findById(id).select('-passwordHash');
+    if(!employee){
+        return null;
     }
 
     return employee;
@@ -23,9 +23,6 @@ const addEmployee=async(newData:NewEmployeeType):Promise<Omit<EmployeeType,"pass
     const shortUUID= uuid().slice(0,6);
     const userId=`${firstLetter}${shortUUID}`;
     const saltRounds=10;
-
-    if(!newData.password || newData.password.length<=2){
-        throw new Error ("password doesn't meet requirement");}
 
     const passwordHash=await bcrypt.hash(newData.password,saltRounds);
     // eslint-disable-next-block @typescript-eslint/no-unused-vars
@@ -39,10 +36,10 @@ const addEmployee=async(newData:NewEmployeeType):Promise<Omit<EmployeeType,"pass
      return {...allData}
 };
 
-const updatePassword= async(id:string,Password:updatePasswordType):Promise<void>=>{
+const updatePassword= async(id:string,Password:updatePasswordType):Promise<void|null>=>{
     const employee= await Employee.findById(id);
     if(!employee){
-        throw new Error(`can't find employee ${id}`);
+        return null;
     }
     const saltRounds=10;
     const newPassword=Password.newPassword
@@ -57,12 +54,12 @@ const updatePassword= async(id:string,Password:updatePasswordType):Promise<void>
 const updateDetails = async(id:string,updateData:updateEmployeeType)=>{
     
     if (Object.keys(updateData).length===0){
-        throw new Error("Everything up-to-date");
+        return "Everything up-to-date";
     }
 
     const employee= await Employee.findById(id);
     if(!employee){
-        throw new Error(`can't find employee ${id}`);
+        return null;
     }
 
     const updatedEmployee= await Employee.findByIdAndUpdate(id,{$set:updateData},{returnDocument: 'after',runValidators:true});
@@ -73,7 +70,7 @@ const updateDetails = async(id:string,updateData:updateEmployeeType)=>{
 const removeEmployee =async(id:string)=>{
     const employee= await Employee.findByIdAndDelete(id);
 if(!employee){
-        throw new Error(`can't find employee ${id}`);
+        return null;
     }
     return;
 };

@@ -30,6 +30,8 @@ employeeRouter.get("/:id",async(req: Request,res:Response,next: NextFunction)=>{
             return res.status(403).json ({error:"Insufficient Permissions"})
         } 
     const employee =await admin_employee.getOneEmployee(id as string);
+    if(employee===null){return res.status(404).json({error:"employee details not found"})}
+    
     return res.json(employee);}catch(error){
         return next(error);
     }
@@ -60,8 +62,8 @@ employeeRouter.patch("/:id/password",parser(updatePasswordSchema),async (req:Req
               return res.status(403).json ({error:"Insufficient Permissions"})
         }
        
- 
-    await admin_employee.updatePassword(id as string,req.body as updatePasswordType);
+    const updatePWEmployee=await admin_employee.updatePassword(id as string,req.body as updatePasswordType);
+     if(updatePWEmployee===null){return res.status(404).json({error:"employee details not found"})}
 
     return res.json({message:"password updated"});}catch(error){
         return next(error);
@@ -78,6 +80,7 @@ employeeRouter.patch("/:id/details",parser(updateEmployeeSchema),async (req:Requ
         } 
     
     const updatedEmployee=await admin_employee.updateDetails(id as string,req.body as updateEmployeeType);
+     if(updatedEmployee===null){return res.status(404).json({error:"employee details not found"})}
         return res.json(updatedEmployee);
     }catch(error){
         return next(error);
@@ -93,7 +96,8 @@ employeeRouter.delete("/:id",async (req:Request,res:Response, next: NextFunction
             return res.status(403).json ({error:"Insufficient Permissions"})
         }
        
-        await admin_employee.removeEmployee(id as string);
+        const deleteEmployee= await admin_employee.removeEmployee(id as string);
+         if(deleteEmployee===null){return res.status(404).json({error:"employee details not found"})}
         return res.json({message:`employee ${id} deleted`});
     }catch(error){return next(error);}
 });

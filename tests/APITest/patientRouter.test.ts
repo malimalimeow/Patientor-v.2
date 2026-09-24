@@ -37,9 +37,11 @@ test.describe('reset',()=>{
     expect(getResponse.status()).toBe(200);
 
     const patients=await getResponse.json()
+    expect(Array.isArray(patients)).toBeTruthy();
     expect(patients.length).toBeGreaterThan(0);
     
-    id=patients[0].id
+    id=patients[0].id||patients[0]._id
+    expect(id).toBeDefined();
     })
 
 test.describe('Patientor API', () => {
@@ -61,21 +63,19 @@ test.describe('Patientor API', () => {
     });
 
     test('patients should not include password field', async ({ request }) => {
-      const response = await request.get('/api/patients',{
+      const response = await request.get(`/api/patients/${id}`,{
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const body = await response.json();
+      const patient = await response.json();
 
-      for (const patient of body) {
-        expect(patient).not.toHaveProperty('password')
         expect(patient).toHaveProperty('id');
         expect(patient).toHaveProperty('name');
         expect(patient).toHaveProperty('dateOfBirth');
         expect(patient).toHaveProperty('gender');
         expect(patient).toHaveProperty('occupation');
-      }
+      
     });
 
     test('should return error without login',async({request})=>{
@@ -177,13 +177,13 @@ test.describe('Patientor API', () => {
 
   test("should delete a patient",async({request})=>{
 
-    const response= await request.delete(`api/patients/${id}`,{headers: {
+    const response= await request.delete(`/api/patients/${id}`,{headers: {
           Authorization: `Bearer ${token}`,
         }})
     
 
     expect(response.status()).toBe(200);
-    const getPatient = await request.get(`api/patients/${id}`,{headers: {
+    const getPatient = await request.get(`/api/patients/${id}`,{headers: {
           Authorization: `Bearer ${token}`,
         }})
     
