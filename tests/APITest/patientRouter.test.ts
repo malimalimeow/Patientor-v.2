@@ -139,11 +139,7 @@ test.describe('Patientor API', () => {
 
       expect(response.status()).toBe(400);
     });
-  });
-
-  test.describe("Add entry, update patient,delete patient API",()=>{
   
-
   test("should create new entry to a patient",async({request})=>{
     
     const newEntry={
@@ -175,6 +171,9 @@ test.describe('Patientor API', () => {
 
   })
 
+  });
+
+  test.describe("DELETE /api/patients/:id",()=>{
   test("should delete a patient",async({request})=>{
 
     const response= await request.delete(`/api/patients/${id}`,{headers: {
@@ -190,6 +189,25 @@ test.describe('Patientor API', () => {
     expect(getPatient.status()).toBe(404);
 
   })
+  })
+
+  test.describe("PATCH /api/patient/:id",()=>{
+    test("should update data of patient",async({request})=>{
+      const response=await request.patch(`/api/patients/${id}`,{data:{name:"Change newName"},headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+      
+      expect(response.status()).toBe(200);
+
+      const getPatient = await request.get(`/api/patients/${id}`,{headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+
+        const body= await getPatient.json()
+    
+    expect(body).toHaveProperty('name',"Change newName");
+    
+    })
   })
 });
 
