@@ -22,6 +22,20 @@ const master:EmployeeType = {
       role: "master" 
         }
 
+const normalEmployee: EmployeeType = {
+  id: "8472910482",
+  name: "Sarah Jenkins",
+  username: "S1a2b3f",
+  passwordHash,
+  title: "Staff Nurse",
+  dateOfBirth: "1994-06-15",
+  NI: "AB123456C",
+  address: "42 High Street, London",
+  emergencyContact: "07700900123",
+  gender: "female",
+  role: "normal"
+};
+
 const testPatient:PatientType = {
     id:"9126027012921",
         name: 'Test Patient',
@@ -36,15 +50,19 @@ testingRouter.post("/reset",async(_req: Request,res:Response)=>{
     try{
         await Employee.deleteMany({});
         await Patient.deleteMany({});
+        
         await Employee.findOneAndUpdate(
     { username: master.username },
   master,
   { upsert: true, returnDocument: 'after', runValidators: true }
 );
 
-await Patient.findOneAndUpdate({name:testPatient.name},testPatient,{upsert:true,returnDocument: 'after',runValidators:true});
+const normal=await Employee.findOneAndUpdate({username:normalEmployee.username},normalEmployee,{ upsert: true, returnDocument: 'after', runValidators: true })
 
+await Patient.findOneAndUpdate({name:testPatient.name},testPatient,{upsert:true,returnDocument: 'after',runValidators:true});
+console.log("reset done",normal)
         return res.status(204).end();
+
         
     }catch(error){
         console.log("Testing db reset error",error);

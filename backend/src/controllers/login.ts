@@ -22,6 +22,7 @@ loginRouter.post("/",parser(loginSchema),async(req:Request,res:Response,next:Nex
         name:employeeForToken.name,
         id:employeeForToken.id,
         role:employeeForToken.role}); }catch(error){
+        
         return next(error);
     }
 });
