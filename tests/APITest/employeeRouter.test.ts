@@ -5,6 +5,7 @@ test.describe('reset',()=>{
   let masterToken:string
   let normalToken:string
   let id:string
+  let toDeleteID:string
 
   test.beforeAll(async({request})=>{
     const resetResponse=await request.post('/api/testing/reset')
@@ -48,6 +49,10 @@ test.describe('reset',()=>{
     const target= employees.find(e=>e.username==="M1a2b3c")
     id=target?.id as string
     expect(id).toBeDefined();
+
+     const toDelete=employees.find(e=>e.username==="T123456")
+     toDeleteID=toDelete?.id as string
+     expect(toDeleteID).toBeDefined();
     })
 
     test.describe("GET /api/employees",()=>{
@@ -98,11 +103,21 @@ test.describe('reset',()=>{
       expect(response.status()).toBe(403)
 
     })    
+
+     test("should return 404 for invalidId",async({request})=>{
+      const response = await request.get("/api/employees/invalidID",{
+        headers: {
+          Authorization: `Bearer ${masterToken}`,
+        },
+      });
+
+      expect(response.status()).toBe(404)
+
+    })    
     })
 
     test.describe("POST /api/employees",()=>{
-      test("should add a new employee",async({request})=>{
-        const newEmployee={
+      const newEmployee={
           name: "David Miller",
         username: "D9f8e7c",             
         password: "Password123!",        
@@ -114,6 +129,7 @@ test.describe('reset',()=>{
         gender: "male",
         role: "normal"
         }
+      test("should add a new employee",async({request})=>{
 
         const response = await request.post('/api/employees', {
         data: newEmployee,
@@ -139,19 +155,7 @@ test.describe('reset',()=>{
       })  
       
       test("should return 403 forbidden",async({request})=>{
-        const newEmployee={
-          name: "David Miller",
-        username: "D9f8e7c",             
-        password: "Password123!",        
-        title: "Clinical Assistant",
-        dateOfBirth: "1998-11-20",
-        NI: "CE654321D",                
-        address: "15 Baker Street, London",
-        emergencyContact: "07700900456",
-        gender: "male",
-        role: "normal"
-        }
-
+        
         const response = await request.post('/api/employees', {
         data: newEmployee,
         headers: {
@@ -180,11 +184,13 @@ test.describe('reset',()=>{
     })
 
     test.describe("PATCH /api/employees",()=>{
-      test("should update new Password",async({request})=>{
-        const updatePassword={
+      const updatePassword={
           oldPassword:"Password123!",
           newPassword:"NewPassword123!"
         }
+      const updateDetails={name:"Change New Name"}
+
+      test("should update new Password",async({request})=>{
 
         const response = await request.patch(`/api/employees/${id}/password`, {
         data: updatePassword,
@@ -202,16 +208,10 @@ test.describe('reset',()=>{
       }})
       
       expect(loginTrial.status()).toBe(200)
-
-
       })
 
-      test("should return 403 forbidden",async({request})=>{
-        const updatePassword={
-          oldPassword:"Password123!",
-          newPassword:"NewPassword123!"
-        }
-
+      test("should return 403 forbidden, no update PW",async({request})=>{
+        
         const response = await request.patch(`/api/employees/${id}/password`, {
         data: updatePassword,
         headers: {
@@ -220,11 +220,23 @@ test.describe('reset',()=>{
       });
 
       expect(response.status()).toBe(403)})
-    })
+
+      test("should return 404 for invalidId",async({request})=>{
+        
+        const response = await request.patch("/api/employees/invalidId/password", {
+        data: updatePassword,
+        headers: {
+          Authorization: `Bearer ${normalToken}`,
+        }
+      });
+
+      expect(response.status()).toBe(404)})
+
+
+    
 
     test("should update some employee details",async({request})=>{
-      const updateDetails={name:"Change New Name"}
-
+      
       const response = await request.patch(`/api/employees/${id}/details`,{
         data:updateDetails,
         headers:{
@@ -243,5 +255,71 @@ test.describe('reset',()=>{
       expect(target).toHaveProperty("name",updateDetails.name)
 
     })
+
+    test("should return 404 for invalid ID, no update details",async({request})=>{
+
+      const response = await request.patch("/api/employees/invalidId/details",{
+        data:updateDetails,
+        headers:{
+          Authorization:`Bearer ${masterToken}`,
+        }
+      })
+
+      expect(response.status()).toBe(404)
+
+    })
+
+    test("should return 403 forbidden, no update details",async({request})=>{
+
+      const response = await request.patch(`/api/employees/${id}/details`,{
+        data:updateDetails,
+        headers:{
+          Authorization:`Bearer ${normalToken}`,
+        }
+      })
+
+      expect(response.status()).toBe(403)
+
+    })
+
+    })
+
+    test.describe("DELETE /api/employee/:id",()=>{
+      test("should delete a patient",async({request})=>{
+        const response = await request.delete(`/api/employees/${toDeleteID}`,{headers:{
+          Authorization:`Bearer ${masterToken}`,
+        }})
+
+        expect(response.status()).toBe(200)
+
+        const checkTarget = await request.get(`/api/employees/${toDeleteID}`,{headers:{
+          Authorization:`Bearer ${masterToken}`,
+        }})
+
+        expect(checkTarget.status()).toBe(404)
+      })
+
+      test("should return 403 forbidden, not delete employee",async({request})=>{
+
+        const response = await request.delete(`/api/employees/${id}`,{headers:{
+          Authorization:`Bearer ${normalToken}`,
+        }})
+
+
+        expect(response.status()).toBe(403)
+      })
+
+      test("should return 404 for invalid id, cant find anyone",async({request})=>{
+        const response = await request.delete("/api/employees/invalidID",{headers:{
+          Authorization:`Bearer ${masterToken}`,
+        }})
+
+        expect(response.status()).toBe(404)
+      })
+
+    })
+
+   
+
 })
 

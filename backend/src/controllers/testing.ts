@@ -36,6 +36,20 @@ const normalEmployee: EmployeeType = {
   role: "normal"
 };
 
+const toDeleteEmployee: EmployeeType = {
+  id: "6264634534",
+  name: "Delete To",
+  username: "T123456",
+  passwordHash,
+  title: "no",
+  dateOfBirth: "1992-11-20",
+  NI: "BB124456D",
+  address: "no",
+  emergencyContact: "07537156342",
+  gender: "other",
+  role: "normal"
+};
+
 const testPatient:PatientType = {
     id:"9126027012921",
         name: 'Test Patient',
@@ -57,10 +71,11 @@ testingRouter.post("/reset",async(_req: Request,res:Response)=>{
   { upsert: true, returnDocument: 'after', runValidators: true }
 );
 
-const normal=await Employee.findOneAndUpdate({username:normalEmployee.username},normalEmployee,{ upsert: true, returnDocument: 'after', runValidators: true })
+await Employee.findOneAndUpdate({username:normalEmployee.username},normalEmployee,{ upsert: true, returnDocument: 'after', runValidators: true })
+await Employee.findOneAndUpdate({username:toDeleteEmployee.username},toDeleteEmployee,{ upsert: true, returnDocument: 'after', runValidators: true })
 
 await Patient.findOneAndUpdate({name:testPatient.name},testPatient,{upsert:true,returnDocument: 'after',runValidators:true});
-console.log("reset done",normal)
+console.log("reset done")
         return res.status(204).end();
 
         

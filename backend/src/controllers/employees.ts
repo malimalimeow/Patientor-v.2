@@ -91,7 +91,7 @@ employeeRouter.delete("/:id",async (req:Request,res:Response, next: NextFunction
     try{
         const id=req.params.id;
           const loginEmployee=req.employee
-    if(!loginEmployee){return res.status(401).json({error:"Insufficient permission,please login "})}
+    if(!loginEmployee){return res.status(401).json({error:"please login "})}
     if (loginEmployee.role!=="admin" && loginEmployee.role!=="master"){
             return res.status(403).json ({error:"Insufficient Permissions"})
         }
