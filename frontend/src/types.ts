@@ -37,32 +37,47 @@ interface HealthCheckEntry extends BaseEntry {
   type: "HealthCheck";
   healthCheckRating: HealthCheckRating;}
 
-interface HospitalEntry extends BaseEntry {
-    type: "Hospital";
-    discharge:Discharge
-}
-export interface Discharge{
-    date:string
-    criteria:string
-}
-
-export interface OccupationalHealthcareEntry extends BaseEntry {
-    type: "OccupationalHealthcare"
-    employerName :string
-    sickLeave?:SickLeave
+interface InpatientEntry extends BaseEntry {
+    type: "Inpatient";
+    admissionDate: string
+    admissionReason:string
+    dischargeDate?: string
+    ward?:string
+    bedNumber?:string
+    dischargeSummary?:string
+    dischargeStatus?:string
+    followUpInstruction?:string
+    
 }
 
-export type OccupationalForm =Omit<OccupationalHealthcareEntry,"id">
-
-export interface SickLeave {
-    startDate: string
-    endDate: string
+export interface vitalSigns{
+  bp?:string,
+    pulse?:number,
+    temperature?:number
 }
+
+export interface prescription{
+  medication:string
+    dosage:string
+    frequency:string
+}
+
+
+export interface OutpatientEntry extends BaseEntry {
+    type: "Outpatient";
+    department:string
+   chiefComplaint:string
+   vitalSigns?:vitalSigns
+   prescription?:[prescription]|[]
+   followUpDate?:string
+
+}
+
 
 
 export type Entry =
-  | HospitalEntry
-  | OccupationalHealthcareEntry
+  | InpatientEntry
+  | OutpatientEntry
   | HealthCheckEntry;
 
 type UnionOmit<T,K extends string|number|symbol>=T extends unknown ? Omit<T,K>:never
@@ -82,8 +97,8 @@ export interface Patient {
 export type PatientFormValues = Omit<Patient, "id">;
 
 export const EntryType = {
-  Hospital: "Hospital",
-  OccupationalHealthcare: "OccupationalHealthcare",
+  Inpatient:"Inpatient",
+  Outpatient: "Outpatient",
   HealthCheck: "HealthCheck",
 } as const;
 

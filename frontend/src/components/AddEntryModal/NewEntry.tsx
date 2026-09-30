@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-import type {
-  Discharge,
-  SickLeave,
-  EntryTypes,
-  EntryFormValues,
-  HealthCheckRating,
-  BaseEntryForm,
-  OccupationalForm,
-} from "../../types";
+import type { EntryTypes, EntryFormValues, BaseEntryForm } from "../../types";
 import { EntryType } from "../../types";
 import NewEntryType from "./NewEntryType";
 import { useDiagnoses } from "../../stores/diagnosesStore";
@@ -24,6 +16,7 @@ import {
   Chip,
   Grid,
 } from "@mui/material";
+import { useTypeStore } from "../../stores/entryTypeStore";
 
 interface NewEntryProps {
   onSubmit: (id: string, values: EntryFormValues) => void;
@@ -34,21 +27,12 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
   const { reset: resetDate, ...date } = useField("text");
   const { reset: resetDescription, ...description } = useField("text");
   const { reset: resetSpecialist, ...specialist } = useField("text");
-  const { reset: resetEmployerName, ...employerName } = useField("text");
 
   const [code, setCode] = useState<string[]>([]);
-  const [type, setType] = useState<EntryTypes>("Hospital");
-  const [rating, setRating] = useState<HealthCheckRating>(0);
-  const [discharge, setDischarge] = useState<Discharge>({
-    date: "",
-    criteria: "",
-  });
-  const [sickLeave, setSickLeave] = useState<SickLeave>({
-    startDate: "",
-    endDate: "",
-  });
+  const [type, setType] = useState<EntryTypes>("Inpatient");
   const diagnoses = useDiagnoses();
   const { closeModal } = useModalActions();
+  const typeDetails = useTypeStore((state) => state.typeDetails);
 
   const handleCodeChange = (event: SelectChangeEvent<typeof code>) => {
     const {
@@ -68,38 +52,31 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
       basicPack = { ...basicPack, diagnosisCodes: code };
     }
 
-    if (type === "Hospital") {
+    if (type === "Inpatient") {
       onSubmit(patientId, {
         ...basicPack,
-        type: "Hospital",
-        discharge: discharge,
-      });
+        type: "Inpatient",
+        ...typeDetails,
+      } as EntryFormValues);
     } else if (type === "HealthCheck") {
       onSubmit(patientId, {
         ...basicPack,
         type: "HealthCheck",
-        healthCheckRating: rating,
-      });
-    } else if (type === "OccupationalHealthcare") {
-      let OccupationalPack: OccupationalForm = {
+        ...typeDetails,
+      } as EntryFormValues);
+    } else if (type === "Outpatient") {
+      onSubmit(patientId, {
         ...basicPack,
-        type: "OccupationalHealthcare",
-        employerName: employerName.value,
-      };
-
-      if (sickLeave.startDate !== "" && sickLeave.endDate !== "") {
-        OccupationalPack = { ...OccupationalPack, sickLeave: sickLeave };
-      }
-
-      onSubmit(patientId, OccupationalPack);
-      closeModal();
-      resetDate();
-      resetDescription();
-      resetEmployerName();
-      resetSpecialist();
+        type: "Outpatient",
+        ...typeDetails,
+      } as EntryFormValues);
     }
-  };
 
+    closeModal();
+    resetDate();
+    resetDescription();
+    resetSpecialist();
+  };
   return (
     <div>
       <form onSubmit={handleCreate}>
@@ -170,16 +147,7 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
           </FormControl>
         </div>
 
-        <NewEntryType
-          type={type}
-          rating={rating}
-          discharge={discharge}
-          employerNameField={employerName}
-          sickLeave={sickLeave}
-          setRating={setRating}
-          setDischarge={setDischarge}
-          setSickLeave={setSickLeave}
-        />
+        <NewEntryType type={type} />
 
         <Grid container justifyContent="space-between" sx={{ marginTop: 2 }}>
           <Grid size="auto">

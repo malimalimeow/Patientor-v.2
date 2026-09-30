@@ -1,5 +1,4 @@
 import mongoose, {Schema,type Types }from "mongoose";
-
 import type { NewPatientType , NewEntryType} from "../zodSchemas.ts";
 import { Gender,HealthCheckRating } from "../zodSchemas.ts";
 
@@ -42,14 +41,15 @@ const MongoPatientSchema = new Schema<NewPatientType>({
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 const entriesArray= MongoPatientSchema.path('entries') as Schema.Types.DocumentArray;
 
-entriesArray.discriminator("Hospital",new Schema({
-     discharge:{
-      date:{
-            type: String, required: true 
-        },
-      criteria:{
-            type: String, required: true 
-        },
+entriesArray.discriminator("Inpatient",new Schema({
+  admissionDate: {type:String, required:true},
+  admissionReason:{type:String, required:true},
+  dischargeDate: {type:String},
+  ward:{type:String},
+  bedNumber:{type:String},
+  dischargeSummary:{type:String},
+  dischargeStatus:{type:String},
+  followUpInstruction:{type:String},
 }}, { _id: false }));
 
 entriesArray.discriminator("HealthCheck", new Schema({
@@ -60,18 +60,22 @@ entriesArray.discriminator("HealthCheck", new Schema({
     }
 }, { _id: false }));
 
-entriesArray.discriminator("OccupationalHealthcare", new Schema({
-     employerName :{
-            type: String, required: true 
-        },
-        sickLeave:{
-          startDate: {
-            type: String
-        },
-        endDate: {
-            type: String
-        },
-        }
+const prescriptionSchema= new Schema({
+        medication:{type:String},
+        dosage:{type:String},
+        frequency:{type:String},
+       }, { _id: false })
+
+entriesArray.discriminator("Outpatient", new Schema({
+    department:{type:String, required:true},
+       chiefComplaint:{type:String, required:true},
+       vitalSigns:{
+        bp:{type:String},
+        pulse:{type:Number},
+        temperature:{type:Number},
+       },
+       prescription:{type:[prescriptionSchema],default:[]},
+       followUpDate:{type:String}
 }, { _id: false }));
 
 MongoPatientSchema.set("toJSON", {

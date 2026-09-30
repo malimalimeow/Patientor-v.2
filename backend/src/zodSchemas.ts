@@ -64,23 +64,37 @@ export const HealthCheckSchema= NewBaseEntrySchema.extend({
 ])});
 
 
-export const  HospitalSchema =NewBaseEntrySchema.extend({
-    type: z.literal("Hospital"),
-    discharge:z.object({
-  date:z.string().date(),
-  criteria:z.string().trim().min(1,"criteria required")
-})});
-
-export const OccupationalSchema=NewBaseEntrySchema.extend({
-   type: z.literal("OccupationalHealthcare"),
-    employerName :z.string().trim().min(1,"employerName required"),
-    sickLeave:z.object({
-      startDate:z.string().date(),
-    endDate: z.string().date()
-    }).optional()
+export const  InpatientSchema =NewBaseEntrySchema.extend({
+    type: z.literal("Inpatient"),
+    admissionDate: z.string().date(),
+    admissionReason:z.string(),
+    dischargeDate: z.string().date().optional(),
+    ward:z.string().optional(),
+    bedNumber:z.string().optional(),
+    dischargeSummary:z.string().optional(),
+    dischargeStatus:z.string().optional(),
+    followUpInstruction:z.string().optional()
 });
 
-export const NewEntrySchema=z.discriminatedUnion("type",[HealthCheckSchema,HospitalSchema,OccupationalSchema]);
+
+export const OutpatientSchema=NewBaseEntrySchema.extend({
+   type: z.literal("Outpatient"),
+   department:z.string(),
+   chiefComplaint:z.string(),
+   vitalSigns:z.object({
+    bp:z.string(),
+    pulse:z.number(),
+    temperature:z.number()
+   }).partial().optional(),
+   prescription:z.array(z.object({
+    medication:z.string(),
+    dosage:z.string(),
+    frequency:z.string(),
+   })).optional(),
+   followUpDate:z.string().date().optional()
+});
+
+export const NewEntrySchema=z.discriminatedUnion("type",[HealthCheckSchema,InpatientSchema,OutpatientSchema]);
 
 
 export type GenderType = typeof Gender[keyof typeof Gender];
@@ -89,9 +103,9 @@ export type NewPatientType =z.infer<typeof NewPatientSchema>;
 
 export type HealthCheckEntryType =z.infer<typeof HealthCheckSchema>;
 
-export type HospitalEntryType =z.infer<typeof HospitalSchema>;
+export type HospitalEntryType =z.infer<typeof InpatientSchema>;
 
-export type OccupationalHealthcareEntryType =z.infer<typeof OccupationalSchema>;
+export type OccupationalHealthcareEntryType =z.infer<typeof OutpatientSchema>;
 
 export type NewEntryType =z.infer<typeof NewEntrySchema>;
 
