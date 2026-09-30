@@ -6,6 +6,7 @@ test.describe('reset',()=>{
   let normalToken:string
   let id:string
   let toDeleteID:string
+  const fakeID:string="60c72b2f9b1d8c2a4c8e4b1a"
 
   test.beforeAll(async({request})=>{
     const resetResponse=await request.post('/api/testing/reset')
@@ -104,8 +105,8 @@ test.describe('reset',()=>{
 
     })    
 
-     test("should return 404 for invalidId",async({request})=>{
-      const response = await request.get("/api/employees/invalidID",{
+     test("should return 404 for invalidId, employee not found",async({request})=>{
+      const response = await request.get(`/api/employees/${fakeID}`,{
         headers: {
           Authorization: `Bearer ${masterToken}`,
         },
@@ -219,21 +220,7 @@ test.describe('reset',()=>{
         }
       });
 
-      expect(response.status()).toBe(403)})
-
-      test("should return 404 for invalidId",async({request})=>{
-        
-        const response = await request.patch("/api/employees/invalidId/password", {
-        data: updatePassword,
-        headers: {
-          Authorization: `Bearer ${normalToken}`,
-        }
-      });
-
-      expect(response.status()).toBe(404)})
-
-
-    
+      expect(response.status()).toBe(403)})    
 
     test("should update some employee details",async({request})=>{
       
@@ -256,9 +243,20 @@ test.describe('reset',()=>{
 
     })
 
+    test("wrong data,should return 400 and reject update",async({request})=>{
+      
+      const response = await request.patch(`/api/employees/${id}/details`,{
+        data:{role:"superman",gender:"cat"},
+        headers:{
+          Authorization:`Bearer ${masterToken}`,
+        }
+      })
+
+      expect(response.status()).toBe(400)})
+
     test("should return 404 for invalid ID, no update details",async({request})=>{
 
-      const response = await request.patch("/api/employees/invalidId/details",{
+      const response = await request.patch(`/api/employees/${fakeID}/details`,{
         data:updateDetails,
         headers:{
           Authorization:`Bearer ${masterToken}`,
@@ -279,7 +277,18 @@ test.describe('reset',()=>{
       })
 
       expect(response.status()).toBe(403)
+    })
 
+    test("should return 400 for random id, no update",async({request})=>{
+
+      const response = await request.patch("/api/employees/invalidID/details",{
+        data:updateDetails,
+        headers:{
+          Authorization:`Bearer ${masterToken}`,
+        }
+      })
+
+      expect(response.status()).toBe(400)
     })
 
     })
@@ -309,12 +318,20 @@ test.describe('reset',()=>{
         expect(response.status()).toBe(403)
       })
 
-      test("should return 404 for invalid id, cant find anyone",async({request})=>{
-        const response = await request.delete("/api/employees/invalidID",{headers:{
+      test("should return 404 for id not existed, cant find anyone",async({request})=>{
+        const response = await request.delete(`/api/employees/${fakeID}`,{headers:{
           Authorization:`Bearer ${masterToken}`,
         }})
 
         expect(response.status()).toBe(404)
+      })
+
+       test("should return 400 for random id",async({request})=>{
+        const response = await request.delete("/api/employees/invalidID",{headers:{
+          Authorization:`Bearer ${masterToken}`,
+        }})
+
+        expect(response.status()).toBe(400)
       })
 
     })

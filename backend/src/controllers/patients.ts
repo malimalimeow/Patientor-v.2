@@ -91,6 +91,7 @@ patientRouter.delete("/:id",async(req:Request,res:Response,next:NextFunction)=>{
         }
 
     const response = await patientService.deletePatient(req.params.id as string)
+    if(response===null){return res.status(404).json({error:"patient ID not found"})}
     
 
     return res.json(response)

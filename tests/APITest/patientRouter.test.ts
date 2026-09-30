@@ -13,6 +13,7 @@ test.describe('GET /api/ping', () => {
 test.describe('reset',()=>{
    let token:string
    let id:string
+  const fakeID:string="507f1f77bcf86cd799439011"
 
   test.beforeEach(async({request})=>{
     const resetResponse=await request.post('/api/testing/reset')
@@ -62,6 +63,11 @@ test.describe('Patientor API', () => {
       expect(body.length).toBeGreaterThan(0);
     });
 
+    test('should return 401 without login, cannot get patients',async({request})=>{
+      const response=await request.get('/api/patients')
+      expect(response.status()).toBe(401)
+    })
+
     test('patients should not include password field', async ({ request }) => {
       const response = await request.get(`/api/patients/${id}`,{
         headers: {
@@ -78,14 +84,46 @@ test.describe('Patientor API', () => {
       
     });
 
-    test('should return error without login',async({request})=>{
-      const response=await request.get('/api/patients')
+    test('should return 401 without login, cannot get one patient with id',async({request})=>{
+      const response=await request.get(`/api/patients/${id}`)
       expect(response.status()).toBe(401)
     })
-   
+
+    test('should return 404 for fake ID ', async ({ request }) => {
+      const response = await request.get(`/api/patients/${fakeID}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      expect(response.status()).toBe(404)
   });
 
+   test('should return 400 for random ID', async ({ request }) => {
+      const response = await request.get("/api/patients/invalidID",{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      expect(response.status()).toBe(400)
+  });
+
+  });
+
+
+
   test.describe('POST /api/patients', () => {
+    const newEntry={
+        date: '2015-01-02',
+        type: 'Hospital',
+        specialist: 'MD House',
+        diagnosisCodes: ['S62.5'],
+        description:
+          "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
+        discharge: {
+          date: '2015-01-16',
+          criteria: 'Thumb has healed.',
+        }}
+
     test('should create a new patient', async ({ request }) => {
       const newPatient = {
         name: 'Test Patient',
@@ -141,19 +179,6 @@ test.describe('Patientor API', () => {
     });
   
   test("should create new entry to a patient",async({request})=>{
-    
-    const newEntry={
-        date: '2015-01-02',
-        type: 'Hospital',
-        specialist: 'MD House',
-        diagnosisCodes: ['S62.5'],
-        description:
-          "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
-        discharge: {
-          date: '2015-01-16',
-          criteria: 'Thumb has healed.',
-        }}
-    
 
     const response = await request.post(`/api/patients/${id}/entries`,{data:newEntry,headers: {
           Authorization: `Bearer ${token}`,
@@ -170,6 +195,33 @@ test.describe('Patientor API', () => {
       expect(body).toHaveProperty('discharge',newEntry.discharge);
 
   })
+
+  test("should return 400 for wrong data",async({request})=>{
+    const response = await request.post(`/api/patients/${id}/entries`,{data:{date:"wrong",type:"wrong"},headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+
+      expect(response.status()).toBe(400)
+  })
+
+  test("should return 400 for random id, not adding entry",async({request})=>{
+    const response = await request.post(`/api/patients/invalidID/entries`,{data:newEntry,headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+
+      expect(response.status()).toBe(400)
+  })
+
+   test("should return 404 for id not exist, not adding entry",async({request})=>{
+    const response = await request.post(`/api/patients/${fakeID}/entries`,{data:newEntry,headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+
+      expect(response.status()).toBe(404)
+  })
+
+
+
 
   });
 
@@ -188,6 +240,22 @@ test.describe('Patientor API', () => {
     
     expect(getPatient.status()).toBe(404);
 
+  })
+
+  test("should return 404 for not exist toDelete patient ID ",async({request})=>{
+    const response= await request.delete(`/api/patients/${fakeID}`,{headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+
+     expect(response.status()).toBe(404);   
+  })
+
+  test("should return 400 for random ID ",async({request})=>{
+    const response= await request.delete("/api/patients/invalidID",{headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+
+     expect(response.status()).toBe(400);   
   })
   })
 
@@ -208,7 +276,23 @@ test.describe('Patientor API', () => {
     expect(body).toHaveProperty('name',"Change newName");
     
     })
-  })
-});
 
+    test("should return 404 for not exist patient ID ",async({request})=>{
+    const response= await request.patch(`/api/patients/${fakeID}`,{data:{name:"Change newName"},headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+
+     expect(response.status()).toBe(404);   
+  })
+
+  test("should return 400 for random ID ",async({request})=>{
+    const response= await request.patch("/api/patients/invalidID",{data:{name:"Change newName"},headers: {
+          Authorization: `Bearer ${token}`,
+        }})
+
+     expect(response.status()).toBe(400);   
+  })
+  })
+
+})
 })
