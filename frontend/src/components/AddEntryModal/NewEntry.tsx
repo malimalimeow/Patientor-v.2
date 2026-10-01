@@ -24,7 +24,7 @@ interface NewEntryProps {
 }
 
 const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
-  const { reset: resetDate, ...date } = useField("text");
+  const { reset: resetDate, ...date } = useField("date");
   const { reset: resetDescription, ...description } = useField("text");
   const { reset: resetSpecialist, ...specialist } = useField("text");
 
@@ -108,11 +108,11 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
         </div>
 
         <div>
-          <TextField label="Description" required {...description} />
+          <TextField label="Description" fullWidth required {...description} />
         </div>
 
         <div>
-          <TextField label="Specialist" required {...specialist} />
+          <TextField label="Specialist" fullWidth required {...specialist} />
         </div>
 
         <div>

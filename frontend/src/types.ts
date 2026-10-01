@@ -68,7 +68,7 @@ export interface OutpatientEntry extends BaseEntry {
     department:string
    chiefComplaint:string
    vitalSigns?:vitalSigns
-   prescription?:[prescription]|[]
+   prescription?:prescription[]
    followUpDate?:string
 
 }

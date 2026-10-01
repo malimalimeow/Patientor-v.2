@@ -50,7 +50,7 @@ entriesArray.discriminator("Inpatient",new Schema({
   dischargeSummary:{type:String},
   dischargeStatus:{type:String},
   followUpInstruction:{type:String},
-}}, { _id: false }));
+}, { _id: false }));
 
 entriesArray.discriminator("HealthCheck", new Schema({
     healthCheckRating:{

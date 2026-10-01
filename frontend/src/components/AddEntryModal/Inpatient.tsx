@@ -13,6 +13,7 @@ export const Inpatient = () => {
       <TextField
         fullWidth
         label="admissionDate"
+        slotProps={{ inputLabel: { shrink: true } }}
         id="admissionDate"
         type="date"
         value={typeDetails.admissionDate || ""}
@@ -33,6 +34,7 @@ export const Inpatient = () => {
       <TextField
         fullWidth
         label="dischargeDate"
+        slotProps={{ inputLabel: { shrink: true } }}
         id="dischargeDate"
         type="date"
         value={typeDetails.dischargeDate || ""}

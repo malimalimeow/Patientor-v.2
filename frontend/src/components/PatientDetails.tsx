@@ -1,13 +1,8 @@
-import type { Entry, EntryFormValues } from "../types";
+import type { EntryFormValues } from "../types";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import "../patientDetail.css";
-import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
-import EmergencyIcon from "@mui/icons-material/Emergency";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import { assertNever } from "../helper";
 import { Button } from "@mui/material";
 import AddEntryModal from "./AddEntryModal/AddEntryModal";
 import axios from "axios";
@@ -18,60 +13,7 @@ import { useModalOpen } from "../stores/modalStore";
 import UpdatePatientModal from "./UpdatePatientModal";
 import { useLoginEmployee } from "../stores/loginStore";
 import { useNavigate } from "react-router-dom";
-
-export const EntryDetails = ({ entry }: { entry: Entry }) => {
-  switch (entry.type) {
-    case "HealthCheck":
-      const color =
-        entry.healthCheckRating === 0
-          ? "#2E7D32"
-          : entry.healthCheckRating === 1
-            ? "#ED6C02"
-            : entry.healthCheckRating === 2
-              ? "#D32F2F"
-              : "#C62828";
-      return (
-        <div className="entryContainer">
-          <p>
-            {entry.date}
-            <MedicalInformationIcon />
-          </p>
-          <p>{entry.description}</p>
-          <FavoriteIcon sx={{ color: color }} />
-          <p>Diagnosed by {entry.specialist}</p>
-        </div>
-      );
-    case "Hospital":
-      return (
-        <div className="entryContainer">
-          <p>
-            {entry.date} <LocalHospitalIcon />
-          </p>
-          <p>{entry.description}</p>
-          <p>discharge:</p>
-          <p>{entry.discharge.date}</p>
-          <p>{entry.discharge.criteria}</p>
-          <p>Diagnosed by {entry.specialist}</p>
-        </div>
-      );
-
-    case "OccupationalHealthcare":
-      return (
-        <div className="entryContainer">
-          <p>
-            {entry.date}
-            <EmergencyIcon />
-            {entry.employerName}
-          </p>
-          <p>{entry.description}</p>
-          <p>Diagnosed by {entry.specialist}</p>
-        </div>
-      );
-
-    default:
-      return assertNever(entry);
-  }
-};
+import { EntryDetails } from "./entryDetails";
 
 const PatientDetails = () => {
   const navigate = useNavigate();

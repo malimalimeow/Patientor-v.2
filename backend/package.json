@@ -12,8 +12,8 @@
     "dev": "concurrently \"tsc --watch\" \"node --watch --experimental-transform-types src/index.ts\"",
     "start": "node --experimental-transform-types src/index.ts",
     "lint": "eslint .",
-    "seed:test": "cross-env NODE_ENV=test tsx src/utils/seed.ts",
-    "seed_d:test": "cross-env NODE_ENV=test tsx src/utils/seed_diagnosis.ts"
+    "seed": "cross-env NODE_ENV=dev tsx src/utils/seed.ts",
+    "seed_d": "cross-env NODE_ENV=dev tsx src/utils/seed_diagnosis.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
