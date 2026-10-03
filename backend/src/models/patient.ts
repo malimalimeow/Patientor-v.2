@@ -7,6 +7,10 @@ const MongoBaseEntrySchema =new Schema<NewEntryType>({
             type: String,
             required: true,
          },
+      finish:{
+        type:Boolean,
+        default:false
+      },
       date:{
             type: String,
             required: true,

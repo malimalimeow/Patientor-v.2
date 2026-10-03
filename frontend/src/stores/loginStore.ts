@@ -12,7 +12,7 @@ interface useLoginState{
     employee:{name:string,id:string, role:string,token:string}|null
     actions:{
         handle401:(error:unknown)=>void;
-        initialEmployee:()=>void;
+        initialEmployee:()=>Promise<void>;
         toLogin:(loginData:loginForm)=>Promise<void>;
         logout:()=>void
     }
@@ -30,12 +30,15 @@ export const useLoginStore= create<useLoginState>()(devtools((set,get)=>({
         return false
         },
 
-        initialEmployee:()=>{
+        initialEmployee:async()=>{
             const existedEmployee = getEmployee()
-            if (existedEmployee){
-                set(()=>({employee: existedEmployee,login:true}))
-                patientService.setToken(existedEmployee.token)
-                employeeService.setToken(existedEmployee.token)
+            try{
+                loginService.setToken(existedEmployee.token)
+                const validatedEmployee=await loginService.validation()
+           set(()=>({employee: validatedEmployee,login:true}))
+                patientService.setToken(validatedEmployee.token)
+                employeeService.setToken(validatedEmployee.token)}catch(error){
+                    get().actions.logout()
             }
         },
         toLogin:async(loginData:loginForm)=>{

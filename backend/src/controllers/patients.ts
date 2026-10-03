@@ -1,7 +1,7 @@
 import patientService from "../services/patientService.ts";
 import express,{type Request, type Response, type NextFunction} from "express";
 import { NewEntrySchema, NewPatientSchema,PatientSchema } from "../zodSchemas.ts";
-import type{EmployeeType, EntryType, NewEntryType, NewPatientType ,PatientType, updatePatientType} from "../zodSchemas.ts";
+import type{EmployeeType, EntryType, NewEntryType, NewPatientType ,PatientType, UpdateEntryType, updatePatientType} from "../zodSchemas.ts";
 import { parser } from "../utils/validator.ts";
 
 
@@ -80,6 +80,24 @@ patientRouter.patch("/:id",async(req:Request,res:Response,next:NextFunction)=>{
   return res.json(updatedPatient);
 
 }catch(error){return next(error);}});
+
+patientRouter.patch("/:id/entries/:entriesId",async(req:Request,res:Response,next:Function)=>{
+  try{
+    const employee:EmployeeType=req.employee
+
+    if(!employee){
+            return res.status(401).json({error:"Insufficient permission,please login "});
+  }
+  const id=req.params.id
+  const entryId=req.params.entriesId
+
+  const updateEntry = await patientService.updateEntry(id as string,req.body as UpdateEntryType,entryId as string)
+  if(updateEntry===null){return res.status(404).json({error:"patient or entry not found"});}
+
+  return res.json(updateEntry)
+
+  }catch(error){return next(error)}
+})
 
 patientRouter.delete("/:id",async(req:Request,res:Response,next:NextFunction)=>{
   try{

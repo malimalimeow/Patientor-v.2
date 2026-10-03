@@ -33,6 +33,7 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
   const diagnoses = useDiagnoses();
   const { closeModal } = useModalActions();
   const typeDetails = useTypeStore((state) => state.typeDetails);
+  const setField = useTypeStore((state) => state.setField);
 
   const handleCodeChange = (event: SelectChangeEvent<typeof code>) => {
     const {
@@ -44,6 +45,7 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
   const handleCreate = (e: React.SyntheticEvent) => {
     e.preventDefault();
     let basicPack: BaseEntryForm = {
+      finish: false,
       description: description.value,
       date: date.value,
       specialist: specialist.value,
@@ -162,7 +164,15 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
           </Grid>
           <Grid size="auto">
             <Button type="submit" variant="contained">
-              Add
+              Save
+            </Button>
+          </Grid>
+          <Grid size="auto">
+            <Button
+              onClick={() => setField("finish", true)}
+              variant="contained"
+            >
+              Confirm and Lock
             </Button>
           </Grid>
         </Grid>

@@ -25,6 +25,7 @@ export type HealthCheckRating = typeof HealthCheckRatings[keyof typeof HealthChe
 
 interface BaseEntry {
   id: string;
+  finish:boolean;
   description: string;
   date: string;
   specialist: string;
@@ -80,9 +81,11 @@ export type Entry =
   | OutpatientEntry
   | HealthCheckEntry;
 
+
 type UnionOmit<T,K extends string|number|symbol>=T extends unknown ? Omit<T,K>:never
 //kinda like a function here T=>type, K=>key, in string/number/symbol(constraint)= (Ternary)when a type extends something? type omit that key 
 
+export type updateEntryType = Partial<Omit<EntryTypes, "id" | "_id" | "type">>
 export type EntryFormValues= UnionOmit<Entry,"id">
 
 export interface Patient {

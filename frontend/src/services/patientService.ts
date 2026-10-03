@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Patient, PatientFormValues, Entry , EntryFormValues,UpdatePatientForm } from "../types";
+import { Patient, PatientFormValues, Entry , EntryFormValues,UpdatePatientForm, updateEntryType } from "../types";
 
 const apiBaseUrl = '/api';
 
@@ -14,7 +14,7 @@ const getAll = async () => {
   const config = {
     headers: { Authorization: token },
   };
-  console.log(config)
+  
   const { data } = await axios.get<Patient[]>(
     `${apiBaseUrl}/patients`,config
   );
@@ -62,6 +62,18 @@ const updatePatient=async( id:string,updateData:UpdatePatientForm)=>{
   return data
 }
 
+const updateEntry = async(id:string,updateEntryDetails:updateEntryType,entryId:string)=>{
+  const config = {
+    headers: { Authorization: token },
+  };
+   const {data} = await axios.patch<Entry>(
+    `${apiBaseUrl}/patients/${id}/entries/${entryId}`,updateEntryDetails,config
+  );
+
+  return data
+
+}
+
 const deleteEntry =async(id:string,entryId:string)=>{
   const config = {
     headers: { Authorization: token },
@@ -82,6 +94,6 @@ const deletePatient = async(id:string)=>{
 
 export default {
 
-  setToken,getAll, create,getOne,addEntry,deleteEntry,deletePatient,updatePatient
+  setToken,getAll, create,getOne,addEntry,deleteEntry,deletePatient,updatePatient,updateEntry
 };
 

@@ -97,19 +97,19 @@ const PatientDetails = () => {
         Update Patient details
       </Button>
 
-      {showPatient && <h3>Entries</h3>}
-      {showPatient?.entries?.map((entry) => (
-        <div key={entry.id}>
-          <EntryDetails entry={entry} />
-        </div>
-      ))}
-
       {modalOpen === "addEntry" && (
         <AddEntryModal onSubmit={submitNewEntry} patientId={showPatient.id} />
       )}
       <Button variant="contained" onClick={() => openModal("addEntry")}>
         Add New Entry
       </Button>
+
+      {showPatient && <h3>Entries</h3>}
+      {showPatient?.entries?.map((entry) => (
+        <div key={entry.id}>
+          <EntryDetails entry={entry} />
+        </div>
+      ))}
 
       {loginEmployeeRole === "master" && (
         <Button onClick={() => deleteThisPatient()}>Delete Record</Button>

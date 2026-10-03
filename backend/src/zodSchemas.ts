@@ -39,7 +39,7 @@ export const NewPatientSchema= z.object({
        });
 
 export const NewBaseEntrySchema =z.object({
-  
+  finish:z.boolean().default(false),
   description: z.string().trim().min(1,"description required"),
   date: z.string().date(),
   specialist: z.string().trim().min(1,"specialist required"),
@@ -128,6 +128,8 @@ export type NonSensitivePatient = Omit<PatientType, 'ssn'|'entries'>;
 export const EntrySchema=NewEntrySchema.and(z.object({id:z.string()}));
 
 export type EntryType=z.infer<typeof EntrySchema>;
+
+export type UpdateEntryType = Partial<EntryType>;
 
 export const updatePasswordSchema = z.object({
   oldPassword:z.string().min(8,"Old password is required"),

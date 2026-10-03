@@ -29,13 +29,20 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    void initialEmployee();
+    const initLogin = async () => {
+      await initialEmployee();
+      console.log(loginEmployee);
+    };
+
+    void initLogin();
   }, []);
 
   useEffect(() => {
-    if (loginEmployee === null) {
+    if (!loginEmployee) {
+      console.log(loginEmployee);
       return;
     }
+
     void fetchPatientList();
     void fetchDiagnoses();
     void getAllEmployee();

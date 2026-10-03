@@ -4,8 +4,14 @@ import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import EmergencyIcon from "@mui/icons-material/Emergency";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { assertNever } from "../helper";
+import { Button } from "@mui/material";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LockIcon from "@mui/icons-material/Lock";
+import { useModalActions } from "../stores/modalStore";
 
 export const EntryDetails = ({ entry }: { entry: Entry }) => {
+  const { openModal } = useModalActions();
+
   switch (entry.type) {
     case "HealthCheck":
       const color =
@@ -25,6 +31,19 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
           <p>{entry.description}</p>
           <FavoriteIcon sx={{ color: color }} />
           <p>Diagnosed by {entry.specialist}</p>
+          {entry.finish === false ? (
+            <>
+              <Button onClick={() => openModal("updateEntry")}>
+                Update Record
+              </Button>
+              <LockOpenIcon />
+            </>
+          ) : (
+            <p>
+              Read Only
+              <LockIcon />
+            </p>
+          )}
         </div>
       );
     case "Inpatient":
@@ -38,6 +57,19 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
           <p>Description:{entry.description}</p>
           <p>Admission Date:{entry.admissionDate}</p>
           <p>Admission Reason:{entry.admissionReason}</p>
+          {entry.finish === false ? (
+            <>
+              <Button onClick={() => openModal("updateEntry")}>
+                Update Record
+              </Button>
+              <LockOpenIcon />
+            </>
+          ) : (
+            <p>
+              Read Only
+              <LockIcon />
+            </p>
+          )}
         </div>
       );
 
@@ -51,6 +83,19 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
           </p>
           <p>Description:{entry.description}</p>
           <p>Chief Complaint:{entry.chiefComplaint}</p>
+          {entry.finish === false ? (
+            <>
+              <Button onClick={() => openModal("updateEntry")}>
+                Update Record
+              </Button>
+              <LockOpenIcon />
+            </>
+          ) : (
+            <p>
+              Read Only
+              <LockIcon />
+            </p>
+          )}
         </div>
       );
 

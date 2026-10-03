@@ -3,8 +3,18 @@ import loginServices from "../services/loginServices.ts";
 import { parser } from "../utils/validator.ts";
 import { loginSchema } from "../zodSchemas.ts";
 import type {loginType} from "../zodSchemas.ts";
+import middleware from "../utils/middleware.ts";
 
 const loginRouter=express.Router();
+
+loginRouter.get("/auth",middleware.employeeExtractor,middleware.tokenExtractor,async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const employee=req.employee
+        return res.json({employee})
+    }catch(error){
+        return next(error)
+    }
+})
 
 loginRouter.post("/",parser(loginSchema),async(req:Request,res:Response,next:NextFunction)=>{
     try{

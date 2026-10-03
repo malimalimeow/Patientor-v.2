@@ -1,6 +1,6 @@
 import Patient from "../models/patient.ts";
 
-import type { NewEntryType, NonSensitivePatient ,PatientType,NewPatientType ,EntryType, updatePatientType} from "../zodSchemas.ts";
+import type { NewEntryType, NonSensitivePatient ,PatientType,NewPatientType ,EntryType, updatePatientType,updateEntryType} from "../zodSchemas.ts";
 
 
 
@@ -58,6 +58,27 @@ const updatePatient=async(id:string,data:updatePatientType)=>{
         return updatedPatient; 
 };
 
+const updateEntry = async(id:string,data:updateEntryType,entryID:string)=>{
+    const patient=await Patient.findById(id)
+
+    if(!patient){return null}
+
+    if(Object.keys(data).length===0){
+        return "everything up-to-date"
+    }
+    const patientEntry=patient.entries as EntryType[]
+    const entry=patientEntry.find(e=>e.id===entryID)
+
+    if(!entry){return null}else if(entry.finish===true){return "File closed"}
+
+    Object.assign(entry, data)
+
+    await patient.save()
+
+    return entry
+    
+}
+
 
 const deletePatient=async (patientId:string):Promise<void|null>=>{
     const patient= await Patient.findByIdAndDelete(patientId);
@@ -67,5 +88,5 @@ const deletePatient=async (patientId:string):Promise<void|null>=>{
 };
 
 export default{
-    addData,getNonSensitiveData,getOne,addEntry, deletePatient,updatePatient
+    addData,getNonSensitiveData,getOne,addEntry, deletePatient,updatePatient,updateEntry
 };
