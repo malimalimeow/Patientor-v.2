@@ -1,6 +1,6 @@
 import Patient from "../models/patient.ts";
 
-import type { NewEntryType, NonSensitivePatient ,PatientType,NewPatientType ,EntryType, updatePatientSchema, updatePatientType} from "../zodSchemas.ts";
+import type { NewEntryType, NonSensitivePatient ,PatientType,NewPatientType ,EntryType, updatePatientType} from "../zodSchemas.ts";
 
 
 
@@ -18,7 +18,7 @@ const getNonSensitiveData=async():Promise<NonSensitivePatient[]> =>{
 const getOne=async (id:string):Promise<PatientType|null>=>{
     const patient= await Patient.findById(id);
     if (patient===null){
-        return null
+        return null;
     }
     return patient;
 };
@@ -32,7 +32,7 @@ const addData=async(data:NewPatientType):Promise<PatientType>=>{
 const addEntry=async(id:string,data:NewEntryType):Promise<EntryType|null>=>{
     const patient= await Patient.findById(id);
     if(!patient){
-        return null
+        return null;
     }
     if (!patient.entries) {
   patient.entries = [];
@@ -45,26 +45,26 @@ const addEntry=async(id:string,data:NewEntryType):Promise<EntryType|null>=>{
 };
 
 const updatePatient=async(id:string,data:updatePatientType)=>{
-    const patient= await Patient.findById(id)
+    const patient= await Patient.findById(id);
     if(!patient){
-        return null
+        return null;
     }
 
     if (Object.keys(data).length===0){
-        return "everything up-to-date"
+        return "everything up-to-date";
     }
 
     const updatedPatient= await Patient.findByIdAndUpdate(id,{$set:data},{returnDocument: 'after',runValidators:true});
         return updatedPatient; 
-}
+};
 
 
 const deletePatient=async (patientId:string):Promise<void|null>=>{
     const patient= await Patient.findByIdAndDelete(patientId);
     if(!patient){
-        return null}
+        return null;}
     return ;  
-}
+};
 
 export default{
     addData,getNonSensitiveData,getOne,addEntry, deletePatient,updatePatient

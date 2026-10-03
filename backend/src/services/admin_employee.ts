@@ -5,8 +5,8 @@ import { v4 as uuid} from "uuid";
 
 
 const getAllEmployee= async():Promise<Omit<EmployeeType,"passwordHash">[]>=>{
-    const allEmployee= await Employee.find({}).select('-passwordHash')
-    return allEmployee}
+    const allEmployee= await Employee.find({}).select('-passwordHash');
+    return allEmployee;};
 
 
 const getOneEmployee=async(id:string):Promise<EmployeeType|null>=>{
@@ -31,9 +31,9 @@ const addEmployee=async(newData:NewEmployeeType):Promise<Omit<EmployeeType,"pass
     const formattedData= {...otherData,passwordHash:passwordHash,username:userId};
     const newEmployee= new Employee(formattedData);
     const savedEmployee = await newEmployee.save();
-    const savedObject= savedEmployee.toJSON()
-    const {passwordHash:_hashedPassword,...allData}=savedObject
-     return {...allData}
+    const savedObject= savedEmployee.toJSON();
+    const {passwordHash:_hashedPassword,...allData}=savedObject;
+     return {...allData};
 };
 
 const updatePassword= async(id:string,Password:updatePasswordType):Promise<void|null>=>{
@@ -42,7 +42,7 @@ const updatePassword= async(id:string,Password:updatePasswordType):Promise<void|
         return null;
     }
     const saltRounds=10;
-    const newPassword=Password.newPassword
+    const newPassword=Password.newPassword;
     if(newPassword && newPassword.length>2){
         const passwordHash=await bcrypt.hash(newPassword,saltRounds);
         employee.passwordHash=passwordHash;

@@ -1,5 +1,5 @@
-GET http://localhost:3003/api/patients
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg4OTczNTU4LCJleHAiOjE3ODg5NzcxNTh9.q7WTiMrxRPRJaGP2Aa7iZV-pz3CtL9EEz60FtkL83hk
+GET http://localhost:3003/api/patients/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzkwOTkwMzYwLCJleHAiOjE3OTA5OTM5NjB9.0V9mxOULor2fHSdIkvDXddRaz94ocpGmh_ZX9yvZUK4
 ###
 
 POST http://localhost:3003/api/patients
@@ -12,27 +12,34 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyI
     "occupation": "New york city cop"}
 
 ###
-POST http://localhost:3003/api/patients/6aa097773377ec852bbfb61a/entries
+POST http://localhost:3003/api/patients/6aa095c73377ec852bbfb615/entries
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg4OTA5MTg0LCJleHAiOjE3ODg5MTI3ODR9.Y0X0lwbO81Lzvt4OYiVZUSsaAYHyrKZxluUtCfJXvsA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzkwOTkwMzYwLCJleHAiOjE3OTA5OTM5NjB9.0V9mxOULor2fHSdIkvDXddRaz94ocpGmh_ZX9yvZUK4
 
-{ "date": "2015-01-02",
-        "type": "Hospital",
-        "specialist": "MD House",
-        "diagnosisCodes": ["S62.5"],
-        "description":
-          "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
-        "discharge": {
-          "date": "2015-01-16",
-          "criteria": "Thumb has healed."}}
+{
+  "id": "inp-entry-002",
+  "date": "2026-03-12",
+  "specialist": "Dr. Michael Chen",
+  "description": "Admitted via A&E for acute appendicitis, underwent laparoscopic appendectomy.",
+  "type": "Inpatient",
+  "admissionDate": "2026-03-12",
+ "admissionReason": "Acute lower right quadrant abdominal pain, fever, and leukocytosis.",
+  "dischargeDate": "2026-03-14",
+  "ward": "5A Surgical Ward",
+  "bedNumber": "B12",
+  "dischargeSummary": "Unremarkable postoperative recovery. Surgical wound clean and dry.",
+  "dischargeStatus": "Stable / Discharged Home",
+  "followUpInstruction": "SOPD follow-up in 2 weeks for wound inspection and pathology report.",
+  "diagnosisCodes": ["K35.80", "Z98.89"]
+}
 
 ###
 DELETE  http://localhost:3003/api/patients/6aa097773377ec852bbfb61a/entries/6aa097873377ec852bbfb61b
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg4OTA5MTg0LCJleHAiOjE3ODg5MTI3ODR9.Y0X0lwbO81Lzvt4OYiVZUSsaAYHyrKZxluUtCfJXvsA
 
 ###
-DELETE http://localhost:3003/api/patients/6aa1918abe7e81bb0963eba4
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzg4OTczNTU4LCJleHAiOjE3ODg5NzcxNTh9.q7WTiMrxRPRJaGP2Aa7iZV-pz3CtL9EEz60FtkL83hk
+DELETE http://localhost:3003/api/patients/6aa097773377ec852bbfb61a
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YTgzYjQyNjNmNmYwMzQ2NmZjMGVjMjUiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzkwOTkwMzYwLCJleHAiOjE3OTA5OTM5NjB9.0V9mxOULor2fHSdIkvDXddRaz94ocpGmh_ZX9yvZUK4
 ###
 
 ###

@@ -1,17 +1,17 @@
-import mongoose from "mongoose"
-import Diagnosis from "../models/dignosis.ts"
+import mongoose from "mongoose";
+import Diagnosis from "../models/dignosis.ts";
 import type { DiagnosisType } from "../zodSchemas.ts";
 import config from "./config.ts";
 
-console.log("add Diagnosis")
+console.log("add Diagnosis");
 
 const createFirstLogOfDiagnosis = async()=>{
     try{
-         if(!config.MONGODB_URI){throw new Error("Can't find Db")}
-                await mongoose.connect(config.MONGODB_URI)
-                console.log("connected to Mongo Db")
+         if(!config.MONGODB_URI){throw new Error("Can't find Db");}
+                await mongoose.connect(config.MONGODB_URI);
+                console.log("connected to Mongo Db");
 
-      await Diagnosis.deleteMany({})
+      await Diagnosis.deleteMany({});
       
 
     const diagnosisSeedData: DiagnosisType[] = [
@@ -83,15 +83,15 @@ const createFirstLogOfDiagnosis = async()=>{
   { code: "Z98.89", name: "Other specified postprocedural states" }
 ];
 
-    const insertedDiagnosis = await Diagnosis.insertMany(diagnosisSeedData)
-    console.log(`added ${insertedDiagnosis.length} diagnosis codes`)
+    const insertedDiagnosis = await Diagnosis.insertMany(diagnosisSeedData);
+    console.log(`added ${insertedDiagnosis.length} diagnosis codes`);
         }catch(error){
-            console.log("failed to add diagnosis")
+            console.log("failed to add diagnosis",error);
         }finally{
-            await mongoose.connection.close()
+            await mongoose.connection.close();
         }
-    }
+    };
 
-    void createFirstLogOfDiagnosis()
+    void createFirstLogOfDiagnosis();
     
     

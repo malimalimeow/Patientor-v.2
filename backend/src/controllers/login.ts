@@ -15,7 +15,7 @@ loginRouter.post("/",parser(loginSchema),async(req:Request,res:Response,next:Nex
         return res.status(400).json({ error: "invalid username or password" });
     }
 
-    const {token,employeeForToken}=response
+    const {token,employeeForToken}=response;
 
     return res.json({message:`Login success,welcome back!${employeeForToken.name},token:${token}`,
         token,

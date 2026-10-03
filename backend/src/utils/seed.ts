@@ -1,23 +1,23 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt"
-import Employee from "../models/employee.ts"
+import bcrypt from "bcrypt";
+import Employee from "../models/employee.ts";
 import config from "./config.ts";
 
-console.log("ready??")
+console.log("ready??");
 
 const createFirstMaster =async()=>{
     try{
-        if(!config.MONGODB_URI){throw new Error("Can't find Db")}
-        await mongoose.connect(config.MONGODB_URI)
-        console.log("connected to Mongo Db")
+        if(!config.MONGODB_URI){throw new Error("Can't find Db");}
+        await mongoose.connect(config.MONGODB_URI);
+        console.log("connected to Mongo Db");
 
-        const existingMaster = await Employee.findOne({role:"master"})
+        const existingMaster = await Employee.findOne({role:"master"});
         if (existingMaster){
-            console.log("Master already exists.")
-            return
+            console.log("Master already exists.");
+            return;
         }
 
-        const passwordHash = await bcrypt.hash("Password123!",10)
+        const passwordHash = await bcrypt.hash("Password123!",10);
 
         const master = new Employee({
            name: "Master Admin",
@@ -30,15 +30,15 @@ const createFirstMaster =async()=>{
       emergencyContact: 91111111,
       gender: "other",
       role: "master" 
-        })
+        });
 
-    await master.save()
-    console.log("master ready")
+    await master.save();
+    console.log("master ready");
     }catch(error){
-        console.log("failed to create Master")
+        console.log("failed to create Master",error);
     }finally{
-        await mongoose.connection.close()
+        await mongoose.connection.close();
     }
-}
+};
 
-void createFirstMaster()
+void createFirstMaster();

@@ -1,12 +1,12 @@
 import express,{type Request, type Response} from "express";
 import Employee from "../models/employee.ts";
 import Patient from "../models/patient.ts";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import type { EmployeeType, PatientType } from "../zodSchemas.ts";
 
 const testingRouter=express.Router();
 
-const passwordHash = await bcrypt.hash("Password123!",10)
+const passwordHash = await bcrypt.hash("Password123!",10);
 
 const master:EmployeeType = {
     id:"9239231203",
@@ -20,7 +20,7 @@ const master:EmployeeType = {
       emergencyContact: "91111111",
       gender: "other",
       role: "master" 
-        }
+        };
 
 const normalEmployee: EmployeeType = {
   id: "8472910482",
@@ -71,11 +71,11 @@ testingRouter.post("/reset",async(_req: Request,res:Response)=>{
   { upsert: true, returnDocument: 'after', runValidators: true }
 );
 
-await Employee.findOneAndUpdate({username:normalEmployee.username},normalEmployee,{ upsert: true, returnDocument: 'after', runValidators: true })
-await Employee.findOneAndUpdate({username:toDeleteEmployee.username},toDeleteEmployee,{ upsert: true, returnDocument: 'after', runValidators: true })
+await Employee.findOneAndUpdate({username:normalEmployee.username},normalEmployee,{ upsert: true, returnDocument: 'after', runValidators: true });
+await Employee.findOneAndUpdate({username:toDeleteEmployee.username},toDeleteEmployee,{ upsert: true, returnDocument: 'after', runValidators: true });
 
 await Patient.findOneAndUpdate({name:testPatient.name},testPatient,{upsert:true,returnDocument: 'after',runValidators:true});
-console.log("reset done")
+console.log("reset done");
         return res.status(204).end();
 
         

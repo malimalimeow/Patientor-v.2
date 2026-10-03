@@ -5,10 +5,10 @@ import type { Types } from "mongoose";
 
 
 
-const toLogin = async (username:string,password:string):Promise<{ token: string,employeeForToken:{name:String,id: Types.ObjectId,role:string}}|null>=>{
+const toLogin = async (username:string,password:string):Promise<{ token: string,employeeForToken:{name:string,id: Types.ObjectId,role:string}}|null>=>{
     const employee= await Employee.findOne({username});
     const passwordCorrect = employee ===null? false: await bcrypt.compare(password, employee.passwordHash);
-    if(!(employee && passwordCorrect)){return null}
+    if(!(employee && passwordCorrect)){return null;}
 
     const employeeForToken ={name:employee.name,id:employee._id, role:employee.role};
     if(!process.env.SECRET){

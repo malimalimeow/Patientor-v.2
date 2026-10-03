@@ -31,26 +31,26 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
       return (
         <div className="entryContainer">
           <p>
-            {entry.date} <LocalHospitalIcon />
+            {entry.date}
+            Diagnosed by {entry.specialist}
+            <LocalHospitalIcon />
           </p>
-          <p>{entry.description}</p>
-          <p>discharge:</p>
-          <p>{entry.discharge.date}</p>
-          <p>{entry.discharge.criteria}</p>
-          <p>Diagnosed by {entry.specialist}</p>
+          <p>Description:{entry.description}</p>
+          <p>Admission Date:{entry.admissionDate}</p>
+          <p>Admission Reason:{entry.admissionReason}</p>
         </div>
       );
 
-    case "OccupationalHealthcare":
+    case "Outpatient":
       return (
         <div className="entryContainer">
           <p>
             {entry.date}
+            Diagnosed by {entry.department}-{entry.specialist}
             <EmergencyIcon />
-            {entry.employerName}
           </p>
-          <p>{entry.description}</p>
-          <p>Diagnosed by {entry.specialist}</p>
+          <p>Description:{entry.description}</p>
+          <p>Chief Complaint:{entry.chiefComplaint}</p>
         </div>
       );
 

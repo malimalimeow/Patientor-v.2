@@ -154,9 +154,9 @@ export const updatePatientSchema= PatientSchema.pick({
         dateOfBirth: true,
         gender:true,
         occupation:true
-}).partial()
+}).partial();
 
-export type updatePatientType=z.infer<typeof updatePatientSchema>
+export type updatePatientType=z.infer<typeof updatePatientSchema>;
 
 export const loginSchema=z.object({
   username:z.string().regex(/^[A-Za-z][0-9a-fA-F]{6}$/,"username invalid"),

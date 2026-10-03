@@ -64,7 +64,7 @@ const prescriptionSchema= new Schema({
         medication:{type:String},
         dosage:{type:String},
         frequency:{type:String},
-       }, { _id: false })
+       }, { _id: false });
 
 entriesArray.discriminator("Outpatient", new Schema({
     department:{type:String, required:true},

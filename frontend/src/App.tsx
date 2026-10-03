@@ -33,7 +33,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if (!loginEmployee) {
+    if (loginEmployee === null) {
       return;
     }
     void fetchPatientList();

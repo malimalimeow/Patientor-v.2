@@ -16,10 +16,13 @@ export const HealthCheck = () => {
           fullWidth
           label="HealthCheckRating"
           id="HealthCheckRating"
-          value={typeDetails.rating || ""}
+          value={typeDetails.healthCheckRating ?? ""}
           required
           onChange={({ target }) =>
-            setField("rating", Number(target.value) as HealthCheckRating)
+            setField(
+              "healthCheckRating",
+              Number(target.value) as HealthCheckRating,
+            )
           }
         >
           {Object.entries(HealthCheckRatings).map(([key, value]) => (

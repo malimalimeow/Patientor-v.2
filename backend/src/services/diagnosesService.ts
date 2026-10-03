@@ -8,19 +8,19 @@ const getData=async():Promise<DiagnosisType[]>=>{
 };
 
 const createDiagnoses= async(diagnosis:DiagnosisType):Promise<DiagnosisType>=>{
-    const code = diagnosis.code
+    const code = diagnosis.code;
     if (!code){
-       throw new Error("please provide valid code")
+       throw new Error("please provide valid code");
     }
-    const checkCode= await Diagnosis.findOne({code:code})
+    const checkCode= await Diagnosis.findOne({code:code});
     if (checkCode){
-        throw new Error("Code existed")
+        throw new Error("Code existed");
     }
-    const newDiagnosis= new Diagnosis(diagnosis)
-    const savedDiagnosis = await newDiagnosis.save()
+    const newDiagnosis= new Diagnosis(diagnosis);
+    const savedDiagnosis = await newDiagnosis.save();
 
-    return savedDiagnosis
-}
+    return savedDiagnosis;
+};
 
 export default{
     getData,createDiagnoses
