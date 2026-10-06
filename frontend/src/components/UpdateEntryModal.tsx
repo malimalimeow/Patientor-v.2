@@ -2,7 +2,7 @@ import { Dialog, DialogTitle, DialogContent, Divider } from "@mui/material";
 import Notification from "./notification";
 import { useModalOpen, useModalActions } from "../stores/modalStore";
 import NewEntry from "./AddEntryModal/NewEntry";
-import { updateEntryType } from "../types";
+import { UpdateEntryType } from "../types";
 import {
   useToUpdateEntry,
   usePatientActions,
@@ -28,13 +28,13 @@ const UpdateEntryModal = () => {
     return null;
   }
 
-  const updateNewEntry = async (id: string, values: updateEntryType) => {
+  const updateNewEntry = async (id: string, values: UpdateEntryType) => {
     try {
       if (toUpdateEntry === null) {
         setMessage("Entry not found");
         return null;
       }
-      updateEntry(id, values, toUpdateEntry.id);
+      await updateEntry(id, values, toUpdateEntry.id);
       closeModal();
       setMessage(`Entry updated`, false);
     } catch (e: unknown) {
