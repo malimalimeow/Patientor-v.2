@@ -1,11 +1,13 @@
 import { create } from "zustand";
-import type { EntryFormValues, EntryTypes, Patient,PatientFormValues, updateEntryType, UpdatePatientForm} from "../types";
+import type { Entry, EntryFormValues, EntryTypes, Patient,PatientFormValues, updateEntryType, UpdatePatientForm} from "../types";
 import patientService from "../services/patientService";
 
 interface patientState {
     patients:Patient[]|[],
-    showPatient:Patient|null
+    showPatient:Patient|null,
+    toUpdateEntry:Entry|null,
     actions:{
+        selectedEntry:(entry:Entry|null)=>void
         fetchPatientList:()=>Promise<void>
         getOnePatient:(id:string)=>Promise<void>
         createPatient:(values:PatientFormValues)=>Promise<void>
@@ -17,10 +19,12 @@ interface patientState {
     }
 }
 
-export const usePatientStore=create<patientState>((set,get)=>({
+export const usePatientStore=create<patientState>((set)=>({
     patients:[],
     showPatient:null,
+    toUpdateEntry:null,
     actions:{
+        selectedEntry:(entry)=>set({toUpdateEntry:entry}),
         fetchPatientList: async()=>{
             const data= await patientService.getAll();
             set({patients:data});
@@ -63,6 +67,7 @@ export const usePatientStore=create<patientState>((set,get)=>({
     }
 }));
 
+export const useToUpdateEntry=()=>usePatientStore((state)=>state.toUpdateEntry)
 export const usePatients=()=>usePatientStore((state)=>state.patients);
 export const useShowPatient=()=> usePatientStore((state)=>state.showPatient);
 export const usePatientActions=()=> usePatientStore((state)=>state.actions);

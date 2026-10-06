@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import type { EntryTypes, EntryFormValues, BaseEntryForm } from "../../types";
+import type {
+  EntryTypes,
+  EntryFormValues,
+  BaseEntryForm,
+  updateEntryType,
+} from "../../types";
 import { EntryType } from "../../types";
 import NewEntryType from "./NewEntryType";
 import { useDiagnoses } from "../../stores/diagnosesStore";
@@ -19,11 +24,12 @@ import {
 import { useTypeStore } from "../../stores/entryTypeStore";
 
 interface NewEntryProps {
-  onSubmit: (id: string, values: EntryFormValues) => void;
+  onSubmit?: (id: string, values: EntryFormValues) => void;
+  update?: (id: string, value: updateEntryType, entryId: string) => void;
   patientId: string;
 }
 
-const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
+const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
   const { reset: resetDate, ...date } = useField("date");
   const { reset: resetDescription, ...description } = useField("text");
   const { reset: resetSpecialist, ...specialist } = useField("text");
@@ -54,31 +60,20 @@ const NewEntry = ({ onSubmit, patientId }: NewEntryProps) => {
       basicPack = { ...basicPack, diagnosisCodes: code };
     }
 
-    if (type === "Inpatient") {
-      onSubmit(patientId, {
-        ...basicPack,
-        type: "Inpatient",
-        ...typeDetails,
-      } as EntryFormValues);
-    } else if (type === "HealthCheck") {
-      onSubmit(patientId, {
-        ...basicPack,
-        type: "HealthCheck",
-        ...typeDetails,
-      } as EntryFormValues);
-    } else if (type === "Outpatient") {
-      onSubmit(patientId, {
-        ...basicPack,
-        type: "Outpatient",
-        ...typeDetails,
-      } as EntryFormValues);
-    }
+    onSubmit?.(patientId, {
+      ...basicPack,
+      type,
+      ...typeDetails,
+    } as EntryFormValues);
 
     closeModal();
     resetDate();
     resetDescription();
     resetSpecialist();
   };
+
+  //TODO handleSubmit: to select which logic to use, handleUpdate: using update props to update Entry details
+
   return (
     <div>
       <form onSubmit={handleCreate}>

@@ -1,4 +1,4 @@
-import type { EntryFormValues } from "../types";
+import type { Entry, EntryFormValues } from "../types";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
@@ -14,6 +14,33 @@ import UpdatePatientModal from "./UpdatePatientModal";
 import { useLoginEmployee } from "../stores/loginStore";
 import { useNavigate } from "react-router-dom";
 import { EntryDetails } from "./entryDetails";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LockIcon from "@mui/icons-material/Lock";
+
+const UpdateButton = ({ entry }: { entry: Entry }) => {
+  const { selectedEntry } = usePatientActions();
+  const { openModal } = useModalActions();
+  const handleUpdateEntry = () => {
+    selectedEntry(entry);
+    openModal("updateEntry");
+  };
+
+  return (
+    <>
+      {entry?.finish === false ? (
+        <>
+          <Button onClick={handleUpdateEntry}>Update Record</Button>
+          <LockOpenIcon />
+        </>
+      ) : (
+        <p>
+          Read Only
+          <LockIcon />
+        </p>
+      )}
+    </>
+  );
+};
 
 const PatientDetails = () => {
   const navigate = useNavigate();
@@ -105,9 +132,11 @@ const PatientDetails = () => {
       </Button>
 
       {showPatient && <h3>Entries</h3>}
+
       {showPatient?.entries?.map((entry) => (
         <div key={entry.id}>
-          <EntryDetails entry={entry} />
+          <EntryDetails />
+          <UpdateButton entry={entry} />
         </div>
       ))}
 
