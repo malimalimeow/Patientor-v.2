@@ -1,6 +1,6 @@
 import { useState,ChangeEvent } from "react";
-export const useField = (type:string) => {
-  const [value, setValue] = useState("");
+export const useField = (type:string,initValue:string="") => {
+  const [value, setValue] = useState(initValue);
 
   const onChange = (event:ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -11,9 +11,10 @@ export const useField = (type:string) => {
   };
 
   return {
+    reset,
     type,
     value,
     onChange,
-    reset
+    
   };
 };

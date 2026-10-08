@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Entry, EntryFormValues, EntryTypes, Patient,PatientFormValues, updateEntryType, UpdatePatientForm} from "../types";
+import type { Entry, EntryFormValues,  Patient,PatientFormValues, UpdateEntryType, UpdatePatientForm} from "../types";
 import patientService from "../services/patientService";
 
 interface patientState {
@@ -13,7 +13,7 @@ interface patientState {
         createPatient:(values:PatientFormValues)=>Promise<void>
         updatePatientDetails:(id:string,values:UpdatePatientForm)=>Promise<void>
         createEntry:(id:string,values: EntryFormValues)=>Promise<void>
-        updateEntry:(id:string,values:updateEntryType,entryId:string)=>Promise<void>
+        updateEntry:(id:string,values:UpdateEntryType,entryId:string)=>Promise<void>
         deletePatient:(id:string)=>Promise<unknown>
        
     }
@@ -42,7 +42,7 @@ export const usePatientStore=create<patientState>((set)=>({
         updatePatientDetails:async(id,values)=>{
             const data = await patientService.updatePatient(id,values);
             set((state)=>({patients:state.patients.map(p=>p.id===id?data:p),
-                showPatient:state.showPatient?.id===id?data:state.showPatient}))
+                showPatient:state.showPatient?.id===id?data:state.showPatient}));
         },
         createEntry:async(id,values)=>{
             const data = await patientService.addEntry(id,values);
@@ -56,18 +56,18 @@ export const usePatientStore=create<patientState>((set)=>({
              
             set((state)=>({
                 showPatient:state.showPatient?{...state.showPatient,entries:state.showPatient?.entries?.map(e=>e.id===entryId?data:e)
-            }:null}))              
+            }:null}));              
         },
         deletePatient:async(id)=>{
-            const data = await patientService.deletePatient(id)
-            set((state)=>({patients:state.patients.filter(p=>p.id!==id)}))
-            return data
+            const data = await patientService.deletePatient(id);
+            set((state)=>({patients:state.patients.filter(p=>p.id!==id)}));
+            return data;
         }
 
     }
 }));
 
-export const useToUpdateEntry=()=>usePatientStore((state)=>state.toUpdateEntry)
+export const useToUpdateEntry=()=>usePatientStore((state)=>state.toUpdateEntry);
 export const usePatients=()=>usePatientStore((state)=>state.patients);
 export const useShowPatient=()=> usePatientStore((state)=>state.showPatient);
 export const usePatientActions=()=> usePatientStore((state)=>state.actions);

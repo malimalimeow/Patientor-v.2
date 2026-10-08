@@ -24,6 +24,9 @@ const UpdatePatientForm = () => {
   const loginEmployee = useLoginEmployee();
   const { closeModal } = useModalActions();
   const [gender, setGender] = useState<Gender>(showPatient?.gender ?? "female");
+  const { reset: resetName, ...name } = useField("text");
+  const { reset: resetDOB, ...dateOfBirth } = useField("text");
+  const { reset: resetOccupation, ...occupation } = useField("text");
 
   if (!loginEmployee) {
     setMessage("please login");
@@ -33,10 +36,6 @@ const UpdatePatientForm = () => {
     setMessage("please select patient");
     return null;
   }
-
-  const { reset: resetName, ...name } = useField("text");
-  const { reset: resetDOB, ...dateOfBirth } = useField("text");
-  const { reset: resetOccupation, ...occupation } = useField("text");
 
   const onGenderChange = (event: SelectChangeEvent<string>) => {
     event.preventDefault();
@@ -52,6 +51,7 @@ const UpdatePatientForm = () => {
   const resetAll = () => {
     resetName();
     resetDOB();
+    resetOccupation();
     setGender(showPatient.gender);
   };
 

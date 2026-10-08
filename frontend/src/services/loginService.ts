@@ -19,7 +19,7 @@ const config = {
     const {data}= await axios.get(baseUrl,config);
 
     return data;
-}
+};
 
 
 const toLogin = async(object:loginForm)=>{

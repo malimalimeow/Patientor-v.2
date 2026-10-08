@@ -10,14 +10,24 @@ export const Outpatient = () => {
     (Field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
       setField(Field, e.target.value);
 
-  const handleVitalSign = (key: keyof vitalSigns, value: any) => {
-    setField("vitalSigns", { ...typeDetails.vitalSigns, [key]: value });
+  const checkedVitalSigns: Record<string, string> =
+    "vitalSigns" in typeDetails && typeDetails.vitalSigns
+      ? (typeDetails.vitalSigns as Record<string, string>)
+      : {};
+
+  const handleVitalSign = (key: keyof vitalSigns, value: unknown) => {
+    setField("vitalSigns", { ...checkedVitalSigns, [key]: value });
   };
+
+  const checkedPrescription =
+    "prescription" in typeDetails && Array.isArray(typeDetails.prescription)
+      ? typeDetails.prescription
+      : [];
 
   const handlePrescriptionChange =
     (Field: string, index: number) =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const currentList: prescription[] = typeDetails.prescription || [];
+      const currentList: prescription[] = checkedPrescription;
       const updateList: prescription[] = [...currentList];
 
       updateList[index] = { ...updateList[index], [Field]: e.target.value };
@@ -27,7 +37,7 @@ export const Outpatient = () => {
 
   const addPrescription = () => {
     setField("prescription", [
-      ...(typeDetails.prescription || []),
+      ...checkedPrescription,
       { medication: "", dosage: "", frequency: "" },
     ]);
   };
@@ -59,7 +69,7 @@ export const Outpatient = () => {
         label="bp"
         id="bp"
         type="text"
-        value={typeDetails.vitalSigns?.bp || ""}
+        value={checkedVitalSigns.bp ?? ""}
         onChange={(e) => handleVitalSign("bp", e.target.value)}
       />
 
@@ -68,7 +78,7 @@ export const Outpatient = () => {
         label="pulse"
         id="pulse"
         type="number"
-        value={typeDetails.vitalSigns?.pulse || ""}
+        value={checkedVitalSigns.pulse ?? ""}
         onChange={(e) => handleVitalSign("pulse", e.target.value)}
       />
 
@@ -77,7 +87,7 @@ export const Outpatient = () => {
         label="temperature"
         id="temperature"
         type="number"
-        value={typeDetails.vitalSigns?.temperature || ""}
+        value={checkedVitalSigns.temperature ?? ""}
         onChange={(e) => handleVitalSign("temperature", e.target.value)}
       />
 
@@ -91,7 +101,7 @@ export const Outpatient = () => {
       />
 
       <p>Prescription</p>
-      {(typeDetails.prescription || []).map((p: prescription, i: number) => (
+      {(checkedPrescription || []).map((p: prescription, i: number) => (
         <div>
           <TextField
             label="medication"

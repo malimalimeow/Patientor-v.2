@@ -3,7 +3,7 @@ import type {
   EntryTypes,
   EntryFormValues,
   BaseEntryForm,
-  updateEntryType,
+  UpdateEntryType,
 } from "../../types";
 import { EntryType } from "../../types";
 import NewEntryType from "./NewEntryType";
@@ -22,20 +22,34 @@ import {
   Grid,
 } from "@mui/material";
 import { useTypeStore } from "../../stores/entryTypeStore";
+import { useToUpdateEntry } from "../../stores/patientStore";
 
 interface NewEntryProps {
   onSubmit?: (id: string, values: EntryFormValues) => void;
-  update?: (id: string, value: updateEntryType, entryId: string) => void;
+  update?: (id: string, value: UpdateEntryType, entryId: string) => void;
   patientId: string;
 }
 
 const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
-  const { reset: resetDate, ...date } = useField("date");
-  const { reset: resetDescription, ...description } = useField("text");
-  const { reset: resetSpecialist, ...specialist } = useField("text");
+  const toUpdateEntry = useToUpdateEntry();
+  const { reset: resetDate, ...date } = useField("date", toUpdateEntry?.date);
+  const { reset: resetDescription, ...description } = useField(
+    "text",
+    toUpdateEntry?.description,
+  );
+  const { reset: resetSpecialist, ...specialist } = useField(
+    "text",
+    toUpdateEntry?.specialist,
+  );
 
-  const [code, setCode] = useState<string[]>([]);
-  const [type, setType] = useState<EntryTypes>("Inpatient");
+  const [code, setCode] = useState<string[]>(
+    toUpdateEntry?.diagnosisCodes ?? [],
+  );
+  const [type, setType] = useState<EntryTypes>(
+    toUpdateEntry?.type ?? "Inpatient",
+  );
+  const entryID = toUpdateEntry?.id;
+
   const diagnoses = useDiagnoses();
   const { closeModal } = useModalActions();
   const typeDetails = useTypeStore((state) => state.typeDetails);
@@ -48,8 +62,9 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
     setCode(typeof value === "string" ? value.split(",") : value);
   };
 
-  const handleCreate = (e: React.SyntheticEvent) => {
+  const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
+
     let basicPack: BaseEntryForm = {
       finish: false,
       description: description.value,
@@ -60,11 +75,13 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
       basicPack = { ...basicPack, diagnosisCodes: code };
     }
 
-    onSubmit?.(patientId, {
-      ...basicPack,
-      type,
-      ...typeDetails,
-    } as EntryFormValues);
+    const fullPayload = { ...basicPack, type, ...typeDetails };
+
+    if (toUpdateEntry !== null) {
+      update?.(patientId, fullPayload as UpdateEntryType, entryID as string);
+    } else {
+      onSubmit?.(patientId, fullPayload as EntryFormValues);
+    }
 
     closeModal();
     resetDate();
@@ -72,11 +89,9 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
     resetSpecialist();
   };
 
-  //TODO handleSubmit: to select which logic to use, handleUpdate: using update props to update Entry details
-
   return (
     <div>
-      <form onSubmit={handleCreate}>
+      <form onSubmit={handleSubmit}>
         <div>
           <TextField
             select

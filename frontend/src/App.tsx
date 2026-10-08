@@ -35,7 +35,7 @@ const App = () => {
     };
 
     void initLogin();
-  }, []);
+  }, [initialEmployee, loginEmployee]);
 
   useEffect(() => {
     if (!loginEmployee) {
@@ -46,7 +46,7 @@ const App = () => {
     void fetchPatientList();
     void fetchDiagnoses();
     void getAllEmployee();
-  }, [loginEmployee]);
+  }, [loginEmployee, fetchPatientList, fetchDiagnoses, getAllEmployee]);
 
   return (
     <div className="App">

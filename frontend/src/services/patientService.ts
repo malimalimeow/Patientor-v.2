@@ -57,10 +57,10 @@ const updatePatient=async( id:string,updateData:UpdatePatientForm)=>{
   const config = {
     headers:{ Authorization: token},
   };
-  const {data}= await axios.patch(`${apiBaseUrl}/patients/${id}`,updateData,config)
+  const {data}= await axios.patch(`${apiBaseUrl}/patients/${id}`,updateData,config);
 
-  return data
-}
+  return data;
+};
 
 const updateEntry = async(id:string,updateEntryDetails:updateEntryType,entryId:string)=>{
   const config = {
@@ -70,9 +70,9 @@ const updateEntry = async(id:string,updateEntryDetails:updateEntryType,entryId:s
     `${apiBaseUrl}/patients/${id}/entries/${entryId}`,updateEntryDetails,config
   );
 
-  return data
+  return data;
 
-}
+};
 
 const deleteEntry =async(id:string,entryId:string)=>{
   const config = {

@@ -1,4 +1,4 @@
-import type{token} from "../types"
+import type{token} from "../types";
 
 const getEmployee = () => {
   const employeeJSON = window.localStorage.getItem("loggedEmployee");

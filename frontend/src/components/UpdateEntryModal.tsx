@@ -28,6 +28,10 @@ const UpdateEntryModal = () => {
     return null;
   }
 
+  if (!toUpdateEntry) {
+    return <p>loading</p>;
+  }
+
   const updateNewEntry = async (id: string, values: UpdateEntryType) => {
     try {
       if (toUpdateEntry === null) {
@@ -63,7 +67,11 @@ const UpdateEntryModal = () => {
       <Divider />
       <DialogContent>
         <Notification />
-        <NewEntry update={updateNewEntry} patientId={showPatient.id} />
+        <NewEntry
+          update={updateNewEntry}
+          patientId={showPatient.id}
+          key={toUpdateEntry.id}
+        />
       </DialogContent>
     </Dialog>
   );

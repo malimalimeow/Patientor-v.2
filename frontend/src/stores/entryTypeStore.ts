@@ -1,9 +1,9 @@
-import {create} from "zustand"
-import { devtools } from "zustand/middleware"
+import {create} from "zustand";
+import { devtools } from "zustand/middleware";
 
 interface typeState{
-    typeDetails:Record<string,any>
-    setField: (field:string,value:any)=>void
+    typeDetails:Record<string,unknown>
+    setField: (field:string,value:unknown)=>void
 }
 
 export const useTypeStore= create<typeState>()(devtools((set)=>({
@@ -12,5 +12,5 @@ export const useTypeStore= create<typeState>()(devtools((set)=>({
     set((state) => ({
       typeDetails: { ...state.typeDetails, [field]: value },
     }))
-})))
+})));
 

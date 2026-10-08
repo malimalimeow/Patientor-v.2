@@ -38,6 +38,14 @@ const UpdateDetailsForm = () => {
   );
   const [role, setRole] = useState<Role>(showEmployee?.role ?? "normal");
 
+  const { reset: resetName, ...name } = useField("text");
+  const { reset: resetTitle, ...title } = useField("text");
+  const { reset: resetDOB, ...dateOfBirth } = useField("text");
+  const { reset: resetNI, ...NI } = useField("text");
+  const { reset: resetAddress, ...address } = useField("text");
+  const { reset: resetEmergencyContact, ...emergencyContact } =
+    useField("text");
+
   if (!loginEmployee) {
     setMessage("please login");
     return null;
@@ -50,14 +58,6 @@ const UpdateDetailsForm = () => {
     setMessage("Insufficient permissions");
     return null;
   }
-
-  const { reset: resetName, ...name } = useField("text");
-  const { reset: resetTitle, ...title } = useField("text");
-  const { reset: resetDOB, ...dateOfBirth } = useField("text");
-  const { reset: resetNI, ...NI } = useField("text");
-  const { reset: resetAddress, ...address } = useField("text");
-  const { reset: resetEmergencyContact, ...emergencyContact } =
-    useField("text");
 
   const textFieldArray: textField[] = [
     { label: "Name", placeholder: showEmployee.name, props: name },

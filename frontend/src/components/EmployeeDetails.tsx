@@ -9,7 +9,6 @@ import Notification from "./notification";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useModalActions, useModalOpen } from "../stores/modalStore";
-import UpdateDetailsForm from "./updateDetailsModal";
 import UpdatePasswordModal from "./updatePWModal";
 import UpdateDetailsModal from "./updateDetailsModal";
 
@@ -20,7 +19,7 @@ const EmployeeDetails = () => {
   const toEmployeeList = () => navigate("/employee");
   const showEmployee = useShowEmployee();
   const { deleteEmployee } = useEmployeeActions();
-  const { openModal, closeModal } = useModalActions();
+  const { openModal } = useModalActions();
   const modalOpen = useModalOpen();
 
   if (!showEmployee) {
