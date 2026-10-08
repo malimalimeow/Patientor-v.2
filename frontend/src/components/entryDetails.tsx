@@ -3,7 +3,40 @@ import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import EmergencyIcon from "@mui/icons-material/Emergency";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { assertNever } from "../helper";
-import { useToUpdateEntry } from "../stores/patientStore";
+import { usePatientActions, useToUpdateEntry } from "../stores/patientStore";
+import { Button } from "@mui/material";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import LockIcon from "@mui/icons-material/Lock";
+import { useModalActions, useModalOpen } from "../stores/modalStore";
+import { Entry } from "../types";
+import UpdateEntryModal from "./UpdateEntryModal";
+
+const UpdateButton = ({ entry }: { entry: Entry }) => {
+  const { selectedEntry } = usePatientActions();
+  const { openModal } = useModalActions();
+  const modalOpen = useModalOpen();
+  const handleUpdateEntry = () => {
+    selectedEntry(entry);
+    openModal("updateEntry");
+  };
+
+  return (
+    <>
+      {modalOpen === "updateEntry" && <UpdateEntryModal />}
+      {entry?.finish === false ? (
+        <>
+          <Button onClick={handleUpdateEntry}>Update Record</Button>
+          <LockOpenIcon />
+        </>
+      ) : (
+        <p>
+          Read Only
+          <LockIcon />
+        </p>
+      )}
+    </>
+  );
+};
 
 export const EntryDetails = () => {
   const entry = useToUpdateEntry();
@@ -29,6 +62,7 @@ export const EntryDetails = () => {
           <p>{entry.description}</p>
           <FavoriteIcon sx={{ color: color }} />
           <p>Diagnosed by {entry.specialist}</p>
+          <UpdateButton entry={entry} />
         </div>
       );
     case "Inpatient":
@@ -42,6 +76,7 @@ export const EntryDetails = () => {
           <p>Description:{entry.description}</p>
           <p>Admission Date:{entry.admissionDate}</p>
           <p>Admission Reason:{entry.admissionReason}</p>
+          <UpdateButton entry={entry} />
         </div>
       );
 
@@ -55,6 +90,7 @@ export const EntryDetails = () => {
           </p>
           <p>Description:{entry.description}</p>
           <p>Chief Complaint:{entry.chiefComplaint}</p>
+          <UpdateButton entry={entry} />
         </div>
       );
 

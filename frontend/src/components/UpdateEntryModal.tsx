@@ -67,11 +67,7 @@ const UpdateEntryModal = () => {
       <Divider />
       <DialogContent>
         <Notification />
-        <NewEntry
-          update={updateNewEntry}
-          patientId={showPatient.id}
-          key={toUpdateEntry.id}
-        />
+        <NewEntry update={updateNewEntry} patientId={showPatient.id} />
       </DialogContent>
     </Dialog>
   );

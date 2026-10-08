@@ -16,7 +16,7 @@ const config = {
     headers: { Authorization: token },
   };
 
-    const {data}= await axios.get(baseUrl,config);
+    const {data}= await axios.get(`${baseUrl}/auth`,config);
 
     return data;
 };

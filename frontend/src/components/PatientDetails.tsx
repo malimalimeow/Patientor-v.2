@@ -14,33 +14,6 @@ import UpdatePatientModal from "./UpdatePatientModal";
 import { useLoginEmployee } from "../stores/loginStore";
 import { useNavigate } from "react-router-dom";
 import { EntryDetails } from "./entryDetails";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import LockIcon from "@mui/icons-material/Lock";
-
-const UpdateButton = ({ entry }: { entry: Entry }) => {
-  const { selectedEntry } = usePatientActions();
-  const { openModal } = useModalActions();
-  const handleUpdateEntry = () => {
-    selectedEntry(entry);
-    openModal("updateEntry");
-  };
-
-  return (
-    <>
-      {entry?.finish === false ? (
-        <>
-          <Button onClick={handleUpdateEntry}>Update Record</Button>
-          <LockOpenIcon />
-        </>
-      ) : (
-        <p>
-          Read Only
-          <LockIcon />
-        </p>
-      )}
-    </>
-  );
-};
 
 const PatientDetails = () => {
   const navigate = useNavigate();
@@ -52,6 +25,7 @@ const PatientDetails = () => {
   const { createEntry, deletePatient } = usePatientActions();
   const { openModal, closeModal } = useModalActions();
   const modalOpen = useModalOpen();
+  const { selectedEntry } = usePatientActions();
 
   if (!showPatient) {
     return <p>Loading</p>;
@@ -110,6 +84,11 @@ const PatientDetails = () => {
     }
   };
 
+  const handleAddEntryModal = () => {
+    selectedEntry(null);
+    openModal("addEntry");
+  };
+
   return (
     <div>
       <h2>
@@ -127,7 +106,7 @@ const PatientDetails = () => {
       {modalOpen === "addEntry" && (
         <AddEntryModal onSubmit={submitNewEntry} patientId={showPatient.id} />
       )}
-      <Button variant="contained" onClick={() => openModal("addEntry")}>
+      <Button variant="contained" onClick={() => handleAddEntryModal()}>
         Add New Entry
       </Button>
 
@@ -136,7 +115,6 @@ const PatientDetails = () => {
       {showPatient?.entries?.map((entry) => (
         <div key={entry.id}>
           <EntryDetails />
-          <UpdateButton entry={entry} />
         </div>
       ))}
 

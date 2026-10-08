@@ -127,7 +127,7 @@ const AddEmployeeForm = ({
             color="secondary"
             variant="contained"
             type="button"
-            onClick={() => toCloseModal}
+            onClick={() => toCloseModal()}
           >
             Cancel
           </Button>
