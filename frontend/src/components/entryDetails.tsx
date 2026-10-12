@@ -3,7 +3,7 @@ import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import EmergencyIcon from "@mui/icons-material/Emergency";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { assertNever } from "../helper";
-import { usePatientActions, useToUpdateEntry } from "../stores/patientStore";
+import { usePatientActions } from "../stores/patientStore";
 import { Button } from "@mui/material";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import LockIcon from "@mui/icons-material/Lock";
@@ -38,8 +38,7 @@ const UpdateButton = ({ entry }: { entry: Entry }) => {
   );
 };
 
-export const EntryDetails = () => {
-  const entry = useToUpdateEntry();
+export const EntryDetails = ({ entry }: { entry: Entry }) => {
   if (!entry) {
     return;
   }

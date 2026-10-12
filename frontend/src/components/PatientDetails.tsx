@@ -1,4 +1,4 @@
-import type { Entry, EntryFormValues } from "../types";
+import type { EntryFormValues } from "../types";
 import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
@@ -12,8 +12,9 @@ import { useModalActions } from "../stores/modalStore";
 import { useModalOpen } from "../stores/modalStore";
 import UpdatePatientModal from "./UpdatePatientModal";
 import { useLoginEmployee } from "../stores/loginStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { EntryDetails } from "./entryDetails";
+import { useEffect } from "react";
 
 const PatientDetails = () => {
   const navigate = useNavigate();
@@ -22,14 +23,34 @@ const PatientDetails = () => {
   const loginEmployeeRole = loginEmployee?.role;
   const { setMessage } = useNotiAction();
   const showPatient = useShowPatient();
-  const { createEntry, deletePatient } = usePatientActions();
+  console.log(showPatient);
+  const { createEntry, deletePatient, getOnePatient } = usePatientActions();
   const { openModal, closeModal } = useModalActions();
   const modalOpen = useModalOpen();
   const { selectedEntry } = usePatientActions();
+  const { id } = useParams();
+  console.log(id);
+
+  if (!id) {
+    return <p>Patient not Found</p>;
+  }
+
+  useEffect(() => {
+    if (!loginEmployee) {
+      return;
+    }
+
+    const getOne = async () => {
+      await getOnePatient(id);
+    };
+
+    void getOne();
+  }, [loginEmployee]);
 
   if (!showPatient) {
-    return <p>Loading</p>;
+    return <p>Looking for Patient details</p>;
   }
+
   const GenderIcon =
     showPatient?.gender === "female"
       ? FemaleIcon
@@ -110,11 +131,11 @@ const PatientDetails = () => {
         Add New Entry
       </Button>
 
-      {showPatient && <h3>Entries</h3>}
+      {showPatient && <h3>Records</h3>}
 
       {showPatient?.entries?.map((entry) => (
-        <div key={entry.id}>
-          <EntryDetails />
+        <div key={entry.id || entry._id}>
+          <EntryDetails entry={entry} />
         </div>
       ))}
 

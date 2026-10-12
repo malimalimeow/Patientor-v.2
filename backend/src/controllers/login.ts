@@ -7,9 +7,10 @@ import middleware from "../utils/middleware.ts";
 
 const loginRouter=express.Router();
 
-loginRouter.get("/auth",middleware.employeeExtractor,middleware.tokenExtractor,async(req:Request,res:Response,next:NextFunction)=>{
+loginRouter.get("/auth",middleware.tokenExtractor,middleware.employeeExtractor,async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const employee=req.employee
+        console.log(employee)
         return res.json({employee})
     }catch(error){
         return next(error)

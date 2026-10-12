@@ -1,6 +1,6 @@
 import Patient from "../models/patient.ts";
 
-import type { NewEntryType, NonSensitivePatient ,PatientType,NewPatientType ,EntryType, updatePatientType,updateEntryType} from "../zodSchemas.ts";
+import type { NewEntryType, NonSensitivePatient ,PatientType,NewPatientType ,EntryType, updatePatientType,UpdateEntryType} from "../zodSchemas.ts";
 
 
 
@@ -58,7 +58,7 @@ const updatePatient=async(id:string,data:updatePatientType)=>{
         return updatedPatient; 
 };
 
-const updateEntry = async(id:string,data:updateEntryType,entryID:string)=>{
+const updateEntry = async(id:string,data:UpdateEntryType,entryID:string)=>{
     const patient=await Patient.findById(id)
 
     if(!patient){return null}

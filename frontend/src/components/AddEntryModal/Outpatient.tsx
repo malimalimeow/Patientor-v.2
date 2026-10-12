@@ -1,10 +1,19 @@
 import { TextField, Button } from "@mui/material";
 import { useTypeStore } from "../../stores/entryTypeStore";
 import { prescription, vitalSigns } from "../../types";
+import { useToUpdateEntry } from "../../stores/patientStore";
+import { useEffect } from "react";
 
 export const Outpatient = () => {
   const typeDetails = useTypeStore((state) => state.typeDetails);
   const setField = useTypeStore((state) => state.setField);
+  const toUpdateEntry = useToUpdateEntry();
+
+  useEffect(() => {
+    if (toUpdateEntry !== null) {
+      Object.entries(toUpdateEntry).map(([key, value]) => setField(key, value));
+    }
+  }, [toUpdateEntry]);
 
   const handleInputChange =
     (Field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>

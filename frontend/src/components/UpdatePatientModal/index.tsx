@@ -10,7 +10,7 @@ const UpdatePatientModal = () => {
   return (
     <Dialog
       fullWidth={true}
-      open={modalOpen === "updatePW"}
+      open={modalOpen === "updatePatient"}
       onClose={() => closeModal()}
     >
       <DialogTitle>Update Patient Details</DialogTitle>

@@ -32,13 +32,15 @@ export const useLoginStore= create<useLoginState>()(devtools((set,get)=>({
 
         initialEmployee:async()=>{
             const existedEmployee = getEmployee();
+            
             try{
-                loginService.setToken(existedEmployee.token);
-                const validatedEmployee=await loginService.validation();
-                console.log(existedEmployee.token)
+                
+                const validatedEmployee=await loginService.validation(existedEmployee.token);
+                console.log(validatedEmployee)
            set(()=>({employee: validatedEmployee,login:true}));
-                patientService.setToken(validatedEmployee.token);
-                employeeService.setToken(validatedEmployee.token);}catch(error){
+           
+                patientService.setToken(existedEmployee.token);
+                employeeService.setToken(existedEmployee.token);}catch(error){
                     get().actions.logout();
                     console.log(error);
             }

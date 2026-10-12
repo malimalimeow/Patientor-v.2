@@ -19,6 +19,7 @@ const App = () => {
   const { getAllEmployee } = useEmployeeActions();
   const loginEmployee = useLoginEmployee();
   const { initialEmployee, logout } = useLoginAction();
+  console.log(loginEmployee);
 
   useEffect(() => {
     const ping = async () => {
@@ -31,11 +32,11 @@ const App = () => {
   useEffect(() => {
     const initLogin = async () => {
       await initialEmployee();
-      console.log(loginEmployee);
     };
 
     void initLogin();
-  }, [initialEmployee, loginEmployee]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!loginEmployee) {

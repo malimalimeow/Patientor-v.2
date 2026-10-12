@@ -14,7 +14,7 @@ const getAll = async () => {
   const config = {
     headers: { Authorization: token },
   };
-  
+ 
   const { data } = await axios.get<Patient[]>(
     `${apiBaseUrl}/patients`,config
   );

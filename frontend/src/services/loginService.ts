@@ -4,16 +4,10 @@ import { loginForm} from "../types";
 
 const baseUrl="/api/login";
 
-let token:string|null = null;
 
-const setToken = (newToken:string) => {
-    
-  token = `Bearer ${newToken}`;
-};
-
-const validation =async()=>{
+const validation =async(token:string)=>{
 const config = {
-    headers: { Authorization: token },
+    headers: { Authorization: `Bearer ${token}` },
   };
 
     const {data}= await axios.get(`${baseUrl}/auth`,config);
@@ -28,4 +22,4 @@ const toLogin = async(object:loginForm)=>{
     return data;
 };
 
-export default {toLogin,setToken,validation};
+export default {toLogin,validation};

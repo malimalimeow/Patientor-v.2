@@ -38,7 +38,7 @@ const UpdateEntryModal = () => {
         setMessage("Entry not found");
         return null;
       }
-      await updateEntry(id, values, toUpdateEntry.id);
+      await updateEntry(id, values, toUpdateEntry._id as string);
       closeModal();
       setMessage(`Entry updated`, false);
     } catch (e: unknown) {

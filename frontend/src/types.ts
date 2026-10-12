@@ -22,9 +22,17 @@ export const HealthCheckRatings = {
 
 export type HealthCheckRating = typeof HealthCheckRatings[keyof typeof HealthCheckRatings];
 
-
-interface BaseEntry {
+type EntryWithID ={
   id: string;
+  _id?:string
+}
+
+type EntryWithMongoID ={
+  id?: string;
+  _id:string
+}
+interface BaseEntry 
+ {
   finish:boolean;
   description: string;
   date: string;
@@ -76,10 +84,7 @@ export interface OutpatientEntry extends BaseEntry {
 
 
 
-export type Entry =
-  | InpatientEntry
-  | OutpatientEntry
-  | HealthCheckEntry;
+export type Entry =(EntryWithID|EntryWithMongoID)&(InpatientEntry|OutpatientEntry|HealthCheckEntry)
 
 
 type UnionOmit<T,K extends string|number|symbol>=T extends unknown ? Omit<T,K>:never

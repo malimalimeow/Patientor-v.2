@@ -53,7 +53,6 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
   const diagnoses = useDiagnoses();
   const { closeModal } = useModalActions();
   const typeDetails = useTypeStore((state) => state.typeDetails);
-  const setField = useTypeStore((state) => state.setField);
 
   const handleCodeChange = (event: SelectChangeEvent<typeof code>) => {
     const {
@@ -62,11 +61,12 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
     setCode(typeof value === "string" ? value.split(",") : value);
   };
 
-  const handleSubmit = (e: React.SubmitEvent) => {
-    e.preventDefault();
+  const handleSubmit = (e: React.SubmitEvent | null, toLock: boolean) => {
+    if (e) e.preventDefault();
+    console.log(toLock);
 
     let basicPack: BaseEntryForm = {
-      finish: false,
+      finish: toLock,
       description: description.value,
       date: date.value,
       specialist: specialist.value,
@@ -75,7 +75,7 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
       basicPack = { ...basicPack, diagnosisCodes: code };
     }
 
-    const fullPayload = { ...basicPack, type, ...typeDetails };
+    const fullPayload = { type, ...typeDetails, ...basicPack };
 
     if (toUpdateEntry !== null) {
       update?.(patientId, fullPayload as UpdateEntryType, entryID as string);
@@ -91,7 +91,7 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => handleSubmit(e, false)}>
         <div>
           <TextField
             select
@@ -179,7 +179,8 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
           </Grid>
           <Grid size="auto">
             <Button
-              onClick={() => setField("finish", true)}
+              onClick={() => handleSubmit(null, true)}
+              type="button"
               variant="contained"
             >
               Confirm and Lock

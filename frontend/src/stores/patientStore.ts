@@ -19,7 +19,7 @@ interface patientState {
     }
 }
 
-export const usePatientStore=create<patientState>((set)=>({
+export const usePatientStore=create<patientState>((set,get)=>({
     patients:[],
     showPatient:null,
     toUpdateEntry:null,
@@ -56,7 +56,7 @@ export const usePatientStore=create<patientState>((set)=>({
              
             set((state)=>({
                 showPatient:state.showPatient?{...state.showPatient,entries:state.showPatient?.entries?.map(e=>e.id===entryId?data:e)
-            }:null}));              
+            }:null, toUpdateEntry:data}));              
         },
         deletePatient:async(id)=>{
             const data = await patientService.deletePatient(id);
