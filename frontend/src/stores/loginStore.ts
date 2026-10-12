@@ -31,13 +31,13 @@ export const useLoginStore= create<useLoginState>()(devtools((set,get)=>({
         },
 
         initialEmployee:async()=>{
-            const existedEmployee = getEmployee();
-            
+            const existedEmployee = getEmployee(); 
             try{
                 
                 const validatedEmployee=await loginService.validation(existedEmployee.token);
-                console.log(validatedEmployee)
-           set(()=>({employee: validatedEmployee,login:true}));
+                console.log(validatedEmployee.employee)
+                const employeeDetail=validatedEmployee.employee
+           set(()=>({employee: employeeDetail,login:true}));
            
                 patientService.setToken(existedEmployee.token);
                 employeeService.setToken(existedEmployee.token);}catch(error){
@@ -47,10 +47,11 @@ export const useLoginStore= create<useLoginState>()(devtools((set,get)=>({
         },
         toLogin:async(loginData:loginForm)=>{
             const employee =await loginService.toLogin(loginData);
+            const employeeDetail=employee.employee
             saveEmployee(employee);
             patientService.setToken(employee.token);
             employeeService.setToken(employee.token);
-            set(()=>({employee:employee,login:true}));
+            set(()=>({employee:employeeDetail,login:true}));
         },
         logout:()=>{
             removeEmployee();

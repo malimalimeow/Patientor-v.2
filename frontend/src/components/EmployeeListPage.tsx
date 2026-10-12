@@ -32,7 +32,7 @@ const EmployeeListPage = () => {
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "object") {
-          const firstError = e?.response?.data.error[0];
+          const firstError = e?.response?.data.details[0];
           const message = `Something went wrong. Error: ${firstError?.message}`;
           setMessage(`${message}`);
         } else {
@@ -57,7 +57,7 @@ const EmployeeListPage = () => {
         </Typography>
       </Box>
       <Table sx={{ marginBottom: "1em" }}>
-        <TableHead>
+        <TableHead sx={{ background: "#f8fafc" }}>
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell>Gender</TableCell>

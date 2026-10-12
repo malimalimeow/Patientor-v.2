@@ -16,6 +16,7 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import axios from "axios";
+import type { UpdateEmployeeType } from "../../types";
 
 interface textField {
   label: string;
@@ -38,13 +39,21 @@ const UpdateDetailsForm = () => {
   );
   const [role, setRole] = useState<Role>(showEmployee?.role ?? "normal");
 
-  const { reset: resetName, ...name } = useField("text");
-  const { reset: resetTitle, ...title } = useField("text");
-  const { reset: resetDOB, ...dateOfBirth } = useField("text");
-  const { reset: resetNI, ...NI } = useField("text");
-  const { reset: resetAddress, ...address } = useField("text");
-  const { reset: resetEmergencyContact, ...emergencyContact } =
-    useField("text");
+  const { reset: resetName, ...name } = useField("text", showEmployee?.name);
+  const { reset: resetTitle, ...title } = useField("text", showEmployee?.title);
+  const { reset: resetDOB, ...dateOfBirth } = useField(
+    "date",
+    showEmployee?.dateOfBirth,
+  );
+  const { reset: resetNI, ...NI } = useField("text", showEmployee?.NI);
+  const { reset: resetAddress, ...address } = useField(
+    "text",
+    showEmployee?.address,
+  );
+  const { reset: resetEmergencyContact, ...emergencyContact } = useField(
+    "text",
+    showEmployee?.emergencyContact,
+  );
 
   if (!loginEmployee) {
     setMessage("please login");
@@ -116,7 +125,7 @@ const UpdateDetailsForm = () => {
 
   const updateDetails = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const receivedData = {
+    const receivedData: UpdateEmployeeType = {
       name: name.value,
       title: title.value,
       dateOfBirth: dateOfBirth.value,
@@ -150,8 +159,9 @@ const UpdateDetailsForm = () => {
           error?.response?.data &&
           typeof error?.response?.data === "object"
         ) {
-          const firstError = error?.response?.data.error[0];
-          const message = `Something went wrong. Error:${firstError?.Message}`;
+          const firstError = error?.response?.data.details[0];
+          console.log(firstError);
+          const message = `Something went wrong. Error:${firstError?.message}`;
           setMessage(message);
         } else {
           setMessage("Unrecognized axios error");

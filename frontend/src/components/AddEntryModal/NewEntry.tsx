@@ -22,16 +22,21 @@ import {
   Grid,
 } from "@mui/material";
 import { useTypeStore } from "../../stores/entryTypeStore";
-import { useToUpdateEntry } from "../../stores/patientStore";
+import { usePatientActions, useToUpdateEntry } from "../../stores/patientStore";
 
 interface NewEntryProps {
-  onSubmit?: (id: string, values: EntryFormValues) => void;
-  update?: (id: string, value: UpdateEntryType, entryId: string) => void;
+  onSubmit?: (id: string, values: EntryFormValues) => Promise<void>;
+  update?: (
+    id: string,
+    value: UpdateEntryType,
+    entryId: string,
+  ) => Promise<void>;
   patientId: string;
 }
 
 const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
   const toUpdateEntry = useToUpdateEntry();
+  const { selectedEntry } = usePatientActions();
   const { reset: resetDate, ...date } = useField("date", toUpdateEntry?.date);
   const { reset: resetDescription, ...description } = useField(
     "text",
@@ -61,7 +66,7 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
     setCode(typeof value === "string" ? value.split(",") : value);
   };
 
-  const handleSubmit = (e: React.SubmitEvent | null, toLock: boolean) => {
+  const handleSubmit = async (e: React.SubmitEvent | null, toLock: boolean) => {
     if (e) e.preventDefault();
     console.log(toLock);
 
@@ -78,15 +83,20 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
     const fullPayload = { type, ...typeDetails, ...basicPack };
 
     if (toUpdateEntry !== null) {
-      update?.(patientId, fullPayload as UpdateEntryType, entryID as string);
+      await update?.(
+        patientId,
+        fullPayload as UpdateEntryType,
+        entryID as string,
+      );
     } else {
-      onSubmit?.(patientId, fullPayload as EntryFormValues);
+      await onSubmit?.(patientId, fullPayload as EntryFormValues);
     }
 
     closeModal();
     resetDate();
     resetDescription();
     resetSpecialist();
+    selectedEntry(null);
   };
 
   return (

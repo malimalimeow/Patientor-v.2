@@ -19,9 +19,9 @@ export const Outpatient = () => {
     (Field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
       setField(Field, e.target.value);
 
-  const checkedVitalSigns: Record<string, string> =
+  const checkedVitalSigns: Record<string, unknown> =
     "vitalSigns" in typeDetails && typeDetails.vitalSigns
-      ? (typeDetails.vitalSigns as Record<string, string>)
+      ? (typeDetails.vitalSigns as Record<string, unknown>)
       : {};
 
   const handleVitalSign = (key: keyof vitalSigns, value: unknown) => {
@@ -88,7 +88,7 @@ export const Outpatient = () => {
         id="pulse"
         type="number"
         value={checkedVitalSigns.pulse ?? ""}
-        onChange={(e) => handleVitalSign("pulse", e.target.value)}
+        onChange={(e) => handleVitalSign("pulse", Number(e.target.value))}
       />
 
       <TextField
@@ -97,7 +97,7 @@ export const Outpatient = () => {
         id="temperature"
         type="number"
         value={checkedVitalSigns.temperature ?? ""}
-        onChange={(e) => handleVitalSign("temperature", e.target.value)}
+        onChange={(e) => handleVitalSign("temperature", Number(e.target.value))}
       />
 
       <TextField

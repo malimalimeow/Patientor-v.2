@@ -1,5 +1,5 @@
 import { useField } from "../hooks/useField";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useLoginAction } from "../stores/loginStore";
 import { useNotiAction } from "../stores/notificationStore";
 import Notification from "./notification";
@@ -47,7 +47,9 @@ const Login = () => {
       <form onSubmit={(e) => loginEmployee(e)}>
         <TextField label="Username" fullWidth {...username} />
         <TextField label="password" fullWidth {...password} />
-        <button type="submit">Login</button>
+        <Button variant="contained" type="submit">
+          Login
+        </Button>
       </form>
     </>
   );

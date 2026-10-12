@@ -1,5 +1,11 @@
 import { test, expect } from '@playwright/test';
 
+test.describe("reset",()=>{
+  test.beforeEach(async({request})=>{
+    const resetResponse=await request.post('/api/testing/reset')
+    expect(resetResponse.status()).toBe(204);
+  })
+
 test.describe('Listing patients', () => {
   test('should show column headers Name, Gender and Occupation', async ({ page }) => {
     await page.goto('/');
@@ -78,3 +84,5 @@ test.describe('Adding an entry to a patient', () => {
     await expect(page.getByText('Annual checkup, all clear')).toBeVisible();
   });
 });
+})
+

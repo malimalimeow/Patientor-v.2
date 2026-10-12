@@ -102,6 +102,10 @@ export interface Patient {
   entries?:Entry[]
 }
 
+export type UpdatePatientType = Partial<Omit<Patient,"id"|"_id"|"entries">>
+
+
+
 export type PatientFormValues = Omit<Patient, "id">;
 
 export const EntryType = {
@@ -139,22 +143,9 @@ export interface updatePasswordForm {
   newPassword:string
 }
 
-export interface UpdateEmployeeForm {
-  name?: string;
-  title?: string;
-  dateOfBirth?: string;
-  NI?: string;
-  address?: string;
-  emergencyContact?: string;
-  role?: Role;
-}
 
-export interface UpdatePatientForm{
-  name?: string;
-  occupation?: string;
-  gender?: Gender;
-  dateOfBirth?: string;
-}
+
+
 
 export interface loginForm{
   username:string;
@@ -169,3 +160,5 @@ export interface token{
 }
 
 export type EmployeeType = Omit<NewEmployeeForm ,"password">& {id:string,passwordHash:string,username:string};
+
+export type UpdateEmployeeType =Partial<Omit<EmployeeType,"id"|"_id"|"passwordHash"|"username">>

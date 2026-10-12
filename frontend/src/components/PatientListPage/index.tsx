@@ -26,7 +26,7 @@ const PatientListPage = () => {
   const submitNewPatient = async (values: PatientFormValues) => {
     try {
       const name = values.name;
-      createPatient(values);
+      await createPatient(values);
       closeModal();
       setMessage(`${name} added`, false);
     } catch (e: unknown) {
@@ -57,7 +57,7 @@ const PatientListPage = () => {
         </Typography>
       </Box>
       <Table sx={{ marginBottom: "1em" }}>
-        <TableHead>
+        <TableHead sx={{ background: "#f8fafc" }}>
           <TableRow>
             <TableCell>Name</TableCell>
             <TableCell>Gender</TableCell>

@@ -113,16 +113,20 @@ test.describe('Patientor API', () => {
 
   test.describe('POST /api/patients', () => {
     const newEntry={
-        date: '2015-01-02',
-        type: 'Hospital',
-        specialist: 'MD House',
-        diagnosisCodes: ['S62.5'],
-        description:
-          "Healing time appr. 2 weeks. patient doesn't remember how he got the injury.",
-        discharge: {
-          date: '2015-01-16',
-          criteria: 'Thumb has healed.',
-        }}
+  "finish": true,
+  "description": "Admitted for observation after minor surgery.",
+  "date": "2026-03-10",
+  "specialist": "Dr. Strange",
+  "type": "Inpatient",
+  "admissionDate": "2026-03-10",
+  "admissionReason": "Post-operative monitoring",
+  "dischargeDate": "2026-03-15",
+  "ward": "Ward B",
+  "bedNumber": "12",
+  "dischargeSummary": "Recovered well.",
+  "dischargeStatus": "Stable",
+  "followUpInstruction": "Return in 2 weeks."
+}
 
     test('should create a new patient', async ({ request }) => {
       const newPatient = {
@@ -190,9 +194,15 @@ test.describe('Patientor API', () => {
       expect(body).toHaveProperty('_id');
       expect(body).toHaveProperty('type', newEntry.type);
       expect(body).toHaveProperty('specialist', newEntry.specialist);
-      expect(body).toHaveProperty('diagnosisCodes', newEntry.diagnosisCodes);
+      expect(body).toHaveProperty('admissionDate', newEntry.admissionDate);
       expect(body).toHaveProperty('description', newEntry.description);
-      expect(body).toHaveProperty('discharge',newEntry.discharge);
+      expect(body).toHaveProperty('admissionReason',newEntry.admissionReason);
+      expect(body).toHaveProperty('dischargeDate', newEntry.dischargeDate);
+      expect(body).toHaveProperty('ward', newEntry.ward);
+      expect(body).toHaveProperty('bedNumber', newEntry.bedNumber);
+      expect(body).toHaveProperty('dischargeSummary', newEntry.dischargeSummary);
+      expect(body).toHaveProperty('dischargeStatus',newEntry.dischargeStatus);
+      expect(body).toHaveProperty('followUpInstruction',newEntry.followUpInstruction);
 
   })
 

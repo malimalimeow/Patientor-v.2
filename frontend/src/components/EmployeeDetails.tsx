@@ -3,16 +3,19 @@ import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import { useLoginEmployee } from "../stores/loginStore";
-import { Button } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useNotiAction } from "../stores/notificationStore";
 import Notification from "./notification";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { useModalActions, useModalOpen } from "../stores/modalStore";
 import UpdatePasswordModal from "./updatePWModal";
 import UpdateDetailsModal from "./updateDetailsModal";
+import { useEffect } from "react";
 
 const EmployeeDetails = () => {
+  const { id } = useParams();
+  const { getOneEmployee } = useEmployeeActions();
   const employee = useLoginEmployee();
   const { setMessage } = useNotiAction();
   const navigate = useNavigate();
@@ -22,13 +25,36 @@ const EmployeeDetails = () => {
   const { openModal } = useModalActions();
   const modalOpen = useModalOpen();
 
-  if (!showEmployee) {
+  console.log(id);
+  console.log(employee);
+
+  if (!id) {
+    return <p>Employee Not Found</p>;
+  }
+
+  useEffect(() => {
+    if (!employee) {
+      return;
+    }
+    const getEmployee = async () => {
+      await getOneEmployee(id);
+    };
+
+    void getEmployee();
+  }, [id]);
+
+  if (!showEmployee || !employee) {
     return <p>Loading</p>;
   }
 
-  const employeeSelf = employee?.name === showEmployee?.name;
+  const employeeSelf = employee?.id === showEmployee?.id;
+  console.log(employee?.id, showEmployee?.id, employee?.role);
+
   const manager = employee?.role === "master" || employee?.role === "admin";
+
   const showData = manager || employeeSelf;
+
+  console.log(showData);
 
   const GenderIcon =
     showEmployee?.gender === "female"
@@ -39,11 +65,11 @@ const EmployeeDetails = () => {
 
   const handleDelete = async () => {
     try {
-      if (!window.confirm(`Remove employee:${showEmployee.name}?`)) {
+      if (!window.confirm(`Remove employee:${showEmployee?.name}?`)) {
         return;
       }
-      const id = showEmployee.id;
-      await deleteEmployee(id);
+      const id = showEmployee?.id;
+      await deleteEmployee(id as string);
       setMessage("Employee Removed", false);
       toEmployeeList();
     } catch (e: unknown) {
@@ -65,6 +91,7 @@ const EmployeeDetails = () => {
   return (
     <>
       <Notification />
+
       {showData && (
         <div>
           <h2>
@@ -78,19 +105,33 @@ const EmployeeDetails = () => {
           <p>Emergency Contact:{showEmployee?.emergencyContact}</p>
           {manager ? (
             <>
-              <Button onClick={() => openModal("updateDetails")}>
-                Update Employee Details
-              </Button>
-              {modalOpen === "updateDetails" && <UpdateDetailsModal />}
-              <Button onClick={() => handleDelete()}>
-                Delete Employee record
-              </Button>
+              <Grid
+                container
+                justifyContent="space-between"
+                sx={{ marginTop: 2 }}
+              >
+                <Grid size="auto">
+                  <Button
+                    variant="contained"
+                    onClick={() => openModal("updateDetails")}
+                  >
+                    Update Employee Details
+                  </Button>
+                  {modalOpen === "updateDetails" && <UpdateDetailsModal />}
+                </Grid>
+                <Grid size="auto"></Grid>
+                <Button variant="contained" onClick={() => handleDelete()}>
+                  Delete Employee record
+                </Button>
+              </Grid>
             </>
           ) : null}
           {employeeSelf ? (
-            <Button onClick={() => openModal("updatePW")}>
-              update Password
-            </Button>
+            <Grid size="auto">
+              <Button variant="contained" onClick={() => openModal("updatePW")}>
+                update Password
+              </Button>
+            </Grid>
           ) : null}
           {modalOpen === "updatePW" && <UpdatePasswordModal />}
         </div>

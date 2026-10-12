@@ -61,13 +61,13 @@ const PatientDetails = () => {
   const submitNewEntry = async (id: string, values: EntryFormValues) => {
     try {
       const date = values.date;
-      createEntry(id, values);
+      await createEntry(id, values);
       closeModal();
       setMessage(`new Entry on ${date} added`, false);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "object") {
-          const firstError = e?.response?.data.error[0];
+          const firstError = e?.response?.data.details[0];
           const message = `Something went wrong. Error: ${firstError?.message}`;
           setMessage(`${message}`);
         } else {

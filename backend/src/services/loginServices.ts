@@ -15,7 +15,7 @@ const toLogin = async (username:string,password:string):Promise<{ token: string,
         throw new Error("SECRET is not found");
       }
     const token = jwt.sign(employeeForToken, process.env.SECRET, {
-    expiresIn: 60 * 60,
+    expiresIn: 24 * 60 * 60,
   });
 
   

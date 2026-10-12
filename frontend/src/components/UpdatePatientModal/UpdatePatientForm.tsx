@@ -5,6 +5,7 @@ import { useModalActions } from "../../stores/modalStore";
 import { SyntheticEvent } from "react";
 import { useState } from "react";
 import { Gender } from "../../types";
+import type { UpdatePatientType } from "../../types";
 import { useNotiAction } from "../../stores/notificationStore";
 import { useShowPatient } from "../../stores/patientStore";
 import {
@@ -24,9 +25,15 @@ const UpdatePatientForm = () => {
   const loginEmployee = useLoginEmployee();
   const { closeModal } = useModalActions();
   const [gender, setGender] = useState<Gender>(showPatient?.gender ?? "female");
-  const { reset: resetName, ...name } = useField("text");
-  const { reset: resetDOB, ...dateOfBirth } = useField("text");
-  const { reset: resetOccupation, ...occupation } = useField("text");
+  const { reset: resetName, ...name } = useField("text", showPatient?.name);
+  const { reset: resetDOB, ...dateOfBirth } = useField(
+    "text",
+    showPatient?.dateOfBirth,
+  );
+  const { reset: resetOccupation, ...occupation } = useField(
+    "text",
+    showPatient?.occupation,
+  );
 
   if (!loginEmployee) {
     setMessage("please login");
@@ -62,25 +69,20 @@ const UpdatePatientForm = () => {
 
   const updateDetails = async (e: SyntheticEvent) => {
     e.preventDefault();
-    const receivedData = {
+    const receivedData: UpdatePatientType = {
       name: name.value,
       occupation: occupation.value,
       dateOfBirth: dateOfBirth.value,
       ...(gender !== showPatient.gender && { gender }),
     };
 
-    const filterData = Object.entries(receivedData).filter(
-      ([_, value]) => value !== "" && value !== undefined,
-    );
-    const updateData = Object.fromEntries(filterData);
-
-    if (Object.keys(updateData).length === 0) {
+    if (Object.keys(receivedData).length === 0) {
       setMessage("No changes detected");
       return;
     }
 
     try {
-      await updatePatientDetails(showPatient.id, updateData);
+      await updatePatientDetails(showPatient.id, receivedData);
       setMessage("Update successful", false);
       resetAll();
       setTimeout(() => {

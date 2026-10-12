@@ -85,18 +85,23 @@ const AddEmployeeForm = ({
   const addNewEmployee = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    await onSubmit({
-      name: name.value,
-      password: password.value,
-      title: title.value,
-      dateOfBirth: dateOfBirth.value,
-      address: address.value,
-      NI: NI.value,
-      emergencyContact: emergencyContact.value,
-      gender: gender,
-      role: role,
-    });
-    resetAll();
+    try {
+      await onSubmit({
+        name: name.value,
+        password: password.value,
+        title: title.value,
+        dateOfBirth: dateOfBirth.value,
+        address: address.value,
+        NI: NI.value,
+        emergencyContact: emergencyContact.value,
+        gender: gender,
+        role: role,
+      });
+
+      toCloseModal();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

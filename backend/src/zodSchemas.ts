@@ -83,8 +83,8 @@ export const OutpatientSchema=NewBaseEntrySchema.extend({
    chiefComplaint:z.string(),
    vitalSigns:z.object({
     bp:z.string(),
-    pulse:z.number(),
-    temperature:z.number()
+    pulse:z.coerce.number(),
+    temperature:z.coerce.number()
    }).partial().optional(),
    prescription:z.array(z.object({
     medication:z.string(),

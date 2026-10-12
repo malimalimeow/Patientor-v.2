@@ -47,15 +47,19 @@ const AddPatientForm = ({
 
   const addPatient = async (event: SyntheticEvent) => {
     event.preventDefault();
-    await onSubmit({
-      name: name.value,
-      occupation: occupation.value,
-      dateOfBirth: dateOfBirth.value,
-      gender: gender,
-    });
-    resetDOB();
-    resetName();
-    resetOccupation();
+    try {
+      await onSubmit({
+        name: name.value,
+        occupation: occupation.value,
+        dateOfBirth: dateOfBirth.value,
+        gender: gender,
+      });
+      resetDOB();
+      resetName();
+      resetOccupation();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
