@@ -1,6 +1,7 @@
 # Patientor 🏥
 
-> A full-stack patient and employee management web application developed as part of the **Full Stack Open (Part 9: TypeScript)** curriculum.
+> An advanced, customized full-stack patient and employee management web application.
+> Originally inspired by the **Full Stack Open (Part 9: TypeScript)** curriculum, this project has been heavily extended and refactored with a custom architecture, extended entry models, and comprehensive test coverage.
 
 Patientor is designed to streamline medical record management with role-based access control, strict type-safety, and a clean, modern UI for handling patient details and diverse medical entries.
 
@@ -14,20 +15,20 @@ Patientor is designed to streamline medical record management with role-based ac
 
 ---
 
-## ✨ Key Features
+## ✨ Key Features & Architectural Overhauls
 
-- **End-to-End Type Safety:** Leveraged TypeScript and **Zod schema validation** to ensure robust data integrity across both frontend forms and backend APIs.
-- **Advanced State & API Management:** Utilized **Zustand** for centralized global state management and streamlined asynchronous API workflows.
-- **Dynamic Modular Architecture:** Built reusable modal components to handle multi-type operations efficiently, minimizing code redundancy.
-- **Modern Minimalist UI:** Designed with **Material UI (MUI)** featuring custom theme overrides (`ThemeProvider`) for a professional, clean, and accessible healthcare dashboard interface.
-- **Complex Domain Modeling:** Implemented discriminated unions in TypeScript to accurately manage varied entry types (HealthCheck, Hospital, Occupational Healthcare).
+- **Custom Domain & Entry Modeling:** Redefined and extended the core data domain, including customized **discriminated unions** for `Entry` types and enhanced role-based employee access control beyond the original course scope.
+- **Strict Data Validation & Type Safety:** Implemented end-to-end type safety across the stack using **Zod schemas** to strictly validate API payloads and catch runtime mismatch early.
+- **State & API Architecture:** Re-engineered state management using **Zustand** to seamlessly handle complex asynchronous API workflows and eliminate frontend state desynchronization.
+- **Modular Component Design:** Built reusable modal architectures to handle multiple entry types dynamically without code duplication.
+- **Modern UI Transformation:** Refactored the UI with **Material UI (MUI)** and a custom global `ThemeProvider` to provide a clean, modern, and accessible dashboard layout.
 
 ---
 
 ## 🧪 Testing & Quality Assurance
 
-- **API Integration Testing:** Validated core backend logic and payload handling with **55 comprehensive tests** (100% passing).
-- **End-to-End (E2E) Testing:** Configured **Playwright** to automate user flow validations and frontend interactions.
+- **API Integration Suite:** Engineered a robust backend test suite with **55 passing integration tests**, ensuring payload consistency and preventing schema mismatch between the client and server.
+- **Automated E2E Testing:** Integrated **Playwright** to validate end-to-end user journeys and UI components.
 
 ---
 
