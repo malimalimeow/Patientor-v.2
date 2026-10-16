@@ -90,8 +90,6 @@ const EmployeeDetails = () => {
 
   return (
     <>
-      <Notification />
-
       {showData && (
         <div>
           <h2>

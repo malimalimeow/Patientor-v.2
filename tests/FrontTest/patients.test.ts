@@ -1,41 +1,41 @@
 import { test, expect } from '@playwright/test';
 
 test.describe("reset",()=>{
-  test.beforeEach(async({request})=>{
+  test.beforeEach(async({request,page})=>{
     const resetResponse=await request.post('/api/testing/reset')
     expect(resetResponse.status()).toBe(204);
+    await page.getByRole('textbox', { name: 'Username' }).click();
+    await page.getByRole('textbox', { name: 'Username' }).fill('M1a2b3c');
+    await page.getByRole('textbox', { name: 'password' }).click();
+    await page.getByRole('textbox', { name: 'password' }).fill('Password123!');
+    await page.getByRole('button', { name: 'Login' }).click();
+    await page.goto('/patients');
   })
 
 test.describe('Listing patients', () => {
-  test('should show column headers Name, Gender and Occupation', async ({ page }) => {
-    await page.goto('/');
+  test('should show column headers Name, Gender and Occupation', async ({ page }) => {    
     await expect(page.getByRole('columnheader', { name: 'Name' })).toBeVisible();
     await expect(page.getByRole('columnheader', { name: 'Gender' })).toBeVisible();
     await expect(page.getByRole('columnheader', { name: 'Occupation' })).toBeVisible();
   });
 
-  test('should list seed patients', async ({ page }) => {
-    await page.goto('/');
-    await expect(page.getByRole('link', { name: 'John McClane' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Martin Riggs' })).toBeVisible();
+  test('should list seed patients', async ({ page }) => {  
+    await expect(page.getByRole('link', { name: 'Test Patient' })).toBeVisible();
   });
 });
-
 test.describe('Adding a patient', () => {
   test('should open modal and add a new patient that appears in the list', async ({ page }) => {
     const patientName = `E2E Patient ${Date.now()}`;
-    await page.goto('/');
-
     await page.getByRole('button', { name: 'Add New Patient' }).click();
-
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
     await expect(dialog.getByText('Add a new patient')).toBeVisible();
 
     await dialog.getByLabel('Name').fill(patientName);
-    await dialog.getByLabel('Social security number').fill('010190-9999');
     await dialog.getByLabel('Date of birth').fill('1990-01-01');
     await dialog.getByLabel('Occupation').fill('Test Engineer');
+    await page.getByLabel('Add a new patient').getByText('female').click();
+    await page.getByRole('option', { name: 'female' }).click();
 
     await dialog.getByRole('button', { name: 'Add' }).click();
 
@@ -45,7 +45,7 @@ test.describe('Adding a patient', () => {
 
 test.describe('Showing patient info', () => {
   test('should navigate to patient detail page and show patient information', async ({ page }) => {
-    await page.goto('/');
+   
     await page.getByRole('link', { name: 'John McClane' }).click();
 
     await expect(page).toHaveURL(/\/patients\/.+/);
@@ -55,7 +55,7 @@ test.describe('Showing patient info', () => {
   });
 
   test('should show existing entries for the patient', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/patients');
     await page.getByRole('link', { name: 'John McClane' }).click();
 
     // John McClane has a Hospital entry in the seed data
@@ -65,7 +65,7 @@ test.describe('Showing patient info', () => {
 
 test.describe('Adding an entry to a patient', () => {
   test('should add a HealthCheck entry to John McClane', async ({ page }) => {
-    await page.goto('/');
+    
     await page.getByRole('link', { name: 'John McClane' }).click();
     await expect(page).toHaveURL(/\/patients\/.+/);
 

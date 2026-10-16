@@ -2,7 +2,6 @@ import { useField } from "../hooks/useField";
 import { Button, TextField } from "@mui/material";
 import { useLoginAction } from "../stores/loginStore";
 import { useNotiAction } from "../stores/notificationStore";
-import Notification from "./notification";
 import { SyntheticEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -28,8 +27,8 @@ const Login = () => {
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "object") {
-          const firstError = e?.response?.data.error[0];
-          const message = `Something went wrong. Error: ${firstError?.message}`;
+          const firstError = e?.response?.data.error;
+          const message = `Something went wrong. Error: ${firstError}`;
           setMessage(`${message}`);
         } else {
           setMessage("Unrecognized axios error");
@@ -43,7 +42,6 @@ const Login = () => {
 
   return (
     <>
-      <Notification />
       <form onSubmit={(e) => loginEmployee(e)}>
         <TextField label="Username" fullWidth {...username} />
         <TextField label="password" fullWidth {...password} />
