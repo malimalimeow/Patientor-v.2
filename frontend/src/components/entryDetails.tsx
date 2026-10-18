@@ -15,9 +15,7 @@ const UpdateButton = ({ entry }: { entry: Entry }) => {
   const { selectedEntry } = usePatientActions();
   const { openModal } = useModalActions();
   const modalOpen = useModalOpen();
-  const toUpdateEntry = useToUpdateEntry();
-
-  const entryFinish = toUpdateEntry?.finish ?? entry.finish;
+  const entryFinish = entry.finish;
   const handleUpdateEntry = () => {
     selectedEntry(entry);
     openModal("updateEntry");

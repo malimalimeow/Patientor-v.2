@@ -58,6 +58,21 @@ const testPatient:PatientType = {
         occupation: 'one Job',
         entries: []
       };
+    
+const john:PatientType={
+    id: 'd2773336-f723-11e9-8f0b-362b9e155667',
+    name: 'John McClane',
+    dateOfBirth: '1986-07-09',
+    gender: "male",
+    occupation: 'New york city cop',
+    entries: [{
+        id: 'b4f4eca1-2aa7-4b13-9a18-4a5535c3c8da',
+        date: '2019-10-20',
+        specialist: 'MD House',
+        type: 'HealthCheck',
+        description: 'Yearly control visit. Cholesterol levels back to normal.',
+        healthCheckRating: 0,
+      }]}
 
 
 testingRouter.post("/reset",async(_req: Request,res:Response)=>{
@@ -75,6 +90,7 @@ await Employee.findOneAndUpdate({username:normalEmployee.username},normalEmploye
 await Employee.findOneAndUpdate({username:toDeleteEmployee.username},toDeleteEmployee,{ upsert: true, returnDocument: 'after', runValidators: true });
 
 await Patient.findOneAndUpdate({name:testPatient.name},testPatient,{upsert:true,returnDocument: 'after',runValidators:true});
+await Patient.findOneAndUpdate({name:john.name},john,{upsert:true,returnDocument: 'after',runValidators:true});
 console.log("reset done");
         return res.status(204).end();
 

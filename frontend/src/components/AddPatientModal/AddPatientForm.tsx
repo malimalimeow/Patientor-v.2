@@ -30,7 +30,7 @@ const AddPatientForm = ({
 }) => {
   const { reset: resetName, ...name } = useField("text");
   const { reset: resetOccupation, ...occupation } = useField("text");
-  const { reset: resetDOB, ...dateOfBirth } = useField("text");
+  const { reset: resetDOB, ...dateOfBirth } = useField("date");
   const [gender, setGender] = useState<Gender>("female");
   const { closeModal } = useModalActions();
 
@@ -69,7 +69,7 @@ const AddPatientForm = ({
 
         <TextField
           label="Date of birth"
-          placeholder="YYYY-MM-DD"
+          slotProps={{ inputLabel: { shrink: true } }}
           fullWidth
           {...dateOfBirth}
         />

@@ -1,0 +1,43 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e5]:
+  - generic [ref=e6]:
+    - generic [ref=e7]:
+      - link "Log Out" [ref=e8] [cursor=pointer]:
+        - /url: /
+      - link "Patient" [ref=e9] [cursor=pointer]:
+        - /url: /patients
+      - link "Employee" [ref=e10] [cursor=pointer]:
+        - /url: /employee
+    - heading "Patientor" [level=5] [ref=e11]
+  - separator [ref=e12]
+  - generic [ref=e13]:
+    - heading "John McClane" [level=2] [ref=e14]:
+      - text: John McClane
+      - img [ref=e15]
+    - paragraph [ref=e17]: occupation:New york city cop
+    - paragraph [ref=e18]: date of birth:1986-07-09
+    - button "Update Patient details" [ref=e19] [cursor=pointer]: Update Patient details
+    - button "Add New Entry" [ref=e20] [cursor=pointer]: Add New Entry
+    - heading "Records" [level=3] [ref=e21]
+    - generic [ref=e23]:
+      - paragraph [ref=e24]:
+        - text: 2019-10-20
+        - img [ref=e25]
+      - paragraph [ref=e27]: Yearly control visit. Cholesterol levels back to normal.
+      - img [ref=e28]
+      - paragraph [ref=e30]: Diagnosed by MD House
+      - button "Update Record" [ref=e31] [cursor=pointer]
+      - img [ref=e32]
+    - generic [ref=e35]:
+      - paragraph [ref=e36]:
+        - text: 2024-03-15
+        - img [ref=e37]
+      - paragraph [ref=e39]: Annual checkup, all clear
+      - img [ref=e40]
+      - paragraph [ref=e42]: Diagnosed by Dr. Test Specialist
+      - button "Update Record" [active] [ref=e43] [cursor=pointer]: Update Record
+      - img [ref=e44]
+    - button "Delete Record" [ref=e46] [cursor=pointer]
+```

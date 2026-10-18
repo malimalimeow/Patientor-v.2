@@ -47,11 +47,11 @@ export const useLoginStore= create<useLoginState>()(devtools((set,get)=>({
         },
         toLogin:async(loginData:loginForm)=>{
             const employee =await loginService.toLogin(loginData);
-            const employeeDetail=employee.employee
+
             saveEmployee(employee);
             patientService.setToken(employee.token);
             employeeService.setToken(employee.token);
-            set(()=>({employee:employeeDetail,login:true}));
+            set(()=>({employee:employee,login:true}));
         },
         logout:()=>{
             removeEmployee();

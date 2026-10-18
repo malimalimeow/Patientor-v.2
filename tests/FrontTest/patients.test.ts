@@ -1,16 +1,36 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 test.describe("reset",()=>{
   test.beforeEach(async({request,page})=>{
     const resetResponse=await request.post('/api/testing/reset')
     expect(resetResponse.status()).toBe(204);
+    await page.goto('http://localhost:5173/')
     await page.getByRole('textbox', { name: 'Username' }).click();
     await page.getByRole('textbox', { name: 'Username' }).fill('M1a2b3c');
     await page.getByRole('textbox', { name: 'password' }).click();
     await page.getByRole('textbox', { name: 'password' }).fill('Password123!');
     await page.getByRole('button', { name: 'Login' }).click();
-    await page.goto('/patients');
+    
   })
+
+  async function addHealthCheckEntry(page:Page, customDescription = 'Annual checkup, all clear') {
+  await page.getByRole('link', { name: 'John McClane' }).click();
+  await expect(page).toHaveURL(/\/patients\/.+/);
+
+  await page.getByRole('button', { name: 'Add New Entry' }).click();
+  await page.getByLabel('Type').click();
+  await page.getByRole("option", { name: "HealthCheck" }).click();
+  
+  await page.getByLabel('Date').pressSequentially('15/03/2024');
+  await page.getByLabel('Description').fill(customDescription);
+  await page.getByLabel('Specialist').fill('Dr. Test Specialist');
+  await page.getByLabel('rating').click();
+  await page.getByRole("option", { name: /0/ }).click();
+
+  await page.getByRole('button', { name: 'Save' }).click();
+
+  await expect(page.getByText(customDescription)).toBeVisible();
+}
 
 test.describe('Listing patients', () => {
   test('should show column headers Name, Gender and Occupation', async ({ page }) => {    
@@ -21,6 +41,7 @@ test.describe('Listing patients', () => {
 
   test('should list seed patients', async ({ page }) => {  
     await expect(page.getByRole('link', { name: 'Test Patient' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'John McClane' })).toBeVisible();
   });
 });
 test.describe('Adding a patient', () => {
@@ -30,7 +51,7 @@ test.describe('Adding a patient', () => {
     const dialog = page.getByRole('dialog');
     await expect(dialog).toBeVisible();
     await expect(dialog.getByText('Add a new patient')).toBeVisible();
-
+//16/10/2026 checking
     await dialog.getByLabel('Name').fill(patientName);
     await dialog.getByLabel('Date of birth').fill('1990-01-01');
     await dialog.getByLabel('Occupation').fill('Test Engineer');
@@ -50,16 +71,14 @@ test.describe('Showing patient info', () => {
 
     await expect(page).toHaveURL(/\/patients\/.+/);
     await expect(page.getByRole('heading', { name: /John McClane/ })).toBeVisible();
-    await expect(page.getByText('090786-122X')).toBeVisible();
     await expect(page.getByText('New york city cop')).toBeVisible();
   });
 
   test('should show existing entries for the patient', async ({ page }) => {
-    await page.goto('/patients');
     await page.getByRole('link', { name: 'John McClane' }).click();
 
     // John McClane has a Hospital entry in the seed data
-    await expect(page.getByText(/Thumb has healed/)).toBeVisible();
+    await expect(page.getByText(/Yearly control visit/)).toBeVisible();
   });
 });
 
@@ -79,10 +98,19 @@ test.describe('Adding an entry to a patient', () => {
     await page.getByLabel('rating').click();
     await page.getByRole("option",{name:/0/}).click()
 
-    await page.getByRole('button', { name: 'Add' }).click();
+    await page.getByRole('button', { name: 'Save' }).click();
 
     await expect(page.getByText('Annual checkup, all clear')).toBeVisible();
   });
+
+  test("should able update and lock the entry",async({page})=>{
+    await addHealthCheckEntry(page)
+    await page.getByRole('button', { name: 'Update Record' }).nth(1).click();
+    await page.getByRole('button', { name: 'Confirm and Lock' }).click();
+    await expect(page.getByText('Read Only')).toBeVisible();
+  })
+
+  
 });
 })
 

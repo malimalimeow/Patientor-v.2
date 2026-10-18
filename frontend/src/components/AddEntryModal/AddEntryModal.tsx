@@ -6,7 +6,7 @@ import Notification from "../notification";
 import { useModalActions, useModalOpen } from "../../stores/modalStore";
 
 interface Props {
-  onSubmit: (id: string, values: EntryFormValues) => void;
+  onSubmit: (id: string, values: EntryFormValues) => Promise<void>;
   patientId: string;
 }
 
