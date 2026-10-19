@@ -53,7 +53,7 @@ const NewEntry = ({ onSubmit, update, patientId }: NewEntryProps) => {
   const [type, setType] = useState<EntryTypes>(
     toUpdateEntry?.type ?? "Inpatient",
   );
-  const entryID = toUpdateEntry?.id;
+  const entryID = toUpdateEntry?._id ?? toUpdateEntry?.id;
 
   const diagnoses = useDiagnoses();
   const { closeModal } = useModalActions();

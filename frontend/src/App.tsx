@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import PatientListPage from "./components/PatientListPage";
 import PatientDetails from "./components/PatientDetails";
-import Notification from "./components/notification";
 import { useDiagnosesAction } from "./stores/diagnosesStore";
 import { usePatientActions } from "./stores/patientStore";
 import Login from "./components/Login";
@@ -141,7 +140,7 @@ const App = () => {
                 </Typography>
               </Box>
               <Divider sx={{ mb: 4 }} />
-              <Notification />
+
               <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/employee" element={<EmployeeListPage />} />

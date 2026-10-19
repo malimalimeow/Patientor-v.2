@@ -53,10 +53,12 @@ export const usePatientStore=create<patientState>((set,get)=>({
         },
         updateEntry:async(id,values,entryId)=>{
             const data = await patientService.updateEntry(id,values,entryId);
-             
+             console.log("API 回傳嘅 data:", data);
+
             set((state)=>({
-                showPatient:state.showPatient?{...state.showPatient,entries:state.showPatient?.entries?.map(e=>e.id===entryId?data:e)
-            }:null, toUpdateEntry:data}));              
+                showPatient:state.showPatient?{...state.showPatient,entries:state.showPatient?.entries?.map(e=>e._id===entryId?data:e)
+            }:null, toUpdateEntry:data}));    
+            
         },
         deletePatient:async(id)=>{
             const data = await patientService.deletePatient(id);

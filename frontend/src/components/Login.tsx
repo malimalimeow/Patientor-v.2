@@ -5,6 +5,7 @@ import { useNotiAction } from "../stores/notificationStore";
 import { SyntheticEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Notification from "./notification";
 
 const Login = () => {
   const { reset: resetUsername, ...username } = useField("text");
@@ -42,6 +43,7 @@ const Login = () => {
 
   return (
     <>
+      <Notification />
       <form onSubmit={(e) => loginEmployee(e)}>
         <TextField label="Username" fullWidth {...username} />
         <TextField label="password" fullWidth {...password} />

@@ -32,13 +32,18 @@ const UpdateEntryModal = () => {
     return <p>loading</p>;
   }
 
-  const updateNewEntry = async (id: string, values: UpdateEntryType) => {
+  if (toUpdateEntry === null) {
+    setMessage("Entry not found");
+    return null;
+  }
+
+  const updateNewEntry = async (
+    id: string,
+    values: UpdateEntryType,
+    entryID: string,
+  ) => {
     try {
-      if (toUpdateEntry === null) {
-        setMessage("Entry not found");
-        return null;
-      }
-      await updateEntry(id, values, toUpdateEntry._id as string);
+      await updateEntry(id, values, entryID as string);
       closeModal();
       setMessage(`Entry updated`, false);
     } catch (e: unknown) {

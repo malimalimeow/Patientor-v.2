@@ -67,7 +67,6 @@ const UpdatePWForm = () => {
 
   return (
     <>
-      <Notification />
       <form onSubmit={handleUpdatePW}>
         <TextField label="oldPW" fullWidth {...oldPassword} />
         <TextField label="newPW" fullWidth {...newPassword} />

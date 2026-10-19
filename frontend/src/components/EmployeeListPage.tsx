@@ -15,6 +15,7 @@ import { useNotiAction } from "../stores/notificationStore";
 import { useEmployee, useEmployeeActions } from "../stores/employeeStore";
 import { useModalActions, useModalOpen } from "../stores/modalStore";
 import AddEmployeeModal from "./AddEmployeeModal";
+import Notification from "./notification";
 
 const EmployeeListPage = () => {
   const { setMessage } = useNotiAction();
@@ -51,6 +52,7 @@ const EmployeeListPage = () => {
 
   return (
     <div className="App">
+      <Notification />
       <Box>
         <Typography align="center" variant="h6">
           Employee list

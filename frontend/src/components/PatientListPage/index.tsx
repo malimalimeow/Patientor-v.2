@@ -16,6 +16,7 @@ import HealthRatingBar from "../HealthRatingBar";
 import { useNotiAction } from "../../stores/notificationStore";
 import { usePatients, usePatientActions } from "../../stores/patientStore";
 import { useModalActions } from "../../stores/modalStore";
+import Notification from "../notification";
 
 const PatientListPage = () => {
   const { setMessage } = useNotiAction();
@@ -51,6 +52,7 @@ const PatientListPage = () => {
 
   return (
     <div className="App">
+      <Notification />
       <Box>
         <Typography align="center" variant="h6">
           Patient list

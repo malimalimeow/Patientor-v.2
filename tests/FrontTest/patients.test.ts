@@ -109,8 +109,23 @@ test.describe('Adding an entry to a patient', () => {
     await page.getByRole('button', { name: 'Confirm and Lock' }).click();
     await expect(page.getByText('Read Only')).toBeVisible();
   })
-
-  
+ 
 });
+
+test.describe('updating patient details', () => {
+  test('should update patient details',async({page})=>{
+    await page.getByRole('link', { name: 'Test Patient' }).click();
+    await expect(page).toHaveURL(/\/patients\/.+/);
+    await page.getByRole('button', { name: 'Update Patient details' }).click();
+    const dialog = page.getByRole('dialog');
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByText('Update Patient Details')).toBeVisible();
+    await page.getByRole('textbox', { name: 'DOB' }).click();
+    await page.getByRole('textbox', { name: 'DOB' }).fill('1991-02-04');
+    await page.getByRole('button', { name: 'Update' }).click();
+    await expect(page.getByLabel('Update Patient Details').getByText('Update successful')).toBeVisible();
+
+  })})
+ 
 })
 

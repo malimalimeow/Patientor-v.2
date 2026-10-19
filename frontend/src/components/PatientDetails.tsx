@@ -15,6 +15,7 @@ import { useLoginEmployee } from "../stores/loginStore";
 import { useNavigate, useParams } from "react-router-dom";
 import { EntryDetails } from "./entryDetails";
 import { useEffect } from "react";
+import Notification from "./notification";
 
 const PatientDetails = () => {
   const navigate = useNavigate();
@@ -112,6 +113,7 @@ const PatientDetails = () => {
 
   return (
     <div>
+      <Notification />
       <h2>
         {showPatient?.name}
         <GenderIcon color="primary" fontSize="large" />

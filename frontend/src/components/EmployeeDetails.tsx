@@ -70,8 +70,8 @@ const EmployeeDetails = () => {
       }
       const id = showEmployee?.id;
       await deleteEmployee(id as string);
-      setMessage("Employee Removed", false);
       toEmployeeList();
+      setMessage("Employee Removed", false);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "object") {
@@ -90,6 +90,7 @@ const EmployeeDetails = () => {
 
   return (
     <>
+      <Notification />
       {showData && (
         <div>
           <h2>
