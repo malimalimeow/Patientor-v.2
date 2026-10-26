@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe("reset",()=>{
   test.beforeEach(async({request,page})=>{
-    const resetResponse=await request.post('/api/testing/reset')
+    const resetResponse=await request.post('http://localhost:3003/api/testing/reset')
     expect(resetResponse.status()).toBe(204);
     await page.goto('http://localhost:5173/')
     await page.getByRole('textbox', { name: 'Username' }).click();
