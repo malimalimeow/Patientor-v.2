@@ -1,0 +1,76 @@
+name: Patientor Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  api-tests:
+    name: API Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Start backend
+        working-directory: backend
+        run: npm run dev &
+
+      - name: Install API test dependencies
+        working-directory: tests/APITest
+        run: npm ci
+
+      - name: Run API tests
+        working-directory: tests/APITest
+        run: npm test
+
+  frontend-tests:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install frontend test dependencies
+        working-directory: tests/FrontTest
+        run: npm ci
+
+      - name: Install Playwright
+        working-directory: tests/FrontTest
+        run: npx playwright install --with-deps chromium
+
+      - name: Start backend
+        working-directory: backend
+        run: npm run dev &
+
+      - name: Start frontend
+        working-directory: frontend
+        run: npm run dev -- --host 0.0.0.0 &
+
+      - name: Run frontend tests
+        working-directory: tests/FrontTest
+        run: npm test
