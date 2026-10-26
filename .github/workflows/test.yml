@@ -69,6 +69,7 @@ jobs:
           MONGODB_URI: ${{ secrets.MONGODB_URI }}
           SECRET: ${{ secrets.SECRET }}
           TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
+          NODE_ENV: test
         run: |
           npx tsx src/index.ts > /tmp/backend.log 2>&1 &
           echo $! > /tmp/backend.pid
