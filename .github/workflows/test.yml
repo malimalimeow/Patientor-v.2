@@ -73,13 +73,7 @@ jobs:
         run: |
           npx tsx src/index.ts > /tmp/backend.log 2>&1 &
           echo $! > /tmp/backend.pid
-      - name: Debug backend testing route
-        run: |
-          echo "Checking backend testing route..."
-          curl -i -X POST http://localhost:3003/api/testing/reset
-          echo ""
-          echo "Checking backend ping..."
-          curl -i http://localhost:3003/api/ping
+
       - name: Wait for backend
         run: |
           for i in {1..30}; do
