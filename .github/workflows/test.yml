@@ -22,16 +22,16 @@ jobs:
         working-directory: backend
         run: npm ci
 
-      - name: Start backend
-        working-directory: backend
-        run: npm run dev &
-
       - name: Install API test dependencies
         working-directory: tests/APITest
         run: npm ci
 
       - name: Run API tests
         working-directory: tests/APITest
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          SECRET: ${{ secrets.SECRET }}
+          TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
         run: npm test
 
   frontend-tests:
