@@ -65,6 +65,10 @@ jobs:
 
       - name: Start backend
         working-directory: backend
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          SECRET: ${{ secrets.SECRET }}
+          TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
         run: |
           npm run dev > /tmp/backend.log 2>&1 &
           echo $! > /tmp/backend.pid
