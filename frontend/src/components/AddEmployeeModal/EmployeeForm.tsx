@@ -1,11 +1,4 @@
-import {
-  TextField,
-  Select,
-  MenuItem,
-  Grid,
-  Button,
-  InputLabel,
-} from "@mui/material";
+import { TextField, Select, MenuItem, Grid, Button } from "@mui/material";
 import { useField } from "../../hooks/useField";
 import { Gender, NewEmployeeForm, Role } from "../../types";
 import { SyntheticEvent, useState } from "react";

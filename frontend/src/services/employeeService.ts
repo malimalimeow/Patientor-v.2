@@ -1,5 +1,5 @@
 import axios from "axios";
-import { NewEmployeeForm ,updatePasswordForm,UpdateEmployeeForm} from "../types";
+import { NewEmployeeForm ,updatePasswordForm,UpdateEmployeeType} from "../types";
 
 const baseUrl="/api/employees";
 
@@ -47,7 +47,7 @@ const updatePassword= async(id:string,object:updatePasswordForm)=>{
     return data;
 };
 
-const updateDetails = async(id:string, object:UpdateEmployeeForm)=>{
+const updateDetails = async(id:string, object:UpdateEmployeeType)=>{
     const config = {
     headers: { Authorization: token },
   };

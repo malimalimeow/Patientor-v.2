@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Entry, EntryFormValues,  Patient,PatientFormValues, UpdateEntryType, UpdatePatientForm} from "../types";
+import type { Entry, EntryFormValues,  Patient,PatientFormValues, UpdateEntryType, UpdatePatientType} from "../types";
 import patientService from "../services/patientService";
 
 interface patientState {
@@ -11,7 +11,7 @@ interface patientState {
         fetchPatientList:()=>Promise<void>
         getOnePatient:(id:string)=>Promise<void>
         createPatient:(values:PatientFormValues)=>Promise<void>
-        updatePatientDetails:(id:string,values:UpdatePatientForm)=>Promise<void>
+        updatePatientDetails:(id:string,values:UpdatePatientType)=>Promise<void>
         createEntry:(id:string,values: EntryFormValues)=>Promise<void>
         updateEntry:(id:string,values:UpdateEntryType,entryId:string)=>Promise<void>
         deletePatient:(id:string)=>Promise<unknown>
@@ -19,7 +19,7 @@ interface patientState {
     }
 }
 
-export const usePatientStore=create<patientState>((set,get)=>({
+export const usePatientStore=create<patientState>((set)=>({
     patients:[],
     showPatient:null,
     toUpdateEntry:null,
@@ -53,7 +53,6 @@ export const usePatientStore=create<patientState>((set,get)=>({
         },
         updateEntry:async(id,values,entryId)=>{
             const data = await patientService.updateEntry(id,values,entryId);
-             console.log("API 回傳嘅 data:", data);
 
             set((state)=>({
                 showPatient:state.showPatient?{...state.showPatient,entries:state.showPatient?.entries?.map(e=>e._id===entryId?data:e)

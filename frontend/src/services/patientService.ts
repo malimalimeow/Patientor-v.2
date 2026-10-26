@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Patient, PatientFormValues, Entry , EntryFormValues,UpdatePatientForm, updateEntryType } from "../types";
+import { Patient, PatientFormValues, Entry , EntryFormValues,UpdatePatientType,UpdateEntryType } from "../types";
 
 const apiBaseUrl = '/api';
 
@@ -53,7 +53,7 @@ const addEntry =async( id:string,object:EntryFormValues)=>{
   return data;
 };
 
-const updatePatient=async( id:string,updateData:UpdatePatientForm)=>{
+const updatePatient=async( id:string,updateData:UpdatePatientType)=>{
   const config = {
     headers:{ Authorization: token},
   };
@@ -62,7 +62,7 @@ const updatePatient=async( id:string,updateData:UpdatePatientForm)=>{
   return data;
 };
 
-const updateEntry = async(id:string,updateEntryDetails:updateEntryType,entryId:string)=>{
+const updateEntry = async(id:string,updateEntryDetails:UpdateEntryType,entryId:string)=>{
   const config = {
     headers: { Authorization: token },
   };
