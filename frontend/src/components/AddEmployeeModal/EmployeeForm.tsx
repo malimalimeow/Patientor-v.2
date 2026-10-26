@@ -1,4 +1,11 @@
-import { TextField, Select, MenuItem, Grid, Button } from "@mui/material";
+import {
+  TextField,
+  Select,
+  MenuItem,
+  Grid,
+  Button,
+  InputLabel,
+} from "@mui/material";
 import { useField } from "../../hooks/useField";
 import { Gender, NewEmployeeForm, Role } from "../../types";
 import { SyntheticEvent, useState } from "react";
@@ -24,7 +31,7 @@ const AddEmployeeForm = ({
   const { reset: resetName, ...name } = useField("text");
   const { reset: resetPassword, ...password } = useField("password");
   const { reset: resetTitle, ...title } = useField("text");
-  const { reset: resetDOB, ...dateOfBirth } = useField("text");
+  const { reset: resetDOB, ...dateOfBirth } = useField("date");
   const { reset: resetNI, ...NI } = useField("text");
   const { reset: resetAddress, ...address } = useField("text");
   const { reset: resetEmergencyContact, ...emergencyContact } =
@@ -107,7 +114,14 @@ const AddEmployeeForm = ({
   return (
     <form onSubmit={addNewEmployee}>
       {textFieldArray.map(({ label, props }) => (
-        <TextField key={label} label={label} required fullWidth {...props} />
+        <TextField
+          slotProps={{ inputLabel: { shrink: true } }}
+          key={label}
+          label={label}
+          required
+          fullWidth
+          {...props}
+        />
       ))}
 
       <Select label="Gender" fullWidth value={gender} onChange={onGenderChange}>

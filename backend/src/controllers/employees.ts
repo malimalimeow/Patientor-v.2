@@ -58,7 +58,7 @@ employeeRouter.patch("/:id/password",parser(updatePasswordSchema),async (req:Req
            const id=req.params.id;
         const loginEmployee:EmployeeType=req.employee;
     if(!loginEmployee){return res.status(401).json({error:"Insufficient permission,please login "});}
-    if (loginEmployee?.id!==id){
+    if (loginEmployee?.id!==id ||loginEmployee?.role!=="master"){
               return res.status(403).json ({error:"Insufficient Permissions"});
         }
        

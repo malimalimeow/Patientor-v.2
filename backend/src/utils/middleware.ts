@@ -23,7 +23,7 @@ export const tokenExtractor = (request: Request, _response: Response, next: Next
 };
 
 export const employeeExtractor = async (request: Request, response: Response, next: NextFunction) => {
-  if (!request.token) {return response.status(401).json({error:"token is missing"});}
+  if (!request.token) {return response.status(401).json({error:"Insufficient permission,please login"});}
   try {
       if(!process.env.SECRET){
         return response.status(500).json({error:"SECRET is not found"});

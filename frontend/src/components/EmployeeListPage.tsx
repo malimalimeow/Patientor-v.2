@@ -27,14 +27,14 @@ const EmployeeListPage = () => {
   const submitNewEmployee = async (values: NewEmployeeForm) => {
     try {
       const name = values.name;
-      createEmployee(values);
+      await createEmployee(values);
       closeModal();
       setMessage(`${name} added`, false);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         if (e?.response?.data && typeof e?.response?.data === "object") {
-          const firstError = e?.response?.data.details[0];
-          const message = `Something went wrong. Error: ${firstError?.message}`;
+          const firstError = e?.response?.data.error;
+          const message = `Something went wrong. Error: ${firstError}`;
           setMessage(`${message}`);
         } else {
           setMessage("Unrecognized axios error");

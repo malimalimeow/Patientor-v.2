@@ -50,9 +50,10 @@ const EmployeeDetails = () => {
   const employeeSelf = employee?.id === showEmployee?.id;
   console.log(employee?.id, showEmployee?.id, employee?.role);
 
-  const manager = employee?.role === "master" || employee?.role === "admin";
+  const master = employee?.role === "master";
+  const admin = employee?.role === "admin";
 
-  const showData = manager || employeeSelf;
+  const showData = master || admin || employeeSelf;
 
   console.log(showData);
 
@@ -102,7 +103,7 @@ const EmployeeDetails = () => {
           <p>Address:{showEmployee?.address}</p>
           <p>NI:{showEmployee?.NI}</p>
           <p>Emergency Contact:{showEmployee?.emergencyContact}</p>
-          {manager ? (
+          {master || admin ? (
             <>
               <Grid
                 container
@@ -125,7 +126,7 @@ const EmployeeDetails = () => {
               </Grid>
             </>
           ) : null}
-          {employeeSelf ? (
+          {employeeSelf || master ? (
             <Grid size="auto">
               <Button variant="contained" onClick={() => openModal("updatePW")}>
                 update Password

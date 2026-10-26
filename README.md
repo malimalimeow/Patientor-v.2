@@ -1,39 +1,65 @@
-# Patientor 🏥
+# Patientor v2 🏥
 
-> An advanced, customized full-stack patient and employee management web application.
-> Originally inspired by the **Full Stack Open (Part 9: TypeScript)** curriculum, this project has been heavily extended and refactored with a custom architecture, extended entry models, and comprehensive test coverage.
+//## 🌐 Live Demo
 
-Patientor is designed to streamline medical record management with role-based access control, strict type-safety, and a clean, modern UI for handling patient details and diverse medical entries.
+//[TODO]
 
----
+//## 🎥 Demo Video
 
-## 🚀 Tech Stack
+//[TODO]
 
-- **Frontend:** React, TypeScript, Material UI (MUI), Zustand
-- **Backend:** Node.js, Express, MongoDB
-- **Validation & Types:** Zod
+A full-stack patient and employee management web application built with React, TypeScript, Node.js, Express, and MongoDB.
 
----
+Originally developed as part of the [Full Stack Open](https://fullstackopen.com/en/) Part 9 TypeScript curriculum, Patientor v2 was extended into a personal project to simulate a real-world working environment. The goal was to go beyond completing course requirements and explore how a full-stack application could be developed with additional business requirements, authentication, role-based access control, data validation, and automated testing.
 
-## ✨ Key Features & Architectural Overhauls
+## ✨ Features
 
-- **Custom Domain & Entry Modeling:** Redefined and extended the core data domain, including customized **discriminated unions** for `Entry` types and enhanced role-based employee access control beyond the original course scope.
-- **Strict Data Validation & Type Safety:** Implemented end-to-end type safety across the stack using **Zod schemas** to strictly validate API payloads and catch runtime mismatch early.
-- **State & API Architecture:** Re-engineered state management using **Zustand** to seamlessly handle complex asynchronous API workflows and eliminate frontend state desynchronization.
-- **Modular Component Design:** Built reusable modal architectures to handle multiple entry types dynamically without code duplication.
-- **Modern UI Transformation:** Refactored the UI with **Material UI (MUI)** and a custom global `ThemeProvider` to provide a clean, modern, and accessible dashboard layout.
+### CRUD Operations & Access Control
 
----
+- Implemented Create, Read, Update, and Delete (CRUD) operations for patient records and employee accounts.
+- Supported multiple medical entry types using TypeScript discriminated unions.
+- Implemented authentication and three user roles: `Master`, `Admin`, and `Normal`.
+- Enforced role-based access control (RBAC) in the Express backend to restrict operations according to each role's permissions.
+- Supported password changes according to role permissions.
+- Returned appropriate HTTP status codes, including `401 Unauthorized` and `403 Forbidden`, for authentication and authorisation failures.
+- Used Zod to validate incoming data and help maintain data consistency.
+
+### Frontend Architecture
+
+- Built the user interface with React, TypeScript, and Material UI (MUI).
+- Used Zustand to manage application state and asynchronous API operations.
+- Created reusable modal components for different medical entry types.
+- Used a custom `ThemeProvider` for consistent application styling.
+
+## 🛠️ Tech Stack
+
+| Area             | Technologies                         |
+| ---------------- | ------------------------------------ |
+| Frontend         | React, TypeScript, Material UI (MUI) |
+| State Management | Zustand                              |
+| Backend          | Node.js, Express                     |
+| Database         | MongoDB                              |
+| Validation       | Zod                                  |
+| Testing          | Playwright                           |
+| CI/CD            | GitHub Actions                       |
 
 ## 🧪 Testing & Quality Assurance
 
-- **API Integration Suite:** Engineered a robust backend test suite with **55 passing integration tests**, ensuring payload consistency and preventing schema mismatch between the client and server.
-- **Automated E2E Testing:** Integrated **Playwright** to validate end-to-end user journeys and UI components.
+- **API tests:** 55 automated tests covering successful requests, authentication failures (`401`), forbidden operations (`403`), missing resources (`404`), and invalid input data.
+- **Frontend tests:** 21 Playwright tests covering successful user interactions and unauthorised responses (`401`).
+- **Continuous Integration:** GitHub Actions workflow to automatically run the test suites when code is pushed or a pull request is opened.
 
----
+## 🧠 Technical Challenges & Learning
 
-## 💡 What I Learned
+- **TypeScript:** Used discriminated unions and type guards to model different medical entry types.
+- **Data validation:** Applied Zod schemas to validate API payloads and improve consistency between the client and server.
+- **State management:** Used Zustand to organise application state and asynchronous API operations.
+- **Access control:** Designed and implemented three user roles with different permissions enforced by the backend.
+- **Reusable components:** Built modal interfaces to handle different medical entry types without unnecessary code duplication.
+- **Automated testing:** Used Playwright to test API behaviour, frontend interactions, and error-handling scenarios.
+- **Real-world development practice:** Extended a course assignment with additional requirements to practise application design, authentication, authorisation, and testing beyond the original coursework.
 
-- Deepened expertise in **TypeScript advanced types** (such as discriminated unions and type guards) to catch runtime errors at compile time.
-- Gained hands-on experience in structuring scalable **Zustand** stores for complex full-stack applications.
-- Mastered enterprise-level component styling and layout structuring using **MUI**.
+## 🚀 Future Possible Improvements
+
+- **Search and filtering:** Add search and filtering tools for patient records and employee accounts to make information easier to find.
+- **AI integration for patient records:** Explore AI-assisted summaries of patient history, such as long-term conditions, medication allergies, previous appointments, and relevant changes between records. This would require appropriate privacy safeguards and careful validation of AI-generated information.
