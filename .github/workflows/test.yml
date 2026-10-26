@@ -65,11 +65,41 @@ jobs:
 
       - name: Start backend
         working-directory: backend
-        run: npm run dev &
+        run: |
+          npm run dev > /tmp/backend.log 2>&1 &
+          echo $! > /tmp/backend.pid
+
+      - name: Wait for backend
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://localhost:3003/api/ping; then
+              echo "Backend is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Backend failed to start. Logs:"
+          cat /tmp/backend.log
+          exit 1
 
       - name: Start frontend
         working-directory: frontend
-        run: npm run dev -- --host 0.0.0.0 &
+        run: |
+          npm run dev -- --host 0.0.0.0 > /tmp/frontend.log 2>&1 &
+          echo $! > /tmp/frontend.pid
+
+      - name: Wait for frontend
+        run: |
+          for i in {1..30}; do
+            if curl -fsS http://localhost:5173/ > /dev/null; then
+              echo "Frontend is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Frontend failed to start. Logs:"
+          cat /tmp/frontend.log
+          exit 1
 
       - name: Run frontend tests
         working-directory: tests/FrontTest
