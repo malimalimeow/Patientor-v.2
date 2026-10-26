@@ -14,11 +14,9 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npm run start:test', 
-    url: 'http://localhost:3003/api/ping', 
-    reuseExistingServer: !process.env.CI,
-    env: {
-      NODE_ENV: 'test', 
-    },
-  },
+  command: 'npm test',
+  cwd: '../../backend',
+  url: 'http://localhost:3003/api/ping',
+  reuseExistingServer: !process.env.CI,
+},
 });
