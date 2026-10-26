@@ -70,9 +70,8 @@ jobs:
           SECRET: ${{ secrets.SECRET }}
           TEST_MONGODB_URI: ${{ secrets.TEST_MONGODB_URI }}
         run: |
-          npm run dev > /tmp/backend.log 2>&1 &
+          npx tsx src/index.ts > /tmp/backend.log 2>&1 &
           echo $! > /tmp/backend.pid
-
       - name: Wait for backend
         run: |
           for i in {1..30}; do
