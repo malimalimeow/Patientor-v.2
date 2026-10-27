@@ -98,6 +98,7 @@ const EmployeeDetails = () => {
             {showEmployee?.name}
             <GenderIcon fontSize="large" />
           </h2>
+          <p>username:{showEmployee?.username}</p>
           <p>Title:{showEmployee?.title}</p>
           <p>Date of birth:{showEmployee?.dateOfBirth}</p>
           <p>Address:{showEmployee?.address}</p>
