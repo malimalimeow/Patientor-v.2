@@ -8,8 +8,8 @@ import employeeRouter from "./controllers/employees.ts";
 import loginRouter from "./controllers/login.ts";
 import patientRouter from "./controllers/patients.ts";
 import testingRouter from "./controllers/testing.ts";
+import cors from "cors";
 const  app = express();
-
 
 mongoose
   .connect(config.MONGODB_URI as string, { family: 4 })
@@ -21,6 +21,11 @@ mongoose
   });
 
 //app.use(express.static("dist"));
+
+app.use(cors({
+  origin: "https://patientorv2.netlify.app",
+}));
+
 app.use(express.json());
 app.use(middleware.requestLogger);
 
