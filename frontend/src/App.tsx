@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import axios from "axios";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
 import {
   Button,
@@ -23,6 +22,7 @@ import EmployeeDetails from "./components/EmployeeDetails";
 import { useEmployeeActions } from "./stores/employeeStore";
 import { useLoginAction, useLoginEmployee } from "./stores/loginStore";
 import "./app.css";
+import apiClient from "./services/apiClient";
 
 const App = () => {
   const { fetchPatientList } = usePatientActions();
@@ -44,7 +44,7 @@ const App = () => {
 
   useEffect(() => {
     const ping = async () => {
-      await axios.get<string>("api/ping");
+      await apiClient.get<string>("api/ping");
       console.log("Backend ready！");
     };
     void ping();
