@@ -20,7 +20,7 @@ const getOneEmployee=async(id:string):Promise<EmployeeType|null>=>{
 
 const addEmployee=async(newData:NewEmployeeType):Promise<Omit<EmployeeType,"passwordHash">>=>{
     const firstLetter = newData.name?.charAt(0).toUpperCase()||"M";
-    const shortUUID= uuid().slice(0,6);
+    const shortUUID= uuid().replace(/-/g, "").slice(0,8);
     const userId=`${firstLetter}${shortUUID}`;
     const saltRounds=10;
 

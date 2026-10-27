@@ -13,7 +13,7 @@ export const NewEmployeeSchema = z.object({
     password: z.string().trim().min(8, "password accept 8-16 characters only").max(16,"password accept 8-16 characters only").regex(/^[0-9a-zA-Z!*#@$%^&]+$/,"password contains invalid characters"),
     title:z.string().trim().min(1,"title required"),
     dateOfBirth: z.string().date(),
-    NI:z.string().trim().regex(/^[A-CEG-HJ-PR-TW-Z][A-CEG-HJ-NP-TW-Z][0-9]{6}[ABCD]$/,"Invalid UK National Insurance Number format"),
+    NI:z.string().trim().regex(/^[A-Z][A-Z][0-9]{6}[ABCD]$/,"Invalid UK National Insurance Number format"),
     address: z.string().trim().min(1,"address required"),
     emergencyContact: z.string().trim().regex(/^[0-9]{8,15}$/,"Invalid emergency contact number"),
     gender: z.nativeEnum(Gender),
@@ -67,7 +67,7 @@ export const HealthCheckSchema= NewBaseEntrySchema.extend({
 export const  InpatientSchema =NewBaseEntrySchema.extend({
     type: z.literal("Inpatient"),
     admissionDate: z.string().date(),
-    admissionReason:z.string(),
+    admissionReason:z.string().trim().min(1,"Admission Reason required"),
     dischargeDate: z.string().date().optional(),
     ward:z.string().optional(),
     bedNumber:z.string().optional(),
@@ -87,9 +87,9 @@ export const OutpatientSchema=NewBaseEntrySchema.extend({
     temperature:z.coerce.number()
    }).partial().optional(),
    prescription:z.array(z.object({
-    medication:z.string(),
-    dosage:z.string(),
-    frequency:z.string(),
+    medication:z.string().trim().min(1, "medication required"),
+    dosage:z.string().trim().min(1, "dosage required"),
+    frequency:z.string().trim().min(1, "frequency required"),
    })).optional(),
    followUpDate:z.string().date().optional()
 });

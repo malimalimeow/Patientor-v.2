@@ -1,0 +1,48 @@
+import type { NewEmployeeType } from "../zodSchemas.ts"; 
+
+export const employeeSeedData:NewEmployeeType[] = [
+{
+name: "Oliver Bennett",
+password: "AdminDemo123!",
+title: "Practice Manager",
+dateOfBirth: "1985-04-16",
+NI: "AB123456C",
+address: "12 Example Street, Manchester",
+emergencyContact: "07123456789",
+gender: "male",
+role: "admin",
+},
+{
+name: "Amy Emma",
+password: "AmyDemo123!",
+title: "Registered Nurse",
+dateOfBirth: "1992-08-21",
+NI: "CD234567A",
+address: "24 Example Road, Manchester",
+emergencyContact: "07234567890",
+gender: "female",
+role: "normal",
+},
+{
+name: "Noah Williams",
+password: "NoahDemo123!",
+title: "Healthcare Assistant",
+dateOfBirth: "1997-02-11",
+NI: "EF345678B",
+address: "8 Sample Avenue, Salford",
+emergencyContact: "07345678901",
+gender: "male",
+role: "normal",
+},
+{
+name: "Sophie Taylor",
+password: "SophieDemo123!",
+title: "Receptionist",
+dateOfBirth: "1994-11-05",
+NI: "GH456789D",
+address: "31 Sample Road, Bolton",
+emergencyContact: "07456789012",
+gender: "female",
+role: "normal",
+},
+];

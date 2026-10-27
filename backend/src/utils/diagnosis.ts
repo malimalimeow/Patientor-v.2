@@ -1,20 +1,6 @@
-import mongoose from "mongoose";
-import Diagnosis from "../models/dignosis.ts";
-import type { DiagnosisType } from "../zodSchemas.ts";
-import config from "./config.ts";
+import type{ DiagnosisType } from "../zodSchemas.ts";
 
-console.log("add Diagnosis");
-
-const createFirstLogOfDiagnosis = async()=>{
-    try{
-         if(!config.MONGODB_URI){throw new Error("Can't find Db");}
-                await mongoose.connect(config.MONGODB_URI);
-                console.log("connected to Mongo Db");
-
-      await Diagnosis.deleteMany({});
-      
-
-    const diagnosisSeedData: DiagnosisType[] = [
+export const diagnosisSeedData: DiagnosisType[] = [
   //  (Respiratory)
   { code: "J06.9", name: "Acute upper respiratory infection, unspecified", latin: "Infectio acuta respiratoria superior non specificata" },
   { code: "J03.0", name: "Streptococcal tonsillitis", latin: "Tonsillitis (palatina) streptococcica" },
@@ -82,16 +68,3 @@ const createFirstLogOfDiagnosis = async()=>{
   { code: "Z74.3", name: "Need for continuous supervision" },
   { code: "Z98.89", name: "Other specified postprocedural states" }
 ];
-
-    const insertedDiagnosis = await Diagnosis.insertMany(diagnosisSeedData);
-    console.log(`added ${insertedDiagnosis.length} diagnosis codes`);
-        }catch(error){
-            console.log("failed to add diagnosis",error);
-        }finally{
-            await mongoose.connection.close();
-        }
-    };
-
-    void createFirstLogOfDiagnosis();
-    
-    

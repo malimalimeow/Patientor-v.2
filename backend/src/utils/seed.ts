@@ -1,44 +1,49 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import Employee from "../models/employee.ts";
+import Patient from "../models/patient.ts";
+import Diagnosis from "../models/dignosis.ts";
 import config from "./config.ts";
+import { diagnosisSeedData } from "./diagnosis.ts"
 
 console.log("ready??");
 
-const createFirstMaster =async()=>{
+const seed =async()=>{
     try{
         if(!config.MONGODB_URI){throw new Error("Can't find Db");}
         await mongoose.connect(config.MONGODB_URI);
         console.log("connected to Mongo Db");
 
-        const existingMaster = await Employee.findOne({role:"master"});
-        if (existingMaster){
-            console.log("Master already exists.");
-            return;
-        }
+        await Patient.deleteMany({});
+        await Employee.deleteMany({});
+        await Diagnosis.deleteMany({});
 
+        //add diagnosis
+         const insertedDiagnosis = await Diagnosis.insertMany(diagnosisSeedData);
+        console.log(`added ${insertedDiagnosis.length} diagnosis codes`);
+
+        //add master employee
         const passwordHash = await bcrypt.hash("Password123!",10);
-
         const master = new Employee({
-           name: "Master Admin",
-      username: "M1a2b3c", 
-      passwordHash,
-      title: "System Master Administrator",
-      dateOfBirth: "1990-01-01",
-      NI: "MA111111A",
-      address: "Headquarters 1, London",
-      emergencyContact: 91111111,
-      gender: "other",
-      role: "master" 
+           name: "Master Admin H",
+            username: "H2b3c4d", 
+            passwordHash,
+            title: "System Master Administrator",
+            dateOfBirth: "1994-09-28",
+            NI: "BC123456A",
+            address: "14,Liverpool",
+            emergencyContact: "123456789",
+            gender: "female",
+            role: "master" 
         });
 
     await master.save();
     console.log("master ready");
     }catch(error){
-        console.log("failed to create Master",error);
+        console.log("something went wrong",error);
     }finally{
         await mongoose.connection.close();
     }
 };
 
-void createFirstMaster();
+void seed();
