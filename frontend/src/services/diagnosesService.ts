@@ -1,9 +1,9 @@
-import axios from "axios";
+import apiClient from "./apiClient"
 
 const baseUrl="/api/diagnoses";
 
 const getAll=async()=>{
-    const {data}= await axios.get(baseUrl);
+    const {data}= await apiClient.get(baseUrl);
 
     return data;
 };

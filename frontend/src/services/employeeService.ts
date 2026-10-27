@@ -1,5 +1,5 @@
-import axios from "axios";
 import { NewEmployeeForm ,updatePasswordForm,UpdateEmployeeType} from "../types";
+import apiClient from "./apiClient"
 
 const baseUrl="/api/employees";
 
@@ -15,7 +15,7 @@ const getAll=async()=>{
     headers: { Authorization: token },
   };
 
-    const {data}= await axios.get(baseUrl,config);
+    const {data}= await apiClient.get(baseUrl,config);
 
     return data;
 };
@@ -25,7 +25,7 @@ const getOne = async(id:string)=>{
     headers: { Authorization: token },
   };
 
-    const {data}= await axios.get(`${baseUrl}/${id}`,config);
+    const {data}= await apiClient.get(`${baseUrl}/${id}`,config);
     return data;
 };
 
@@ -34,7 +34,7 @@ const createNewEmployee = async(object:NewEmployeeForm)=>{
     headers: { Authorization: token },
   };
 
-    const {data}=await axios.post(baseUrl,object,config);
+    const {data}=await apiClient.post(baseUrl,object,config);
     return data;
 };
 
@@ -43,7 +43,7 @@ const updatePassword= async(id:string,object:updatePasswordForm)=>{
     headers: { Authorization: token },
   };
 
-    const {data}=await axios.patch(`${baseUrl}/${id}/password`,object,config);
+    const {data}=await apiClient.patch(`${baseUrl}/${id}/password`,object,config);
     return data;
 };
 
@@ -52,7 +52,7 @@ const updateDetails = async(id:string, object:UpdateEmployeeType)=>{
     headers: { Authorization: token },
   };
 
-    const {data}=await axios.patch(`${baseUrl}/${id}/details`,object,config);
+    const {data}=await apiClient.patch(`${baseUrl}/${id}/details`,object,config);
     return data;
 };
 
@@ -61,7 +61,7 @@ const deleteEmployee = async (id:string)=>{
     headers: { Authorization: token },
   };
 
-    const {data}= await axios.delete(`${baseUrl}/${id}`,config);
+    const {data}= await apiClient.delete(`${baseUrl}/${id}`,config);
     return data;
 };
 

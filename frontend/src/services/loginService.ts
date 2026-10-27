@@ -1,5 +1,4 @@
-import axios from "axios";
-
+import apiClient from "./apiClient"
 import { loginForm} from "../types";
 
 const baseUrl="/api/login";
@@ -10,14 +9,14 @@ const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
 
-    const {data}= await axios.get(`${baseUrl}/auth`,config);
+    const {data}= await apiClient.get(`${baseUrl}/auth`,config);
 
     return data;
 };
 
 
 const toLogin = async(object:loginForm)=>{
-    const {data}= await axios.post(baseUrl,object);
+    const {data}= await apiClient.post(baseUrl,object);
 
     return data;
 };

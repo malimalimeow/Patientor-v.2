@@ -1,7 +1,7 @@
-import axios from "axios";
+import apiClient from "./apiClient"
 import { Patient, PatientFormValues, Entry , EntryFormValues,UpdatePatientType,UpdateEntryType } from "../types";
 
-const apiBaseUrl = '/api';
+const apiBaseUrl = `${apiClient}/api`;
 
 let token:string|null = null;
 
@@ -15,7 +15,7 @@ const getAll = async () => {
     headers: { Authorization: token },
   };
  
-  const { data } = await axios.get<Patient[]>(
+  const { data } = await apiClient.get<Patient[]>(
     `${apiBaseUrl}/patients`,config
   );
 
@@ -26,7 +26,7 @@ const getOne =async(id:string)=>{
   const config = {
     headers: { Authorization: token },
   };
-  const {data}=await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`,config);
+  const {data}=await apiClient.get<Patient>(`${apiBaseUrl}/patients/${id}`,config);
   return data;
 };
 
@@ -34,7 +34,7 @@ const create = async (object: PatientFormValues) => {
   const config = {
     headers: { Authorization: token },
   };
-  const { data } = await axios.post<Patient>(
+  const { data } = await apiClient.post<Patient>(
     `${apiBaseUrl}/patients`,
     object,config
   );
@@ -46,7 +46,7 @@ const addEntry =async( id:string,object:EntryFormValues)=>{
   const config = {
     headers: { Authorization: token },
   };
-  const{data}=await axios.post<Entry>(
+  const{data}=await apiClient.post<Entry>(
     `${apiBaseUrl}/patients/${id}/entries`,
     object,config
   );
@@ -57,7 +57,7 @@ const updatePatient=async( id:string,updateData:UpdatePatientType)=>{
   const config = {
     headers:{ Authorization: token},
   };
-  const {data}= await axios.patch(`${apiBaseUrl}/patients/${id}`,updateData,config);
+  const {data}= await apiClient.patch(`${apiBaseUrl}/patients/${id}`,updateData,config);
 
   return data;
 };
@@ -66,7 +66,7 @@ const updateEntry = async(id:string,updateEntryDetails:UpdateEntryType,entryId:s
   const config = {
     headers: { Authorization: token },
   };
-   const {data} = await axios.patch<Entry>(
+   const {data} = await apiClient.patch<Entry>(
     `${apiBaseUrl}/patients/${id}/entries/${entryId}`,updateEntryDetails,config
   );
 
@@ -78,7 +78,7 @@ const deleteEntry =async(id:string,entryId:string)=>{
   const config = {
     headers: { Authorization: token },
   };
-  const {data} = await axios.delete<Entry>(
+  const {data} = await apiClient.delete<Entry>(
     `${apiBaseUrl}/patients/${id}/entries/${entryId}`,config
   );
   return data;
@@ -88,7 +88,7 @@ const deletePatient = async(id:string)=>{
   const config = {
     headers: { Authorization: token },
   };
-  const {data} = await axios.delete<Patient>(`${apiBaseUrl}/patients/${id}`,config);
+  const {data} = await apiClient.delete<Patient>(`${apiBaseUrl}/patients/${id}`,config);
   return data;
 };
 
