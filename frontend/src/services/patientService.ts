@@ -1,7 +1,7 @@
 import apiClient from "./apiClient"
 import { Patient, PatientFormValues, Entry , EntryFormValues,UpdatePatientType,UpdateEntryType } from "../types";
 
-const apiBaseUrl = `${apiClient}/api`;
+const apiBaseUrl = "/api/patients";
 
 let token:string|null = null;
 
@@ -16,7 +16,7 @@ const getAll = async () => {
   };
  
   const { data } = await apiClient.get<Patient[]>(
-    `${apiBaseUrl}/patients`,config
+    `${apiBaseUrl}`,config
   );
 
   return data;
@@ -26,7 +26,7 @@ const getOne =async(id:string)=>{
   const config = {
     headers: { Authorization: token },
   };
-  const {data}=await apiClient.get<Patient>(`${apiBaseUrl}/patients/${id}`,config);
+  const {data}=await apiClient.get<Patient>(`${apiBaseUrl}/${id}`,config);
   return data;
 };
 
@@ -35,7 +35,7 @@ const create = async (object: PatientFormValues) => {
     headers: { Authorization: token },
   };
   const { data } = await apiClient.post<Patient>(
-    `${apiBaseUrl}/patients`,
+    `${apiBaseUrl}`,
     object,config
   );
 
@@ -47,7 +47,7 @@ const addEntry =async( id:string,object:EntryFormValues)=>{
     headers: { Authorization: token },
   };
   const{data}=await apiClient.post<Entry>(
-    `${apiBaseUrl}/patients/${id}/entries`,
+    `${apiBaseUrl}/${id}/entries`,
     object,config
   );
   return data;
@@ -57,7 +57,7 @@ const updatePatient=async( id:string,updateData:UpdatePatientType)=>{
   const config = {
     headers:{ Authorization: token},
   };
-  const {data}= await apiClient.patch(`${apiBaseUrl}/patients/${id}`,updateData,config);
+  const {data}= await apiClient.patch(`${apiBaseUrl}/${id}`,updateData,config);
 
   return data;
 };
@@ -67,7 +67,7 @@ const updateEntry = async(id:string,updateEntryDetails:UpdateEntryType,entryId:s
     headers: { Authorization: token },
   };
    const {data} = await apiClient.patch<Entry>(
-    `${apiBaseUrl}/patients/${id}/entries/${entryId}`,updateEntryDetails,config
+    `${apiBaseUrl}/${id}/entries/${entryId}`,updateEntryDetails,config
   );
 
   return data;
@@ -79,7 +79,7 @@ const deleteEntry =async(id:string,entryId:string)=>{
     headers: { Authorization: token },
   };
   const {data} = await apiClient.delete<Entry>(
-    `${apiBaseUrl}/patients/${id}/entries/${entryId}`,config
+    `${apiBaseUrl}/${id}/entries/${entryId}`,config
   );
   return data;
 };
@@ -88,7 +88,7 @@ const deletePatient = async(id:string)=>{
   const config = {
     headers: { Authorization: token },
   };
-  const {data} = await apiClient.delete<Patient>(`${apiBaseUrl}/patients/${id}`,config);
+  const {data} = await apiClient.delete<Patient>(`${apiBaseUrl}/${id}`,config);
   return data;
 };
 

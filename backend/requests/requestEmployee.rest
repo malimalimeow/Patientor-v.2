@@ -3,13 +3,13 @@ Content-Type: application/json
 
 {
   "username": "M1a2b3c",
-  "password":"Password1234!"
+  "password":"Password123!"
 }
 
 ###
 
 GET http://localhost:3003/api/employees
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9vIExldW5nIiwiaWQiOiI2YTg0YmNmY2JiY2M0ODg3ZjE1MDFmYjIiLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE3ODg5MDM1OTcsImV4cCI6MTc4ODkwNzE5N30.S7H12IHKwBNG6_7Q7EtwxyycLlxaQc1DljzZX0aA-4o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YWRmZjYzMWMxYWNkYjdhN2JmOGMxMWYiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzkzMTI1MzMyLCJleHAiOjE3OTMyMTE3MzJ9.WuhTkvYKwKtsvVXcbjU8JeLzs2-kwQnqtS86Y9GgP7I
 
 
 ###
