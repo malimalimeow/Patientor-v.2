@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import Employee from "../models/employee.ts";
-import Patient from "../models/patient.ts";
 import Diagnosis from "../models/dignosis.ts";
 import config from "./config.ts";
 import { diagnosisSeedData } from "./diagnosis.ts"
@@ -14,8 +13,6 @@ const seed =async()=>{
         await mongoose.connect(config.MONGODB_URI);
         console.log("connected to Mongo Db");
 
-        await Patient.deleteMany({});
-        await Employee.deleteMany({});
         await Diagnosis.deleteMany({});
 
         //add diagnosis
@@ -36,7 +33,7 @@ const seed =async()=>{
             gender: "female",
             role: "master" 
         });
-
+    
     await master.save();
     console.log("master ready");
     }catch(error){
