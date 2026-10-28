@@ -1,10 +1,10 @@
 # Patientor v2 🏥
 
-//## 🌐 Live Demo
+## 🌐 Live Demo
 
-//[TODO]
+[https://patientorv2.netlify.app/]
 
-//## 🎥 Demo Video
+## 🎥 Demo Video
 
 //[TODO]
 
