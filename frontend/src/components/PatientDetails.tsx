@@ -118,8 +118,8 @@ const PatientDetails = () => {
         {showPatient?.name}
         <GenderIcon color="primary" fontSize="large" />
       </h2>
-      <p>occupation:{showPatient?.occupation}</p>
-      <p>date of birth:{showPatient?.dateOfBirth}</p>
+      <p>Occupation:{showPatient?.occupation}</p>
+      <p>Date of birth:{showPatient?.dateOfBirth}</p>
 
       {modalOpen === "updatePatient" && <UpdatePatientModal />}
       <Button variant="contained" onClick={() => openModal("updatePatient")}>
