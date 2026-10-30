@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import { useEmployeeActions } from "../stores/employeeStore";
 import { usePatientActions } from "../stores/patientStore";
-import { ChangeEvent, ReactEventHandler, SyntheticEvent } from "react";
+import { ChangeEvent } from "react";
 
 interface SearchProps {
   placeholder: string;
