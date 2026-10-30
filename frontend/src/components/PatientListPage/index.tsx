@@ -58,7 +58,10 @@ const PatientListPage = () => {
       <Box>
         <Typography align="center" variant="h6">
           Patient list
-          <CustomizedInputBase placeholder="search name or birth year" />
+          <CustomizedInputBase
+            placeholder="search name or birth year"
+            usedPage="patient"
+          />
         </Typography>
       </Box>
       <Divider sx={{ mb: 2 }} />

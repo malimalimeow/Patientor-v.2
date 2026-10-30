@@ -142,7 +142,10 @@ const PatientDetails = () => {
         <Box>
           <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>
             Records
-            <CustomizedInputBase placeholder="search keyword" />
+            <CustomizedInputBase
+              placeholder="search keyword"
+              usedPage="patient"
+            />
           </Typography>
           <Divider sx={{ mb: 2 }} />
         </Box>

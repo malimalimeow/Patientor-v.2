@@ -59,7 +59,7 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
               ? "#D32F2F"
               : "#C62828";
       return (
-        <div>
+        <Box sx={{ mb: 1, mt: 1 }}>
           <Accordion slotProps={{ heading: { component: "h4" } }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -89,24 +89,26 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
 
               <Divider sx={{ mb: 2, mt: 2, gap: 2 }} />
 
-              <Typography variant="subtitle1">DiagnosisCodes</Typography>
-              <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-                {entry.diagnosisCodes?.map((code) => (
-                  <Chip
-                    key={code}
-                    label={code}
-                    size="medium"
-                    variant="outlined"
-                  />
-                ))}
-              </Box>
+              {entry.diagnosisCodes?.length !== 0 && (
+                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                  <Typography variant="subtitle1">DiagnosisCodes</Typography>
+                  {entry.diagnosisCodes?.map((code) => (
+                    <Chip
+                      key={code}
+                      label={code}
+                      size="medium"
+                      variant="outlined"
+                    />
+                  ))}
+                </Box>
+              )}
             </AccordionDetails>
           </Accordion>
-        </div>
+        </Box>
       );
     case "Inpatient":
       return (
-        <div>
+        <Box sx={{ mb: 1, mt: 1 }}>
           <Accordion slotProps={{ heading: { component: "h4" } }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -175,25 +177,27 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
 
               <Divider sx={{ mb: 2, mt: 2, gap: 2 }} />
 
-              <Typography variant="subtitle1">DiagnosisCodes</Typography>
-              <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-                {entry.diagnosisCodes?.map((code) => (
-                  <Chip
-                    key={code}
-                    label={code}
-                    size="medium"
-                    variant="outlined"
-                  />
-                ))}
-              </Box>
+              {entry.diagnosisCodes?.length !== 0 && (
+                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                  <Typography variant="subtitle1">DiagnosisCodes</Typography>
+                  {entry.diagnosisCodes?.map((code) => (
+                    <Chip
+                      key={code}
+                      label={code}
+                      size="medium"
+                      variant="outlined"
+                    />
+                  ))}
+                </Box>
+              )}
             </AccordionDetails>
           </Accordion>
-        </div>
+        </Box>
       );
 
     case "Outpatient":
       return (
-        <div>
+        <Box sx={{ mb: 1, mt: 1 }}>
           <Accordion slotProps={{ heading: { component: "h4" } }}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -220,10 +224,9 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
                 <Typography>Follow up Date:{entry.followUpDate}</Typography>
               )}
 
-              <Divider sx={{ mb: 2, mt: 2, gap: 2 }} />
-
               {entry.vitalSigns && (
                 <Box sx={{ mb: 2 }}>
+                  <Divider sx={{ mb: 2, mt: 2, gap: 2 }} />
                   <Typography variant="h6" sx={{ mb: 1 }}>
                     Vital Sign{" "}
                   </Typography>
@@ -234,12 +237,11 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
                       temperature: {entry.vitalSigns.temperature}
                     </Typography>
                   </Stack>
+                  <Divider sx={{ my: 2 }} />
                 </Box>
               )}
 
-              <Divider sx={{ my: 2 }} />
-
-              {entry.prescription && (
+              {entry.prescription?.length !== 0 && (
                 <Box sx={{ mb: 2 }}>
                   <Typography variant="h6" sx={{ mb: 1 }}>
                     Prescription
@@ -256,20 +258,22 @@ export const EntryDetails = ({ entry }: { entry: Entry }) => {
 
               <Divider sx={{ mb: 2, mt: 2, gap: 2 }} />
 
-              <Typography variant="subtitle1">DiagnosisCodes</Typography>
-              <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-                {entry.diagnosisCodes?.map((code) => (
-                  <Chip
-                    key={code}
-                    label={code}
-                    size="medium"
-                    variant="outlined"
-                  />
-                ))}
-              </Box>
+              {entry.diagnosisCodes?.length !== 0 && (
+                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                  <Typography variant="subtitle1">DiagnosisCodes</Typography>
+                  {entry.diagnosisCodes?.map((code) => (
+                    <Chip
+                      key={code}
+                      label={code}
+                      size="medium"
+                      variant="outlined"
+                    />
+                  ))}
+                </Box>
+              )}
             </AccordionDetails>
           </Accordion>
-        </div>
+        </Box>
       );
 
     default:

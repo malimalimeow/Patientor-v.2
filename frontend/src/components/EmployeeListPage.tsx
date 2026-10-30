@@ -58,7 +58,10 @@ const EmployeeListPage = () => {
       <Box>
         <Typography align="center" variant="h6">
           Employee list
-          <CustomizedInputBase placeholder="search name or title" />
+          <CustomizedInputBase
+            placeholder="search name or title"
+            usedPage="employee"
+          />
         </Typography>
       </Box>
       <Divider sx={{ mb: 2 }} />

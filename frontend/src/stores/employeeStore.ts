@@ -5,11 +5,14 @@ import employeeService from "../services/employeeService";
 import { devtools } from "zustand/middleware";
 
 import { EmployeeType,NewEmployeeForm ,updatePasswordForm,UpdateEmployeeType} from "../types";
+import { useShallow } from "zustand/shallow";
 
 interface employeeState{
     employee:EmployeeType[]|[]
     showEmployee:EmployeeType|null
+    filter:string|""
     actions:{
+        setFilter:(v:string)=>void
         getAllEmployee:()=>Promise<EmployeeType[]>
         getOneEmployee:(id:string)=>Promise<EmployeeType>
         createEmployee:(values:NewEmployeeForm)=>Promise<EmployeeType>
@@ -22,7 +25,9 @@ interface employeeState{
 export const useEmployeeStore=create<employeeState>()(devtools((set)=>({
     employee:[],
     showEmployee:null,
+    filter:"",
     actions:{
+        setFilter:value=>set(()=>({filter:value})),
         getAllEmployee:async()=>{
             const allEmployee= await employeeService.getAll();
             set({employee:allEmployee});
@@ -58,6 +63,10 @@ export const useEmployeeStore=create<employeeState>()(devtools((set)=>({
 })));
 
 
-export const useEmployee=()=>useEmployeeStore(state=>state.employee);
+export const useEmployee=()=>{
+    const employee=useEmployeeStore(useShallow(state=>state.employee))
+    const filter=useEmployeeStore((state=>state.filter)).toLowerCase().trim()
+    if(filter!=="")return employee.filter(e=>e.name.toLowerCase().includes(filter)||e.title.toLowerCase().includes(filter))
+    return employee}
 export const useShowEmployee=()=>useEmployeeStore(state=>state.showEmployee);
 export const useEmployeeActions=()=>useEmployeeStore(state=>state.actions);

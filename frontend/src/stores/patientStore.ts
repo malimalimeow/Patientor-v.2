@@ -1,12 +1,15 @@
 import { create } from "zustand";
 import type { Entry, EntryFormValues,  Patient,PatientFormValues, UpdateEntryType, UpdatePatientType} from "../types";
 import patientService from "../services/patientService";
+import { useShallow } from "zustand/shallow";
 
 interface patientState {
     patients:Patient[]|[],
     showPatient:Patient|null,
     toUpdateEntry:Entry|null,
+    filter:string|""
     actions:{
+        setFilter:(v:string)=>void
         selectedEntry:(entry:Entry|null)=>void
         fetchPatientList:()=>Promise<void>
         getOnePatient:(id:string)=>Promise<void>
@@ -23,7 +26,9 @@ export const usePatientStore=create<patientState>((set)=>({
     patients:[],
     showPatient:null,
     toUpdateEntry:null,
+    filter:"",
     actions:{
+        setFilter:value=>set(()=>({filter:value})),
         selectedEntry:(entry)=>set({toUpdateEntry:entry}),
         fetchPatientList: async()=>{
             const data= await patientService.getAll();
@@ -69,7 +74,20 @@ export const usePatientStore=create<patientState>((set)=>({
 }));
 
 export const useToUpdateEntry=()=>usePatientStore((state)=>state.toUpdateEntry);
-export const usePatients=()=>usePatientStore((state)=>state.patients);
-export const useShowPatient=()=> usePatientStore((state)=>state.showPatient);
+export const usePatients=()=>{
+    const patients=usePatientStore(useShallow((state)=>state.patients));
+const filter=usePatientStore((state)=>state.filter).trim().toLowerCase()
+if (filter!=="") return patients.filter(p=> p.name.toLowerCase().includes(filter) ||
+      p.dateOfBirth?.includes(filter))
+
+return patients
+}
+
+export const useShowPatient=()=> {
+    const showPatient=usePatientStore(useShallow((state)=>state.showPatient))
+const filter=usePatientStore((state)=>state.filter).trim().toLowerCase()
+if (filter!=="" && showPatient) return {...showPatient,entries:showPatient?.entries?.filter(entry=>JSON.stringify(entry).toLowerCase().includes(filter))}
+
+return showPatient}
 export const usePatientActions=()=> usePatientStore((state)=>state.actions);
 

@@ -77,12 +77,12 @@ const App = () => {
         <Router>
           <Container>
             <Paper
-              elevation={0}
+              elevation={2}
               sx={{
-                p: 5,
+                p: 10,
                 border: "1px solid #e2e8f0",
                 borderRadius: 3,
-                marginTop: 3,
+                marginTop: 5,
               }}
             >
               <Box
