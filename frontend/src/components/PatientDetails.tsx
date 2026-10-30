@@ -3,7 +3,7 @@ import FemaleIcon from "@mui/icons-material/Female";
 import MaleIcon from "@mui/icons-material/Male";
 import TransgenderIcon from "@mui/icons-material/Transgender";
 import "../patientDetail.css";
-import { Button } from "@mui/material";
+import { Box, Button, Divider, Typography } from "@mui/material";
 import AddEntryModal from "./AddEntryModal/AddEntryModal";
 import axios from "axios";
 import { useNotiAction } from "../stores/notificationStore";
@@ -16,6 +16,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { EntryDetails } from "./entryDetails";
 import { useEffect } from "react";
 import Notification from "./notification";
+import CustomizedInputBase from "./searchComponent";
 
 const PatientDetails = () => {
   const navigate = useNavigate();
@@ -122,7 +123,11 @@ const PatientDetails = () => {
       <p>Date of birth:{showPatient?.dateOfBirth}</p>
 
       {modalOpen === "updatePatient" && <UpdatePatientModal />}
-      <Button variant="contained" onClick={() => openModal("updatePatient")}>
+      <Button
+        variant="contained"
+        sx={{ mt: 1, mb: 1, mr: 1 }}
+        onClick={() => openModal("updatePatient")}
+      >
         Update Patient details
       </Button>
 
@@ -133,7 +138,15 @@ const PatientDetails = () => {
         Add New Entry
       </Button>
 
-      {showPatient && <h3>Records</h3>}
+      {showPatient.entries?.length !== 0 && (
+        <Box>
+          <Typography variant="h6" sx={{ mt: 2, mb: 2 }}>
+            Records
+            <CustomizedInputBase placeholder="search keyword" />
+          </Typography>
+          <Divider sx={{ mb: 2 }} />
+        </Box>
+      )}
 
       {showPatient?.entries?.map((entry) => (
         <div key={entry.id || entry._id}>
@@ -142,7 +155,13 @@ const PatientDetails = () => {
       ))}
 
       {loginEmployeeRole === "master" && (
-        <Button onClick={() => deleteThisPatient()}>Delete Record</Button>
+        <Button
+          variant="contained"
+          sx={{ mt: 2 }}
+          onClick={() => deleteThisPatient()}
+        >
+          Delete Patient
+        </Button>
       )}
     </div>
   );

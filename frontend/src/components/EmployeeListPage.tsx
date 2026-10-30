@@ -8,6 +8,7 @@ import {
   TableCell,
   TableRow,
   TableBody,
+  Divider,
 } from "@mui/material";
 import axios from "axios";
 import { NewEmployeeForm, EmployeeType } from "../types";
@@ -16,6 +17,7 @@ import { useEmployee, useEmployeeActions } from "../stores/employeeStore";
 import { useModalActions, useModalOpen } from "../stores/modalStore";
 import AddEmployeeModal from "./AddEmployeeModal";
 import Notification from "./notification";
+import CustomizedInputBase from "./searchComponent";
 
 const EmployeeListPage = () => {
   const { setMessage } = useNotiAction();
@@ -56,8 +58,10 @@ const EmployeeListPage = () => {
       <Box>
         <Typography align="center" variant="h6">
           Employee list
+          <CustomizedInputBase placeholder="search name or title" />
         </Typography>
       </Box>
+      <Divider sx={{ mb: 2 }} />
       <Table sx={{ marginBottom: "1em" }}>
         <TableHead sx={{ background: "#f8fafc" }}>
           <TableRow>

@@ -8,6 +8,7 @@ import {
   TableCell,
   TableRow,
   TableBody,
+  Divider,
 } from "@mui/material";
 import axios from "axios";
 import { PatientFormValues, Patient } from "../../types";
@@ -17,6 +18,7 @@ import { useNotiAction } from "../../stores/notificationStore";
 import { usePatients, usePatientActions } from "../../stores/patientStore";
 import { useModalActions } from "../../stores/modalStore";
 import Notification from "../notification";
+import CustomizedInputBase from "../searchComponent";
 
 const PatientListPage = () => {
   const { setMessage } = useNotiAction();
@@ -56,8 +58,10 @@ const PatientListPage = () => {
       <Box>
         <Typography align="center" variant="h6">
           Patient list
+          <CustomizedInputBase placeholder="search name or birth year" />
         </Typography>
       </Box>
+      <Divider sx={{ mb: 2 }} />
       <Table sx={{ marginBottom: "1em" }}>
         <TableHead sx={{ background: "#f8fafc" }}>
           <TableRow>

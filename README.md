@@ -2,7 +2,7 @@
 
 ## 🌐 Live Demo
 
-[https://patientorv2.netlify.app/]
+[Demo Link](https://patientorv2.netlify.app/)
 
 ## 🎥 Demo Video
 
