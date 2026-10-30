@@ -12,6 +12,7 @@ import { useModalActions, useModalOpen } from "../stores/modalStore";
 import UpdatePasswordModal from "./updatePWModal";
 import UpdateDetailsModal from "./updateDetailsModal";
 import { useEffect } from "react";
+import ResetPasswordModal from "./resetPWModal";
 
 const EmployeeDetails = () => {
   const { id } = useParams();
@@ -128,14 +129,21 @@ const EmployeeDetails = () => {
               </Grid>
             </>
           ) : null}
-          {employeeSelf || master ? (
+          {employeeSelf ? (
             <Grid size="auto">
               <Button variant="contained" onClick={() => openModal("updatePW")}>
                 update Password
               </Button>
             </Grid>
-          ) : null}
+          ) : (
+            <Grid size="auto">
+              <Button variant="contained" onClick={() => openModal("resetPW")}>
+                reset Password
+              </Button>
+            </Grid>
+          )}
           {modalOpen === "updatePW" && <UpdatePasswordModal />}
+          {modalOpen === "resetPW" && <ResetPasswordModal />}
         </div>
       )}
     </>

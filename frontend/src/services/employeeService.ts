@@ -1,4 +1,4 @@
-import { NewEmployeeForm ,updatePasswordForm,UpdateEmployeeType} from "../types";
+import { NewEmployeeForm ,updatePasswordForm,UpdateEmployeeType, resetPasswordForm} from "../types";
 import apiClient from "./apiClient"
 
 const baseUrl="/api/employees";
@@ -47,6 +47,13 @@ const updatePassword= async(id:string,object:updatePasswordForm)=>{
     return data;
 };
 
+const resetPassword = async(id:string,object:resetPasswordForm)=>{
+  const config={
+    headers:{Authorization:token},}
+    const {data} = await apiClient.patch(`${baseUrl}/${id}/reset-password`,object,config)
+    return data
+  }
+
 const updateDetails = async(id:string, object:UpdateEmployeeType)=>{
     const config = {
     headers: { Authorization: token },
@@ -68,4 +75,4 @@ const deleteEmployee = async (id:string)=>{
 
 
 
-export default {setToken,getAll,getOne,createNewEmployee,updatePassword,updateDetails,deleteEmployee};
+export default {setToken,getAll,getOne,createNewEmployee,updatePassword,updateDetails,deleteEmployee,resetPassword };

@@ -1,7 +1,7 @@
 import express,{type Request, type Response, type NextFunction} from "express";
 import admin_employee from "../services/admin_employee.ts";
-import { NewEmployeeSchema, updateEmployeeSchema ,updatePasswordSchema } from "../zodSchemas.ts";
-import type { EmployeeType, NewEmployeeType,updateEmployeeType,updatePasswordType } from "../zodSchemas.ts";
+import { NewEmployeeSchema, resetPasswordSchema, updateEmployeeSchema ,updatePasswordSchema } from "../zodSchemas.ts";
+import type { EmployeeType, NewEmployeeType,resetPasswordType,updateEmployeeType,updatePasswordType } from "../zodSchemas.ts";
 import { parser } from "../utils/validator.ts";
 
 const employeeRouter=express.Router();
@@ -58,7 +58,7 @@ employeeRouter.patch("/:id/password",parser(updatePasswordSchema),async (req:Req
            const id=req.params.id;
         const loginEmployee:EmployeeType=req.employee;
     if(!loginEmployee){return res.status(401).json({error:"Insufficient permission,please login "});}
-    if (loginEmployee?.id!==id ||loginEmployee?.role!=="master"){
+    if (loginEmployee?.id!==id){
               return res.status(403).json ({error:"Insufficient Permissions"});
         }
        
@@ -69,6 +69,22 @@ employeeRouter.patch("/:id/password",parser(updatePasswordSchema),async (req:Req
         return next(error);
     }
 });
+
+employeeRouter.patch("/:id/reset-password",parser(resetPasswordSchema),async(req:Request,res:Response, next: NextFunction)=>{
+    try{
+        const id=req.params.id
+        const loginEmployee:EmployeeType=req.employee
+        if(!loginEmployee){return res.status(401).json({error:"Insufficient permission,please login "});}
+    if (loginEmployee?.role!=="admin" && loginEmployee?.role!=="master" &&loginEmployee?.id!==id){
+            return res.status(403).json ({error:"Insufficient Permissions"});
+        } 
+    const reetPWEmployee=await admin_employee.resetPassword(id as string,req.body as resetPasswordType);
+     if(reetPWEmployee===null){return res.status(404).json({error:"employee details not found"});}
+
+    return res.json({message:"password updated"});}catch(error){
+        return next(error);
+    }
+})
 
 employeeRouter.patch("/:id/details",parser(updateEmployeeSchema),async (req:Request,res:Response, next: NextFunction)=>{
     try{

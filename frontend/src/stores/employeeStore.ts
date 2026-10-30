@@ -4,7 +4,7 @@ import employeeService from "../services/employeeService";
 
 import { devtools } from "zustand/middleware";
 
-import { EmployeeType,NewEmployeeForm ,updatePasswordForm,UpdateEmployeeType} from "../types";
+import { EmployeeType,NewEmployeeForm ,updatePasswordForm,UpdateEmployeeType, resetPasswordForm} from "../types";
 import { useShallow } from "zustand/shallow";
 
 interface employeeState{
@@ -17,6 +17,7 @@ interface employeeState{
         getOneEmployee:(id:string)=>Promise<EmployeeType>
         createEmployee:(values:NewEmployeeForm)=>Promise<EmployeeType>
         updateEmployeePassword:(id:string,values:updatePasswordForm)=>Promise<void>
+        resetEmployeePassword:(id:string,values:resetPasswordForm)=>Promise<void>
         updateEmployeeDetail:(id:string,values:UpdateEmployeeType)=>Promise<EmployeeType>
         deleteEmployee:(id:string)=>Promise<unknown>
     }
@@ -46,6 +47,10 @@ export const useEmployeeStore=create<employeeState>()(devtools((set)=>({
         updateEmployeePassword:(id:string,value:updatePasswordForm)=>{
             return employeeService.updatePassword(id,value);
         },
+        resetEmployeePassword:(id:string,value:resetPasswordForm)=>{
+            return employeeService.resetPassword(id,value)
+        }
+        ,
         updateEmployeeDetail:async(id:string,value:UpdateEmployeeType)=>{
             const updatedEmployee=await employeeService.updateDetails(id,value);
             set((state)=>({employee:state.employee.map(e=>e.id===updatedEmployee.id?updatedEmployee:e),

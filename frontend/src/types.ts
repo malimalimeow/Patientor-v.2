@@ -144,7 +144,9 @@ export interface updatePasswordForm {
 }
 
 
-
+export interface resetPasswordForm {
+  password:string
+}
 
 
 export interface loginForm{

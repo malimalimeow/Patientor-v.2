@@ -18,8 +18,10 @@ import { useModalActions, useModalOpen } from "../stores/modalStore";
 import AddEmployeeModal from "./AddEmployeeModal";
 import Notification from "./notification";
 import CustomizedInputBase from "./searchComponent";
+import { useLoginEmployee } from "../stores/loginStore";
 
 const EmployeeListPage = () => {
+  const loginEmployee = useLoginEmployee();
   const { setMessage } = useNotiAction();
   const employee = useEmployee();
   const { createEmployee, getOneEmployee } = useEmployeeActions();
@@ -49,8 +51,26 @@ const EmployeeListPage = () => {
   };
 
   const findEmployeeData = async (id: string) => {
-    await getOneEmployee(id);
+    try {
+      await getOneEmployee(id);
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        if (e?.response?.data && typeof e?.response?.data === "object") {
+          const firstError = e?.response?.data.error;
+          const message = `Something went wrong. Error: ${firstError}`;
+          setMessage(`${message}`);
+        } else {
+          setMessage("Unrecognized axios error");
+        }
+      } else {
+        console.error("Unknown error", e);
+        setMessage("Unknown error");
+      }
+    }
   };
+
+  const validRole =
+    loginEmployee?.role === "admin" || loginEmployee?.role === "master";
 
   return (
     <div className="App">
@@ -79,7 +99,9 @@ const EmployeeListPage = () => {
               <TableCell>
                 <Link
                   to={`/employee/${employee.id}`}
-                  onClick={() => findEmployeeData(employee.id)}
+                  onClick={() => {
+                    findEmployeeData(employee.id);
+                  }}
                 >
                   {employee.name}
                 </Link>
@@ -93,9 +115,11 @@ const EmployeeListPage = () => {
       {modalOpen === "addNewEmployee" && (
         <AddEmployeeModal onSubmit={submitNewEmployee} />
       )}
-      <Button variant="contained" onClick={() => openModal("addNewEmployee")}>
-        Add New Employee
-      </Button>
+      {validRole && (
+        <Button variant="contained" onClick={() => openModal("addNewEmployee")}>
+          Add New Employee
+        </Button>
+      )}
     </div>
   );
 };

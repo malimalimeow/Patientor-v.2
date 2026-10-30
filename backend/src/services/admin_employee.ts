@@ -1,5 +1,5 @@
 import Employee from '../models/employee.ts';
-import type {NewEmployeeType,EmployeeType,updatePasswordType,updateEmployeeType} from '../zodSchemas.ts';
+import type {NewEmployeeType,EmployeeType,updatePasswordType,updateEmployeeType, resetPasswordType} from '../zodSchemas.ts';
 import bcrypt from "bcrypt";
 import { v4 as uuid} from "uuid";
 
@@ -36,6 +36,8 @@ const addEmployee=async(newData:NewEmployeeType):Promise<Omit<EmployeeType,"pass
      return {...allData};
 };
 
+
+
 const updatePassword= async(id:string,Password:updatePasswordType):Promise<void|null>=>{
     const employee= await Employee.findById(id);
     if(!employee){
@@ -43,13 +45,30 @@ const updatePassword= async(id:string,Password:updatePasswordType):Promise<void|
     }
     const saltRounds=10;
     const newPassword=Password.newPassword;
-    if(newPassword && newPassword.length>2){
+    if(newPassword){
         const passwordHash=await bcrypt.hash(newPassword,saltRounds);
         employee.passwordHash=passwordHash;
         await employee.save();
     }
     return;
 };
+
+const resetPassword=async(id:string,newPW:resetPasswordType):Promise<void|null>=>{
+    const employee= await Employee.findById(id);
+    if(!employee){
+        return null;
+    }
+    const saltRounds=10;
+    
+    if(newPW.password){
+        const passwordHash=await bcrypt.hash(newPW.password,saltRounds);
+        employee.passwordHash=passwordHash;
+        await employee.save();
+    }
+    return;
+}
+
+
 
 const updateDetails = async(id:string,updateData:updateEmployeeType)=>{
     
@@ -76,4 +95,4 @@ if(!employee){
 };
     
 
-export default {getAllEmployee,getOneEmployee,addEmployee,updatePassword,updateDetails,removeEmployee};
+export default {getAllEmployee,getOneEmployee,addEmployee,updatePassword,updateDetails,removeEmployee,resetPassword};

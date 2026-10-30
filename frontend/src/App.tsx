@@ -63,11 +63,14 @@ const App = () => {
     if (!loginEmployee) {
       console.log(loginEmployee);
       return;
+    } else if (
+      loginEmployee.role === "master" ||
+      loginEmployee.role === "admin"
+    ) {
+      void getAllEmployee();
     }
-
     void fetchPatientList();
     void fetchDiagnoses();
-    void getAllEmployee();
   }, [loginEmployee, fetchPatientList, fetchDiagnoses, getAllEmployee]);
 
   return (
@@ -122,14 +125,25 @@ const App = () => {
                   >
                     Patient
                   </Button>
-                  <Button
-                    component={Link}
-                    to="/employee"
-                    variant="outlined"
-                    color="inherit"
-                  >
-                    Employee
-                  </Button>
+                  {loginEmployee?.role === "normal" ? (
+                    <Button
+                      component={Link}
+                      to={`/employee/${loginEmployee.id}`}
+                      variant="outlined"
+                      color="inherit"
+                    >
+                      Employee
+                    </Button>
+                  ) : (
+                    <Button
+                      component={Link}
+                      to="/employee"
+                      variant="outlined"
+                      color="inherit"
+                    >
+                      Employee
+                    </Button>
+                  )}
                 </Stack>
 
                 <Typography

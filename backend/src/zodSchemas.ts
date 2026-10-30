@@ -138,6 +138,12 @@ export const updatePasswordSchema = z.object({
 
 export type updatePasswordType= z.infer<typeof updatePasswordSchema>;
 
+export const resetPasswordSchema = z.object({
+  password:z.string().min(8,"password is required,minimum 8 characters")
+})
+
+export type resetPasswordType= z.infer<typeof  resetPasswordSchema>;
+
 export const updateEmployeeSchema= EmployeeSchema.pick({
     name:true,
     title:true,
@@ -161,7 +167,7 @@ export const updatePatientSchema= PatientSchema.pick({
 export type updatePatientType=z.infer<typeof updatePatientSchema>;
 
 export const loginSchema=z.object({
-  username:z.string().regex(/^[A-Za-z][0-9a-fA-F]{6}$/,"username invalid"),
+  username:z.string().regex(/^[A-Za-z]([0-9a-fA-F]{6}|[0-9a-fA-F]{8})$/,"username invalid"),
   password:z.string().min(8,"password is required,minimum 8 characters")
 });
 

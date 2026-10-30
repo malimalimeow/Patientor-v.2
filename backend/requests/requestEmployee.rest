@@ -2,14 +2,14 @@ POST http://localhost:3003/api/login
 Content-Type: application/json
 
 {
-  "username": "M1a2b3c",
+  "username": "H2b3c4d",
   "password":"Password123!"
 }
 
 ###
 
 GET http://localhost:3003/api/employees
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIiwiaWQiOiI2YWRmZjYzMWMxYWNkYjdhN2JmOGMxMWYiLCJyb2xlIjoibWFzdGVyIiwiaWF0IjoxNzkzMTI1MzMyLCJleHAiOjE3OTMyMTE3MzJ9.WuhTkvYKwKtsvVXcbjU8JeLzs2-kwQnqtS86Y9GgP7I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiTWFzdGVyIEFkbWluIEgiLCJpZCI6IjZhZTEzMWRiNDlmOTFkMGU3NWFlMDgxZiIsInJvbGUiOiJtYXN0ZXIiLCJpYXQiOjE3OTMzODU1NjUsImV4cCI6MTc5MzQ3MTk2NX0.D8hOMwggp6gLwxvJ_uw4TwcKcvlkIn5yGMf54aFp2wA
 
 
 ###

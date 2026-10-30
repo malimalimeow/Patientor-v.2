@@ -74,15 +74,7 @@ const updateEntry = async(id:string,updateEntryDetails:UpdateEntryType,entryId:s
 
 };
 
-const deleteEntry =async(id:string,entryId:string)=>{
-  const config = {
-    headers: { Authorization: token },
-  };
-  const {data} = await apiClient.delete<Entry>(
-    `${apiBaseUrl}/${id}/entries/${entryId}`,config
-  );
-  return data;
-};
+
 
 const deletePatient = async(id:string)=>{
   const config = {
@@ -94,6 +86,6 @@ const deletePatient = async(id:string)=>{
 
 export default {
 
-  setToken,getAll, create,getOne,addEntry,deleteEntry,deletePatient,updatePatient,updateEntry
+  setToken,getAll, create,getOne,addEntry,deletePatient,updatePatient,updateEntry
 };
 
