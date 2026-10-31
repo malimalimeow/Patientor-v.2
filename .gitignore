@@ -27,3 +27,9 @@ dist-ssr
 .env
 *.env
 
+# Seed files
+**/seed.ts      
+**/seedPatient.ts
+**/patientSeedData.ts
+**/diagnosis.ts 
+**/employeeSeed.ts

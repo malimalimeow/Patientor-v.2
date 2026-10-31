@@ -13,7 +13,8 @@
     "start": "node --experimental-transform-types src/index.ts",
     "lint": "eslint .",
     "seed": "cross-env NODE_ENV=dev tsx src/utils/seed.ts",
-    "seedP":"cross-env NODE_ENV=dev tsx src/utils/seedPatient.ts"
+    "seedP":"cross-env NODE_ENV=dev tsx src/utils/seedPatient.ts",
+    "seedE":"cross-env NODE_ENV=dev tsx src/utils/employeeSeed.ts"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
