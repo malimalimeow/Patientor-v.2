@@ -4,6 +4,19 @@
 
 [Demo Link](https://patientorv2.netlify.app/)
 
+Demo Employee Accounts
+The following demo accounts are available for testing the application.
+|Name |Username |Password|
+|-------|-----------|--------|
+| Oliver Bennett(Admin) | Oe542ac28 | Oliver#2026 |
+| Emily Carter | Eecdabd73 | Emily#2026 |
+| Noah Williams | N08703a6d | Noah#2026 |
+| Sophie Mitchell | S5cb222ee | Sophie#2026 |
+| Daniel Foster | D3fcd069d | Daniel#2026 |
+| Grace Thompson | G09a4c082 | Grace#2026 |
+
+Note: These are demo accounts created with fictional employee data. Please use them for testing purposes only.
+
 ## 🎥 Demo Video
 
 //[TODO]
