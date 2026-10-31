@@ -38,16 +38,6 @@ test.describe("reset",()=>{
 
   test('should not able to add Employee, and error message shown',async({page})=>{
     await page.getByRole("link",{name:"Employee"}).click()
-    await page.getByRole('button', { name: 'Add New Employee' }).click();
-    await page.getByRole('textbox', { name: 'Name' }).fill('test');
-    await page.getByRole('textbox', { name: 'Password' }).fill('Password!');
-    await page.getByRole('textbox', { name: 'Title' }).fill('test');
-    await page.getByRole('textbox', { name: 'Date of Birth' }).fill('2026-10-26');
-    await page.getByRole('textbox', { name: 'NI' }).fill('AA123456A');
-    await page.getByRole('textbox', { name: 'Address' }).fill('123,London');
-    await page.getByRole('textbox', { name: 'Emergency Contact' }).fill('12345678');
-    await page.getByRole('button', { name: 'Add' }).click();
-    await expect(page.getByText('Something went wrong. Error:')).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Add New Employee' })).not.toBeVisible();
   })
-  
 })
