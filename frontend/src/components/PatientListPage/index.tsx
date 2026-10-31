@@ -59,7 +59,7 @@ const PatientListPage = () => {
         <Typography align="center" variant="h6">
           Patient list
           <CustomizedInputBase
-            placeholder="search name or birth year"
+            placeholder="search name or date of birth"
             usedPage="patient"
           />
         </Typography>
