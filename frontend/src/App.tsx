@@ -82,10 +82,10 @@ const App = () => {
             <Paper
               elevation={2}
               sx={{
-                p: 10,
+                p: { xs: 5, md: 10 },
                 border: "1px solid #e2e8f0",
                 borderRadius: 3,
-                marginTop: 5,
+                width: { xs: "100%", sm: "80%", md: "600px" },
               }}
             >
               <Box
