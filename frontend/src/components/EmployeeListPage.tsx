@@ -85,33 +85,35 @@ const EmployeeListPage = () => {
         </Typography>
       </Box>
       <Divider sx={{ mb: 2 }} />
-      <Table sx={{ marginBottom: "1em" }}>
-        <TableHead sx={{ background: "#f8fafc" }}>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Gender</TableCell>
-            <TableCell>Title</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Object.values(employee).map((employee: EmployeeType) => (
-            <TableRow key={employee.id}>
-              <TableCell>
-                <Link
-                  to={`/employee/${employee.id}`}
-                  onClick={() => {
-                    findEmployeeData(employee.id);
-                  }}
-                >
-                  {employee.name}
-                </Link>
-              </TableCell>
-              <TableCell>{employee.gender}</TableCell>
-              <TableCell>{employee.title}</TableCell>
+      <Box sx={{ width: "100%", overflowX: "auto" }}>
+        <Table sx={{ marginBottom: "1em", minWidth: 650 }}>
+          <TableHead sx={{ background: "#f8fafc" }}>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Gender</TableCell>
+              <TableCell>Title</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {Object.values(employee).map((employee: EmployeeType) => (
+              <TableRow key={employee.id}>
+                <TableCell>
+                  <Link
+                    to={`/employee/${employee.id}`}
+                    onClick={() => {
+                      findEmployeeData(employee.id);
+                    }}
+                  >
+                    {employee.name}
+                  </Link>
+                </TableCell>
+                <TableCell>{employee.gender}</TableCell>
+                <TableCell>{employee.title}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
       {modalOpen === "addNewEmployee" && (
         <AddEmployeeModal onSubmit={submitNewEmployee} />
       )}

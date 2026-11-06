@@ -93,12 +93,18 @@ const App = () => {
               <Box
                 sx={{
                   display: "flex",
+                  flexDirection: { xs: "column-reverse", md: "row" },
                   justifyContent: "space-between",
-                  alignItems: "center",
+                  alignItems: { xs: "stretch", md: "center" },
                   mb: 3,
+                  gap: { xs: 2, md: 0 },
                 }}
               >
-                <Stack direction="row" spacing={1.5}>
+                <Stack
+                  direction="row"
+                  spacing={1.5}
+                  sx={{ flexWrap: "wrap", gap: 1 }}
+                >
                   {loginEmployee !== null ? (
                     <Button
                       onClick={() => logout()}
@@ -150,7 +156,11 @@ const App = () => {
 
                 <Typography
                   variant="h5"
-                  sx={{ fontWeight: 700, color: "#0f172a", marginRight: "10" }}
+                  sx={{
+                    fontWeight: 700,
+                    color: "#0f172a",
+                    mb: { xs: 1, md: 0 },
+                  }}
                 >
                   Patientor
                 </Typography>

@@ -65,35 +65,37 @@ const PatientListPage = () => {
         </Typography>
       </Box>
       <Divider sx={{ mb: 2 }} />
-      <Table sx={{ marginBottom: "1em" }}>
-        <TableHead sx={{ background: "#f8fafc" }}>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Gender</TableCell>
-            <TableCell>Occupation</TableCell>
-            <TableCell>Health Rating</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {Object.values(patients).map((patient: Patient) => (
-            <TableRow key={patient.id}>
-              <TableCell>
-                <Link
-                  to={`/patients/${patient.id}`}
-                  onClick={() => findPatientData(patient.id)}
-                >
-                  {patient.name}
-                </Link>
-              </TableCell>
-              <TableCell>{patient.gender}</TableCell>
-              <TableCell>{patient.occupation}</TableCell>
-              <TableCell>
-                <HealthRatingBar showText={false} rating={1} />
-              </TableCell>
+      <Box sx={{ width: "100%", overflowX: "auto" }}>
+        <Table sx={{ marginBottom: "1em", minWidth: 650 }}>
+          <TableHead sx={{ background: "#f8fafc" }}>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell>Gender</TableCell>
+              <TableCell>Occupation</TableCell>
+              <TableCell>Health Rating</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {Object.values(patients).map((patient: Patient) => (
+              <TableRow key={patient.id}>
+                <TableCell>
+                  <Link
+                    to={`/patients/${patient.id}`}
+                    onClick={() => findPatientData(patient.id)}
+                  >
+                    {patient.name}
+                  </Link>
+                </TableCell>
+                <TableCell>{patient.gender}</TableCell>
+                <TableCell>{patient.occupation}</TableCell>
+                <TableCell>
+                  <HealthRatingBar showText={false} rating={1} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
       <AddPatientModal onSubmit={submitNewPatient} />
       <Button variant="contained" onClick={() => openModal("addNewPatient")}>
         Add New Patient
