@@ -13,7 +13,6 @@ import {
 import axios from "axios";
 import { PatientFormValues, Patient } from "../../types";
 import AddPatientModal from "../AddPatientModal";
-import HealthRatingBar from "../HealthRatingBar";
 import { useNotiAction } from "../../stores/notificationStore";
 import { usePatients, usePatientActions } from "../../stores/patientStore";
 import { useModalActions } from "../../stores/modalStore";
@@ -72,7 +71,6 @@ const PatientListPage = () => {
               <TableCell>Name</TableCell>
               <TableCell>Gender</TableCell>
               <TableCell>Occupation</TableCell>
-              <TableCell>Health Rating</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -88,9 +86,6 @@ const PatientListPage = () => {
                 </TableCell>
                 <TableCell>{patient.gender}</TableCell>
                 <TableCell>{patient.occupation}</TableCell>
-                <TableCell>
-                  <HealthRatingBar showText={false} rating={1} />
-                </TableCell>
               </TableRow>
             ))}
           </TableBody>
